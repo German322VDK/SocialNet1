@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SocialNet1.Infrastructure.Methods;
 
 namespace Social_Net1.Infrastructure.Services.Based
 {
@@ -14,15 +15,9 @@ namespace Social_Net1.Infrastructure.Services.Based
     {
         public byte[] GetSpecialImage(string user)
         {
-            return GetBytePhoto(user);
-        }
-
-        private byte[] GetBytePhoto(string photoName)
-        {
-
             string photo = "";
 
-            switch (photoName)
+            switch (user)
             {
                 case "GodName":
                     photo = "pepegod.jpg";
@@ -40,30 +35,11 @@ namespace Social_Net1.Infrastructure.Services.Based
 
             var newImage = Image.FromFile(photoPath);
 
-            newImage.Save(memorystream, GetFormat(photo));
+            newImage.Save(memorystream, ImageMethods.GetFormat(photo));
 
             return memorystream.ToArray();
         }
 
-        private ImageFormat GetFormat(string photoName)
-        {
-            var photoNames = photoName.Split('.');
-
-            var format = photoNames[photoNames.Length - 1];
-
-            if (format == "jpeg" || format == "jpg")
-            {
-                return ImageFormat.Jpeg;
-            }
-            else if (format == "png" || format == "PNG")
-            {
-                return ImageFormat.Png;
-            }
-            else
-            {
-                throw new ArgumentException("Неправильный формат файла");
-            }
-        }
 
     }
 }
