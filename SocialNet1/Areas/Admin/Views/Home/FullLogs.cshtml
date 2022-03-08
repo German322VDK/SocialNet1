@@ -1,0 +1,16 @@
+﻿@model ICollection<string>
+
+@{
+    ViewBag.Title = "Полные логи";
+}
+
+<p>Полные логи</p>
+@foreach (var item in Model)
+{
+    var itemAr = item.Split("\\");
+
+    var fileName = itemAr[itemAr.Length - 1];
+
+    <a asp-area="Admin" asp-controller="Home" asp-action="GetFile" asp-route-fileName="@item">@fileName</a>
+
+}

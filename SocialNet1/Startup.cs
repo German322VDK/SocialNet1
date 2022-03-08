@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SocialNet1.Infrastructure.Services.Admin;
+using SocialNet1.Infrastructure.Interfaces.Admin;
 
 namespace SocialNet1
 {
@@ -49,6 +51,8 @@ namespace SocialNet1
             services.AddTransient<IImage, ImageService>();
 
             services.AddTransient<IUserIdProvider, CustomUserIdProvider>();
+
+            services.AddTransient<ILogInfo, LogInfoService>();
 
             services.AddSignalR();
 
