@@ -11,6 +11,8 @@
 
     var fileName = itemAr[itemAr.Length - 1];
 
-    <a asp-area="Admin" asp-controller="Home" asp-action="GetFile" asp-route-fileName="@item">@fileName</a>
+    <p>
+        <a asp-area="Admin" asp-controller="Home" asp-action="GetFile" asp-route-fileName="@item">@fileName</a>
+    </p>
 
 }

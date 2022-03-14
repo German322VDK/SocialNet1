@@ -10,7 +10,7 @@ namespace SocialNet1.Infrastructure.Services.Admin
             GetFileNames("Logs\\Error");
 
         public ICollection<string> GetFullLogs() =>
-            GetFileNames("Logs\\Error");
+            GetFileNames("Logs\\Info");
 
         public ICollection<string> GetFileNames(string dir)
         {
