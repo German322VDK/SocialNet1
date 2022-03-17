@@ -44,6 +44,7 @@ namespace SocialNet1
            //.UseLazyLoadingProxies()
            );
 
+
             services.AddIdentity<UserDTO, RoleDTO>()
                 .AddEntityFrameworkStores<SocialNetDBSQlite>()
                 .AddDefaultTokenProviders();

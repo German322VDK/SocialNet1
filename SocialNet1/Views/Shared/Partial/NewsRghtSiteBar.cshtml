@@ -1,7 +1,12 @@
-﻿@{
+﻿@inject IUser userService;
+@{
     var name = User.Identity!.Name;
 
-    
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var l = 1;
 }
 
 

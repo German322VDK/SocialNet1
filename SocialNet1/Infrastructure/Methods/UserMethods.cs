@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
@@ -10,8 +11,7 @@ namespace SocialNet1.Infrastructure.Methods
 {
     public static class UserMethods
     {
-        public static UserDTO GetUser(string Username, [FromServices] IUser user) =>
-            user.Get(Username);
+        
 
         /// <summary>
         /// 
