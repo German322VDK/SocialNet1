@@ -1,5 +1,34 @@
 ﻿@model LoginViewModel
 
 @{
+    Layout = "LoginLayout";
     ViewData["Title"] = "Вход в систему";
 }
+
+<div class="registration">
+    <div class="registration__container">
+        <form asp-action="Login" asp-antiforgery="true" asp-route-ReturnUrl="@Model.ReturnUrl" class="registration-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="input-wrapper_l">
+                <input type="text" placeholder="Логин или почта" asp-for="UserName">
+            </div>
+            <div class="input-wrapper_p">
+                <input type="password" id="password" placeholder="Пароль" asp-for="Password">
+                <div class="input-icon" id="icon" onclick="togglePassword()">
+                    <img src="~/img/search.svg" alt="">
+                </div>
+            </div>
+            <div class="registration__down">
+                <div class="registration__btn">
+                    <button type="submit" class="registration__btn_in custom-btn btn-6" name="register">
+                        <span class="registration__btn_in_sp">Войти</span>
+                    </button>
+                </div>
+                <div class="reg custom-btn btn-6 btn-66">
+                    <a href="reg__btn"><span class="registration__btn_in_sp">Регистрация</span></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

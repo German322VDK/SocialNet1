@@ -27,37 +27,25 @@
 
 </head>
 <body>
-    
-    <partial name="Partial/Header" />
 
-    <div class="body mid_blue">
-        <div class="body__container">
-
-            <partial name="Partial/LeftSiterBar" />
-
-            @RenderBody()
-
+    <header class="header__container container">
+        <div class="header__left">
+            <div class="header__red dark_red"></div>
+            <div class="header__green dark_green"></div>
         </div>
-    </div>
-    @*<div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>*@
-    @*<footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2022 - SocialNet1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="header__center">
+            <a class="header__logo" href=""></a>
+        </div>
+        <div class="header__right">
+            <div class="header__blue dark_blue">
             </div>
-        </footer>*@
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>*@
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="~/js/profil_modal.js" asp-append-version="true"></script>
-    <script src="~/js/profil_tabs.js" asp-append-version="true"></script>
-    <script src="~/js/profil_slider.js" asp-append-version="true"></script>
-    <script src="~/js/pcl.js" asp-append-version="true"></script>
+            <div class="header__yellow dark_yellow"></div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <script src="~/js/login.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

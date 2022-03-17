@@ -101,7 +101,7 @@ namespace SocialNet1.Controllers
             var login_result = await _signInManager.PasswordSignInAsync(
                 Model.UserName,
                 Model.Password,
-                Model.RememberMe,
+                true,
 #if DEBUG
                 false
 #else
@@ -132,7 +132,7 @@ namespace SocialNet1.Controllers
 
             _logger.LogInformation("Пользователь вышел");
 
-            return RedirectToAction("Index", "Home", new { id = 0 });
+            return RedirectToAction("Index", "News");
         }
 
         public IActionResult AccessDenied(string ReturnUrl)
