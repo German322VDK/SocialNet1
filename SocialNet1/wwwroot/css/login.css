@@ -1,0 +1,260 @@
+*{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+html{
+  font-family:  sans-serif;
+}
+
+ul{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p{
+  margin: 0;
+  padding: 0;
+}
+
+img{
+  max-width: 100%;
+}
+
+.container{
+    /* max-width: 1920px; */
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-center{
+  text-align: center;
+}
+
+textarea {outline: none;}
+
+input {outline:none;}
+
+.registration{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin-top: 100px;
+}
+
+.registration__container{
+  /* left: 43%;
+  top: 20%; */
+  /* position: fixed; */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-wrapper_l,
+.input-wrapper_p{
+  margin-top: 20px;
+  box-shadow: rgba(113, 113, 113, 0.15) -5px -5px 11px, rgba(0, 0, 0, 0.15) 5px 5px 11px;
+  border-radius: 12px;
+  width: 325px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper_l input,
+.input-wrapper_p input{
+  background: rgba(245, 245, 245, 1);
+  border: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  text-indent: 20px;
+  color: black;
+  font-size: 16px;
+  outline: 0;
+}
+
+.input-icon{
+  width: 20px;
+  margin-right: 20px;
+  border-radius: 50px;
+  padding: 3px 6px;
+  cursor: pointer;
+  transition: all .4s ease;
+}
+
+.input-icon.selected {
+  background-color: #2d2d2d;
+}
+
+.input-icon img{
+  width: 100%;
+  height: 100%;
+}
+
+::-webkit-input-placeholder {
+  color: #b2becd;
+}
+
+.registration__btn{
+  margin-top: 20px;
+  width: 80%;
+  box-shadow: rgba(113, 113, 113, 0.15) -5px -5px 11px, rgba(0, 0, 0, 0.15) 5px 5px 11px;
+  border-radius: 12px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+}
+
+.registration__btn_in{
+  border-color: transparent;
+  background-color: transparent;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  padding-left: 25%;
+}
+
+.reg{
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+  width: 35%;
+  box-shadow: rgba(113, 113, 113, 0.15) -5px -5px 11px, rgba(0, 0, 0, 0.15) 5px 5px 11px;
+  border-radius: 12px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  /* padding-left: 3%; */
+  margin-left: 100px;
+}
+
+.registration__down{
+  display: flex;
+  justify-content: space-between;
+}
+
+.registration__btn_in_sp{
+  font-size: 16px;
+
+}
+
+.custom-btn {
+  background: transparent;
+  cursor: pointer;
+  transition: all .5s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+.btn-6 {
+  background: rgb(255, 255, 255);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(249, 248, 246, 1) 100%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  width: 100%;
+  border-radius: 12px;
+}
+.btn-6 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+.btn-6:before,
+.btn-6:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 1px;
+ box-shadow:
+   -1px -1px 20px 0px rgba(255,255,255,1),
+   -4px -4px 5px 0px rgba(255,255,255,1),
+   7px 7px 20px 0px rgba(0,0,0,.4),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+   border-radius: 12px;
+}
+.btn-6:before {
+  right: 0;
+  top: 0;
+  transition: all .5s ease;
+  border-radius: 12px;
+}
+.btn-6:after {
+  left: 0;
+  bottom: 0;
+  transition: all .5s ease;
+  border-radius: 12px;
+}
+.btn-6:hover{
+  background: transparent;
+  color: #6F8FAF	;
+  box-shadow: none;
+  border-radius: 12px;
+}
+.btn-66:hover{
+  background: transparent;
+  color: 	#0818A8	;
+  box-shadow: none;
+  border-radius: 12px;
+}
+.btn-6:hover:before {
+  transition: all .5s ease;
+  height: 100%;
+  border-radius: 12px;
+}
+/* .btn-6:hover:after {
+  transition: all 1s ease;
+  height: 100%;
+  border-radius: 12px;
+} */
+.btn-6 span:before,
+.btn-6 span:after {
+  position: absolute;
+  content: "";
+  box-shadow:
+   -1px -1px 20px 0px rgba(255,255,255,1),
+   -4px -4px 5px 0px rgba(255,255,255,1),
+   7px 7px 20px 0px rgba(0,0,0,.4),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+   border-radius: 12px;
+}
+/* .btn-6 span:before {
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 0.1px;
+  transition: all 1s ease;
+  border-radius: 12px;
+} */
+.btn-6 span:after {
+  right: 0;
+  bottom: 0;
+  width: 0%;
+  height: 0.1px;
+  transition: all .5s ease;
+  border-radius: 12px;
+}
+.btn-6 span:hover:before {
+  width: 100%;
+}
+.btn-6 span:hover:after {
+  width: 100%;
+}
+

@@ -1,0 +1,1442 @@
+body{
+  margin: 0;
+}
+button{
+  background-color: transparent;
+  border: transparent;
+  cursor: pointer;
+}
+.container{
+  /* max-width: 1920px; */
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-center{
+  text-align: center;
+}
+.body{
+  display: flex;
+  /* justify-content: space-around; */
+  justify-self: center;
+  /* min-height: 100vh; */
+  height: auto;
+  /* height: 100%; */
+  min-height: 100%;
+
+}
+.body__container{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  min-height: 100vh;
+}
+.profil_left{
+  width: 550px;
+  height: 97%;
+}
+.profil_left__container{
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 12px 12px 0 0;
+}
+.profil_left__name{
+  margin-top: 0px;
+  padding-top: 10px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 24px;
+}
+.profil_left__status{
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+
+.kto_na_koord_polich{
+  padding-left: 20px;
+  width: 50%;
+  padding-top: 5%;
+  font-size: 14px;
+}
+.kto_na_koord{
+  display: flex;
+}
+.kto_na_koord_img{
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.profil_left__birthday_info{
+  margin-top: 10px;
+}
+.profil_left__birthday_info,
+.profil_left__city,
+.profil_left__views{
+  display: flex;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.profil_left__birthday,
+.profil_left__city_city,
+.profil_left__views_views{
+  width: 50%;
+  font-size: 14px;
+}
+
+.profil_left__container_button{
+  width: 100%;
+}
+.profil_left__btn_one,
+.profil_left__btn_two{
+  background-color: transparent;
+  border: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+.profil_left__btn_active{
+  display: block;
+}
+.profil_left__birthday_date,
+.profil_left__city_name,
+.profil_left__views_name{
+  font-size: 14px;
+}
+.profil_left__btn_one,
+.profil_left__btn_active{
+  font-size: 14px;
+}
+.profil_left__dop_list_item{
+  font-size: 14px;
+}
+
+.profil_left__dop{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.profil_left__dop_list{
+  margin-top: 20px;
+  display: flex;
+}
+.profil_left__dop_list_item:not(:last-child){
+  margin-right: 15px;
+}
+.profil_left__dop_list_item_t_c{
+  text-align: center;
+}
+
+.profil_left__all_foto{
+  padding-bottom: 15px;
+  text-align: center;
+}
+.profil_left__all_foto_list{
+  display: flex;
+  justify-content: space-evenly;
+}
+.profil_left__foto_title{
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  text-align: center;
+  padding-top: 10px;
+}
+.profil_left__all_foto_f{
+  text-align: center;
+}
+.profil_left__all_foto_img{
+  text-align: center;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.profil_left__add_f{
+  margin-top: 20px;
+}
+.profil_left__add_foto{
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.profil_left__add_foto:hover{
+  font-size: 16px;
+}
+
+.profil_left__news_title{
+  padding-top: 20px;
+  margin-left: 20px;
+}
+.profil_left__news{
+  margin-top: 20px;
+}
+.profil_left__news_btn{
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.profil_left__news_btn:hover{
+  font-size: 16px;
+}
+
+.profil_left__news_news{
+  padding:20px
+}
+
+.profil_left__news_img{
+  width: 100%;
+  height: 350px;
+  background-size: cover;
+  background-image: url('../img/намаз.jpg');
+}
+
+.profil_left__news_dif{
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.profil_left__news_dif_btn{
+  background-color: transparent;
+  border-color: transparent;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.news__post_profil{
+  border-radius: 0;
+  max-width: 640px;
+  margin-top: 20px;
+}
+
+.profil__post_profil_container{
+  margin-bottom: 20px;
+  display: none;
+}
+.profil__post_profil_container_active{
+  display: block;
+}
+
+.profil_left_dop_infa{
+  display: none;
+}
+.profil_left_dop_infa_active{
+  display: block;
+}
+
+.profil_right{
+  width: 210px;
+  padding-left: 30px;
+  padding-right: 10px;
+}
+.profil_right__conteiner_one{
+  margin-top: 22px;
+  border-radius: 12px;
+}
+.profil_right__ava{
+  padding-top: 20px;
+}
+.profil_right__ava_img{
+  width: 170px;
+  height: 170px;
+  /* padding-top: 20px;
+  padding-bottom: 20px; */
+  object-fit: cover;
+  border-radius: 12px;
+}
+.profil_right__ava_btn{
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  width: 100%;
+  padding: 15px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.profil_right__lol{
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.profil_right__lol:last-child{
+  margin-bottom: 15px;
+}
+/* модальное окно первого фото */
+.modal_1{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s;
+}
+.open__foto_1{
+  background-color: transparent;
+  border: none;
+  text-align: center;
+}
+.modal_1__is_open{
+  opacity: 1;
+  transform: scale(1);
+  z-index: 20;
+}
+.modal_1__is_open > .modal__foto_container{
+  opacity: 1;
+  transform: translateY(0);
+}
+.modal__foto_container{
+  max-width: 750px;
+  flex-grow:1;
+  display: flex;
+  position: relative;
+  opacity: 0;
+  transform: translateY(-10%);
+  transition: transform 0.2s, opacity 0.2s;
+  transition-delay: 0.2s;
+  border-radius: 12px;
+  margin-bottom: 200px;
+  /* background-color:rgba(0, 0, 0, 0.7); */
+  margin-top: 17%;
+}
+.modal__foto_all_el{
+  display: flex;
+}
+.modal__foto_left{
+  width: 500px;
+}
+.modal__left_container_img{
+  display:flex;
+  margin: auto;
+  width: 450px;
+  height: 490px;
+  border-radius: 12px;
+  justify-content: center; /*центрируем элемент по горизонтали */
+  align-items: center; /* и вертикали */
+  overflow: hidden;
+}
+.modal__left_container_img_img{
+  border-radius: 12px;
+}
+.modal__left_container_dop{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-top: 2px solid white;
+  display: flex;
+  justify-content: flex-end;
+}
+.modal__left_dop_infa{
+  font-size: 14px;
+  line-height: 18px;
+  color: white;
+  padding-right: 10px;
+}
+.modal__foto_right{
+  width: 250px;
+  border-radius: 0 12px 12px 0;
+}
+/* модальное окно, правый блок, top */
+.foto__right_top{
+  width: 100%;
+  height: 56px;
+  display: flex;
+  border-radius: 0 12px 0 0;
+}
+.foto__right_t_l{
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
+}
+.foto__right_t_l_link{
+  width: 50px;
+  height: 50px;
+}
+.foto__right_t_l_img{
+  width: 48px;
+  height: 48px;
+  border: 1px solid black;
+  border-radius: 50px;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+.foto__right_t_r_container{
+  display: flex;
+  padding-top: 6px;
+}
+.foto__right_t_name{
+  font-size: 14px;
+  line-height: 26px;
+  margin-right: 5px;
+  color: white;
+}
+.foto__right_t_img{
+  width: 26px;
+  height: 26px;
+}
+.foto__right_t_date{
+  font-size: 14px;
+  color: white;
+}
+.modal_foto__close_btn{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  position: absolute;
+  left: 95.5%;
+  top: 5px;
+  cursor: pointer;
+}
+
+/* модальное окно, правый блок, реакции */
+
+.modal__foto_right_reactions{
+  display: flex;
+  padding-top: 6px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+.modal__foto_r_r_btn{
+  outline: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+/* .heart_none{
+  display: none;
+} */
+.profil_modal_foto_btn_quantity{
+  font-size: 16px;
+  line-height: 30px;
+  margin-right: 15px;
+}
+.modal__foto_r_r_btn_circle{
+  cursor: pointer;
+}
+.modal__foto_r_r_btn_circle:hover{
+  line-height: 28px;
+}
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.circle__tooltop{
+  position: absolute;
+  transition: display .3s ease-in-out;
+  right: 0;
+  z-index: 15;
+  border-radius: 12px;
+  top: 99px;
+  min-width: 250px;
+  max-width: 350px;
+  padding: 10px;
+  display: none;
+}
+.circle__tooltop_active{
+  display: block;
+}
+.circle__tooltip_comtainer{
+  display: flex;
+  padding-bottom: 2px;
+  margin-top: 2px;
+}
+.circle__tooltip_link{
+  padding-bottom: 2px;
+}
+.circle__tooltip_comtainer:hover,
+.circle__tooltip_link:hover{
+  padding-bottom: 0px;
+}
+
+.circle__tooltip_r_c_l{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.circle__ava_link{
+  width: 40px;
+  height: 40px;
+}
+.circle__link_img{
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.circle__name_polit{
+  display: flex;
+}
+.circle__name_link{
+  font-size: 14px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  color: white;
+}
+.circle__polit_img{
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.circle__tooltip_title{
+  font-size: 14px;
+  color: white;
+  margin-bottom: 13px;
+  text-align: center;
+}
+circle__tooltip_link_c{
+  text-align: center;
+  padding-top: 3px;
+}
+.circle__tooltip_link{
+  display: block;
+  padding-top: 13px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+
+/* МОДАЛЬНОЕ ОКНО, ПРАВЫЙ БЛОК, КОМЕНТ */
+
+.modal__foto_right_comment_container{
+  height: 389px;
+}
+.modal__foto_right_comment{
+  display: flex;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+}
+.modal__foto_r_c_l{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.modal__foto_r_c_r{
+  width: 190px;
+}
+.comment_ava_link{
+  width: 40px;
+  height: 40px;
+}
+.comment_link_img{
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.comment__name_polit{
+  display: flex;
+}
+.comment__name_link{
+  font-size: 14px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+.comment__polit_img{
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.comment__all_infa{
+  display: flex;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+.comment__date{
+  font-size: 12px;
+  margin-right: 10px;
+}
+.comment__icons{
+  display: flex;
+}
+.comment__plus,
+.comment__minus,
+.comment__pencil,
+.comment__heart,
+.comment__heart_bac{
+  margin-right: 7px;
+  cursor: pointer;
+}
+.comment__content{
+  width: 200px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+/* МОДАЛЬНОЕ ОКНО, ПРАВЫЙ БЛОК, МОЙ КОМЕНТ */
+
+.modal__foto_right_my_comment{
+  display: flex;
+}
+.modal__foto_r_m_c_link_ava{
+  padding-top: 3px;
+  padding-left: 5px;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+}
+.my_comment__ava_link{
+  width: 40px;
+  height: 40px;
+}
+.my_comment__link_img{
+  width: 34px;
+  height: 34px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.my_comment__container{
+  padding-top: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal__foto_right_my_comment_write{
+  display: none;
+  position: absolute;
+  top: 400px;
+  z-index: 10;
+  width: 250px;
+}
+.modal__foto_right_my_comment_write_active{
+  display: block;
+}
+.modal__foto_right_my_comment_write_top{
+  display: flex;
+}
+.my_comment_write_ava{
+  padding-left: 5px;
+  padding-top: 5px;
+  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+}
+.my_comment_write_ava_link{
+  width: 40px;
+  height: 40px;
+}
+.my_comment_write_ava_img{
+  width: 34px;
+  height: 34px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.my_comment_write_smile{
+  text-align: center;
+  margin-top: 3px;
+  cursor: pointer;
+}
+.my_comment_write_skrepka{
+  text-align: center;
+  margin-top: 3px;
+  cursor: pointer;
+}
+.modal__foto_right_my_comment_write_t_r{
+  height:100%;
+}
+.my_comment__write_my_comment{
+  height: 83px;
+  width: 200px;
+  outline: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.modal__foto_right_my_comment_write_bottom{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  padding-top: 5px;
+  border-radius: 0 0 12px 0;
+}
+.my_comment_write_btn_cancel{
+  outline: none;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.my_comment_write_btn_send{
+  outline: none;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.modal__foto_bottom_background{
+  height: 40px;
+  width: 100%;
+  border-radius: 0 0 12px 0;
+}
+
+.modal{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s;
+}
+.modal__is_open{
+  opacity: 1;
+  transform: scale(1);
+  z-index: 20;
+}
+.modal__dialog{
+  max-width: 1000px;
+  min-height: 565px;
+  flex-grow:1;
+  display: flex;
+  position: relative;
+  opacity: 0;
+  transform: translateY(-10%);
+  transition: transform 0.2s, opacity 0.2s;
+  transition-delay: 0.2s;
+  border-radius: 12px;
+}
+.modal__is_open > .modal__dialog{
+  opacity: 1;
+  transform: translateY(0);
+}
+.modal__close_btn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: transparent;
+  border: none;
+  margin-top: 25px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+.modal__dialog_container{
+  width: 100%;
+}
+.modal__add_foto_title{
+  width: 100%;
+  text-align: center;
+}
+.modal__add_foto_info{
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+.modal__add_foto_vibrat{
+  margin-top: 15px;
+  text-align: center;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Выберите файл';
+  display: inline-block;
+  width: 235px;
+  text-align: center;
+  background: -webkit-linear-gradient(transparent);
+  /* border: 1px solid #999; */
+  border-radius: 3px;
+  padding: 10px 8px;
+  outline: none;
+  white-space: nowrap;
+  /* -webkit-user-select: none; */
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+}
+input[type="file" i]{
+  /* margin-left: 25px; */
+  border: none;
+  margin-bottom: 15px;
+}
+input[type="submit"]{
+  margin-top: 10px;
+  width: 100px;
+  left: -30px;
+  border: none;
+  padding: 10px;
+  background-color: transparent;
+  position: absolute;
+  left: 45%;
+  top: 89%;
+}
+.thumb{
+  text-align: center;
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.kto_na_koord_2{
+  position: absolute;
+  transform: translate(-85px, -35px);
+  width: 200px;
+  padding: 5px;
+  color: white;
+  /* background: rgba(0, 0, 0, 0.85); */
+  list-style: none;
+  margin-top: 10px;
+  /* -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1); */
+  display: none;
+  z-index: 999;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.kto_na_koord_img_2:hover .kto_na_koord_2{
+  display: initial;
+}
+/* .display_none{
+  display: none;
+} */
+
+/* МОЙ ЛЮБИМЫЙ СЛАЙДЕР <3 */
+/* .mySlides {display: none}; */
+.mySlides {display: none};
+.slideshow-container{
+  position: relative;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  border-radius: 12px 0 0 12px;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  border-radius: 0 12px 12px 0;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+/* СТРЕЛКА ВВЕРХ */
+.rightsitebar__link_top_cont{
+  display: block;
+  margin-top: 370px;
+  position: sticky;
+  top: 96%;
+  font-size: 14px;
+}
+
+/* ПОСТЫ */
+
+.profil__post_ava{
+  display: inline-block;
+  margin-top: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  width: 55px;
+  height: 55px;
+  border: 2px solid black;
+  border-radius: 50%;
+}
+
+.profil__post{
+  margin-top: 20px;
+  border-radius: 12px;
+}
+
+.profil__post_blok{
+  display: flex;
+}
+
+.profil__post_gryp_name{
+  font-size: 14px;
+  padding-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.profil__post_gryp_time{
+  font-size: 14px;
+  padding-top: 10px;
+  margin-left: 10px;
+}
+
+.profil__post_flex{
+  display: flex;
+}
+
+.profil__post_p{
+  margin: 10px;
+}
+
+
+
+.fa_profil__post_l_list{
+  position: absolute;
+  transform: translate(-85px, -35px);
+  width: 150px;
+  padding: 5px;
+  color: white;
+  background: rgba(0, 0, 0, 0.85);
+  list-style: none;
+  margin-top: 10px;
+  -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 999;
+  border-radius: 5px;
+}
+
+.profil__post_l_img:hover .profil__post_l_list{
+  display: initial;
+}
+.fa:hover .fa_profil__post_l_list{
+  display: initial;
+}
+.fa_profil__post_l_list_item{
+  font-size: 14px;
+}
+
+.profil__post_p{
+font-size: 14px;
+}
+
+/* Пост */
+.profil__post_lkr{
+  padding: 0px 0 10px;
+}
+
+.profil__post_lkr,
+.profil__post_l,
+.profil__post_r,
+.profil__post_c{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profil__col_like_all,
+.profil__col_like_ally,
+.profil__col_like_enemy,
+.profil__col_rep_all,
+.profil__col_rep_ally,
+.profil__col_rep_enemy,
+.profil__col_com_all,
+.profil__col_com_ally,
+.profil__col_com_enemy{
+  margin-right: 6px;
+}
+
+.profil__post_l_img,
+.profil__post_r_img,
+.profil__post_c_img{
+  margin-right: 5px;
+}
+.profil__col_rep_all{
+  cursor: pointer;
+}
+
+.repostAll__tooltop{
+  position: absolute;
+  transition: display .3s ease-in-out;
+  right: 3%;
+  z-index: 15;
+  border-radius: 12px;
+  top: 310px;
+  min-width: 250px;
+  max-width: 350px;
+  padding: 10px;
+  display: none;
+}
+.repostAll__tooltop_active{
+  display: block;
+}
+.repostAll__tooltip_comtainer{
+  display: flex;
+  padding-bottom: 2px;
+  margin-top: 2px;
+}
+.repostAll__tooltip_link{
+  padding-bottom: 2px;
+}
+.repostAll__tooltip_comtainer:hover,
+.repostAll__tooltip_link:hover{
+  padding-bottom: 0px;
+}
+
+.repostAll__tooltip_r_c_l{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.repostAll__ava_link{
+  width: 40px;
+  height: 40px;
+}
+.repostAll__link_img{
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.repostAll__name_polit{
+  display: flex;
+}
+.repostAll__name_link{
+  font-size: 14px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  color: white;
+}
+.repostAll__polit_img{
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.repostAll__tooltip_title{
+  font-size: 14px;
+  color: white;
+  margin-bottom: 13px;
+  text-align: center;
+}
+.repostAll__tooltip_link_c{
+  text-align: center;
+  padding-top: 3px;
+}
+.repostAll__tooltip_link{
+  display: block;
+  padding-top: 13px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+/* ВСПЛАВАЮЩИЕ РЕПОСТНУВШИЕ */
+
+.profil_circle__tooltop{
+  position: fixed;
+  transition: display .3s ease-in-out;
+  left: 68%;
+  top: 55%;
+  z-index: 15;
+  border-radius: 12px;
+  min-width: 250px;
+  max-width: 350px;
+  padding: 10px;
+  display: none;
+}
+.profil_circle__tooltop_active{
+  display: block;
+}
+.profil_circle__tooltip_comtainer{
+  display: flex;
+  padding-bottom: 2px;
+  margin-top: 2px;
+}
+.profil_circle__tooltip_link{
+  padding-bottom: 2px;
+}
+.profil_circle__tooltip_comtainer:hover,
+.profil_circle__tooltip_link:hover{
+  padding-bottom: 0px;
+}
+
+.profil_circle__tooltip_r_c_l{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.profil_circle__ava_link{
+  width: 40px;
+  height: 40px;
+}
+.profil_circle__link_img{
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.profil_circle__name_polit{
+  display: flex;
+}
+.profil_circle__name_link{
+  font-size: 14px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  color: white;
+}
+.profil_circle__polit_img{
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.profil_circle__tooltip_title{
+  font-size: 14px;
+  color: white;
+  margin-bottom: 13px;
+  text-align: center;
+}
+.profil_circle__tooltip_link_c{
+  text-align: center;
+  padding-top: 3px;
+}
+.profil_circle__tooltip_link{
+  display: block;
+  padding-top: 13px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+/* МОДАЛЬНОЕ ОКНО, ВЕРХНИЙ БЛОК, КОМЕНТ */
+
+.profil_modal__foto_right_comment_container{
+  max-height: 280px;
+}
+.profil_modal__foto_right_comment{
+  display: flex;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+}
+.profil_modal__foto_r_c_l{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.profil_modal__foto_r_c_r{
+  width: 100%;
+}
+.profil_comment_ava_link{
+  width: 40px;
+  height: 40px;
+}
+.profil_comment_link_img{
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.profil_comment__name_polit{
+  display: flex;
+}
+.profil_comment__name_link{
+  font-size: 14px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+.profil_comment__polit_img{
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.profil_comment__all_infa{
+  display: flex;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+.profil_comment__date{
+  font-size: 12px;
+  margin-right: 10px;
+}
+.profil_comment__icons{
+  display: flex;
+}
+.profil_comment__plus,
+.profil_comment__minus,
+.profil_comment__pencil,
+.profil_comment__heart,
+.profil_comment__heart_bac{
+  margin-right: 7px;
+  cursor: pointer;
+}
+.profil_comment__content{
+  width: 95%;
+  font-size: 14px;
+  word-wrap: break-word;
+  margin-bottom: 5px;
+}
+/* МОДАЛЬНОЕ ОКНО, ПРАВЫЙ БЛОК, МОЙ КОМЕНТ */
+
+.profil_modal__foto_right_my_comment{
+  display: flex;
+}
+.profil_modal__foto_r_m_c_link_ava{
+  padding-top: 3px;
+  padding-left: 5px;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+}
+.profil_my_comment__ava_link{
+  width: 40px;
+  height: 40px;
+}
+.profil_my_comment__link_img{
+  width: 34px;
+  height: 34px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.profil_my_comment__container{
+  padding-top: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.profil_modal__foto_right_my_comment_write{
+  display: none;
+  /* position: absolute; */
+  z-index: 10;
+
+}
+.profil_modal__foto_right_my_comment_write_active{
+  display: block;
+}
+.profil_modal__foto_right_my_comment_write_top{
+  display: flex;
+}
+.profil_my_comment_write_ava{
+  padding-left: 5px;
+  padding-top: 5px;
+  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+}
+.profil_my_comment_write_ava_link{
+  width: 40px;
+  height: 40px;
+}
+.profil_modal__foto_right_my_comment_write_t_l{
+  display: flex;
+}
+.profil_my_comment_write_ava_img{
+  width: 34px;
+  height: 34px;
+  border: 1px solid black;
+  border-radius: 50px;
+}
+.profil_my_comment_write_smile{
+  text-align: center;
+  margin-top: 3px;
+  cursor: pointer;
+}
+.profil_my_comment_write_skrepka{
+  text-align: center;
+  margin-top: 3px;
+  cursor: pointer;
+}
+/* .news_modal__foto_right_my_comment_write_t_r{
+  height: 50%;
+} */
+.profil_my_comment__write_my_comment{
+  height: 50px;
+  width: 480px;
+  outline: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.profil_modal__foto_right_my_comment_write_bottom{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  padding-top: 5px;
+  border-radius: 0 0 12px 12px;
+}
+.profil_my_comment_write_emoj{
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.profil_my_comment_write_btn_cancel{
+  outline: none;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.profil_my_comment_write_btn_send{
+  outline: none;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.profil_modal__foto_right_my_comment_write_active{
+  display: block;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: 1}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: 1}
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+@media (min-width:1080px){
+  .prev{
+    left: 118px;
+  }
+  
+  .next {
+    right: 118px;
+  }
+}
+@media (min-width:1280px){
+  .prev{
+    left: 218px;
+  }
+  
+  .next {
+    right: 218px;
+  }
+}
+@media (min-width:1388px){
+  .prev{
+    left: 272px;
+  }
+  
+  .next {
+    right: 272px;
+  }
+}
+@media (min-width:1480px){
+  .prev{
+    left: 318px;
+  }
+  
+  .next {
+    right: 317px;
+  }
+}
+@media (min-width:1680px){
+  .prev{
+    left: 418px;
+  }
+  
+  .next {
+    right: 417px;
+  }
+}
+@media (min-width:1920px){
+  .prev{
+    left: 538px;
+  }
+  
+  .next {
+    right: 537px;
+  }
+}
+@media (min-width:2560px){
+  .prev{
+    left: 858px;
+  }
+  
+  .next {
+    right: 857px;
+  }
+}
