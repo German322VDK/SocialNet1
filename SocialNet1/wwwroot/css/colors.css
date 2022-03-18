@@ -141,21 +141,21 @@
   background-color: rgba(235, 235, 235, 1);
 }
 
-.dark_green_hover:hover {
-  background-color: rgba(210, 255, 209);
+.hover_dark_green:hover {
+    background-color: rgba(210, 255, 209);
 }
-.dark_red_hover:hover {
-  background-color: rgba(255, 210, 209);
+.hover_dark_red:hover {
+    background-color: rgba(255, 210, 209);
 }
-.dark_blue_hover:hover {
-  background-color: rgba(205, 215, 255);
+.hover_dark_blue:hover {
+    background-color: rgba(205, 215, 255);
 }
-.dark_yellow_hover:hover {
-  background-color: rgba(255, 244, 171);
+.hover_dark_yellow:hover {
+    background-color: rgba(255, 244, 171);
 }
 
-.dark_gray_hover:hover {
-  background-color: rgba(220, 220, 220);
+.hover_dark_gray:hover {
+    background-color: rgba(220, 220, 220);
 }
 
 .mid_green_border{
