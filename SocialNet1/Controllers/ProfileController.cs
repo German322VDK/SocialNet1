@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SocialNet1.Data;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
@@ -40,6 +41,11 @@ namespace SocialNet1.Controllers
                 CoordName = coordName,
                 CoordImage = $"photo/coordinates/{x}d{y}.jpg"
             });
+        }
+
+        public IActionResult AddImage(IFormFile uploadedFile)
+        {
+            return RedirectToAction("Index", "Profile");
         }
     }
 }

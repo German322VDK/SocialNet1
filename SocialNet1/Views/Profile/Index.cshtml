@@ -19,89 +19,29 @@
     var user = userService.Get(name);
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var photos = new List<PhotoFormat>();
+
+    foreach (var item in user.Images)
+    {
+        var photo = ImageMethods.GetStringFromByteArr(item.Image);
+        var formatPhoto = ImageMethods.GetFormat(item.Image);
+
+        photos.Add(new PhotoFormat
+        {
+            Image = photo,
+            Format = formatPhoto
+        });
+    }
 }
 
 <div class="profil_left">
-    <div class="profil_left__container light_@(color)">
-        <div class="profil_left__container_top">
-            <h1 class="profil_left__name">@Model.User.FirstName @Model.User.SecondName</h1>
-            <p class="profil_left__status dark_@(color)_border_bottom">@Model.User.Status</p>
-            <div class="kto_na_koord">
-                <div class="kto_na_koord_polich">Поолитические координаты:</div>
-                <div class="kto_na_koord_img_2">
-                    <img class="kto_na_koord_img" src="@Model.CoordImage" alt="">
-                    <div class="kto_na_koord_2 background-color_dark_dark_@(color)">
-                        <img class="kto_na_koord_img_2" src="@Model.CoordImage" alt="">
-                        <div class="kto_na_koord_poiasnen_2">Поздравляю, ты @Model.CoordName!</div>
-                    </div>
-                </div>
-            </div>
-            <div class="profil_left__birthday_info">
-                <div class="profil_left__birthday">День рождения</div>
-                <div class="profil_left__birthday_date">04.05.2000</div>
-            </div>
-            <div class="profil_left__city">
-                <div class="profil_left__city_city">Город:</div>
-                <div class="profil_left__city_name">Владивосток</div>
-            </div>
-            <div class="profil_left__views">
-                <div class="profil_left__views_views">Взгляды:</div>
-                <div class="profil_left__views_name">Косые</div>
-            </div>
-            <div class="profil_left__container_button">
-                <button id="profil_left__btn_one" class="profil_left__btn_one profil_left__btn_active mid_@(color)_hover">Подробно</button>
-            </div>
-            <div class="profil_left__container_button">
-                <button id="profil_left__btn_two" class="profil_left__btn_two mid_@(color)_hover">Скрыть</button>
-            </div>
-            <div id="profil_left_dop_infa" class="profil_left_dop_infa">
-                <div class="profil_left__birthday_info">
-                    <div class="profil_left__birthday">День рождения</div>
-                    <div class="profil_left__birthday_date">04.05.2000</div>
-                </div>
-                <div class="profil_left__city">
-                    <div class="profil_left__city_city">Город:</div>
-                    <div class="profil_left__city_name">Владикавказ</div>
-                </div>
-                <div class="profil_left__views">
-                    <div class="profil_left__views_views">Взгляды:</div>
-                    <div class="profil_left__views_name">Косые</div>
-                </div>
-            </div>
-            <div class="profil_left__dop dark_@(color)_border_top">
-                <ul class="profil_left__dop_list">
-                    <li class="profil_left__dop_list_item">
-                        <div class="profil_left__dop_list_item_t_c">@Model.User.Friends.Count</div>
-                        <div class="profil_left__dop_list_item_t_c">друга</div>
-                    </li>
-                    <li class="profil_left__dop_list_item">
-                        <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
-                        <div class="profil_left__dop_list_item_t_c">групп</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <partial name="Partial/ProfileInfo" model="@Model" />
 
-    <div class="profil_left__all_foto light_blue">
-        <h2 class="profil_left__foto_title">Фотографии 1000-7</h2>
-        <div class="profil_left__all_foto_list">
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('1')">
-                <img class="profil_left__all_foto_img" src="img/ава.jpg" alt="">
-            </span>
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('2')">
-                <img class="profil_left__all_foto_img" src="img/WdcBU4RTx7Y.jpg" alt="">
-            </span>
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('3')">
-                <img class="profil_left__all_foto_img" src="img/oxy_cRmqxcw.jpg" alt="">
-            </span>
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('4')">
-                <img class="profil_left__all_foto_img" src="img/сырок.jpg" alt="">
-            </span>
-        </div>
-    </div>
+    <partial name="Partial/ProfilePhotos" model="@photos"/>
 
-    <div class="profil_left__add_f light_blue">
+
+    <div class="profil_left__add_f light_@(color)">
         <button class="profil_left__add_foto add_foto">Добавить фото</button>
     </div>
 

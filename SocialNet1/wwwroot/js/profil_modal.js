@@ -52,13 +52,18 @@ function Validate(oForm) {
     var image = document.getElementById('files');
 
     if(image != null)
-        image.remove();
+        image.style="display: none";
 
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
 
-    var f = files[0];
+      var f = files[0];
+
+      //document.getElementById('fileForm').files = files;
+
+      //var fileF1 = document.getElementById('fileForm').files;
+
 
     // Only process image files.
     if (!f.type.match('image.*')) {
@@ -80,6 +85,10 @@ function Validate(oForm) {
     })(f);
 
     // Read in the image file as a data URL.
-    reader.readAsDataURL(f);
+      reader.readAsDataURL(f);
+
+      //var fileF2 = document.getElementById('fileForm').files;
+
+      //var file2 = document.getElementById('files').files;
 }
 
