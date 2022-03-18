@@ -1,27 +1,31 @@
 ﻿@model UserInfoComponentViewModel
+@inject IUser userService;
 @{
     var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 }
 
-
-<div class="header__blue_ava_link light_@Model.Color">
+<div class="header__blue_ava_link light_@color">
     <a href="#">
         <img class="header__blue_ava" src="data:image/@Model.Format;base64,@Model.Photo" alt="Фото">
     </a>
 </div>
-    @*<a href="" class="header__blue_aaa light_blue">
-            <span class="header__polzovatel_name">
-                @name
-            </span>
-        </a>*@
-<div class="header__blue_aaa light_@Model.Color">
+@*<a href="" class="header__blue_aaa light_blue">
+        <span class="header__polzovatel_name">
+            @name
+        </span>
+    </a>*@
+<div class="header__blue_aaa light_@color">
     @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
     {
-        <a class="light_@Model.Color" asp-area="Admin" asp-controller="Home" , asp-action="Index">
+        <a class="light_@color" asp-area="Admin" asp-controller="Home" , asp-action="Index">
             <i class="fa fa-keyboard-o"></i>
         </a>
     }
-    <a class="light_@Model.Color" asp-controller="Account" asp-action="Logout">
+    <a class="light_@color" asp-controller="Account" asp-action="Logout">
         <i class="fa fa-lock"></i>
     </a>
 </div>

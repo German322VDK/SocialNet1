@@ -1,26 +1,33 @@
-﻿
+﻿@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
 
 <div class="leftsiterbar">
     <ul class="leftsitebar__list">
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             Настройки
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             <a asp-controller="News" asp-action="Index">Новости</a>
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
-            Мой профиль
+        <li class="leftsitebar__list_item hover_dark_@color">
+            <a asp-controller="Profile" asp-action="Index">Мой профиль</a>
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             Мои сообщения
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             Мои друзья
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             Мои группы
         </li>
-        <li class="leftsitebar__list_item dark_blue_hover">
+        <li class="leftsitebar__list_item hover_dark_@color">
             Противостояния
         </li>
     </ul>

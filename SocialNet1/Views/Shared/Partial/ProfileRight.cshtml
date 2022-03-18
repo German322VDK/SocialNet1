@@ -1,0 +1,29 @@
+﻿@model PhotoFormat
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="profil_right">
+    <div class="profil_right__conteiner_one light_@color">
+        <div class="profil_right__ava">
+            <img class="profil_right__ava_img" src="data:image/@Model.Format;base64,@Model.Image" alt="Фото">
+        </div>
+        <button class="profil_right__ava_btn mid_@(color)_hover">Сменить ебло</button>
+        <a class="profil_right__lol mid_@(color)_hover" href="">Феминистки</a>
+        <a class="profil_right__lol mid_@(color)_hover" href="">Вперед</a>
+        <a class="profil_right__lol mid_@(color)_hover" href="">Мужики</a>
+        <a class="profil_right__lol mid_@(color)_hover" href="">Сосатб</a>
+        <a class="profil_right__lol mid_@(color)_hover" href="">НиксельПиксель топ</a>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

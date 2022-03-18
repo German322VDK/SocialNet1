@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,16 +16,16 @@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />*@
 
-    <link rel="stylesheet" href="~/css/profil.css">
-    <link rel="stylesheet" href="~/css/colors.css">
-    <link rel="stylesheet" href="~/css/header_leftbar.css">
-    <link rel="stylesheet" href="~/css/login.css">
-    <link rel="stylesheet" href="~/css/messages.css">
-    <link rel="stylesheet" href="~/css/friends.css">
-    <link rel="stylesheet" href="~/css/groups.css">
-    <link rel="stylesheet" href="~/css/chats.css">
-    <link rel="stylesheet" href="~/css/pcl.css">
-    <link rel="stylesheet" href="~/css/news.css">
+    <link rel="stylesheet" href="~/css/profil.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/colors.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/header_leftbar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/messages.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/friends.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/groups.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/chats.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/pcl.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/news.css" asp-append-version="true">
 
     <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/fontawesome.css">
     <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/all.min.css">
@@ -27,10 +36,10 @@
 
 </head>
 <body>
-    
+
     <partial name="Partial/Header" />
 
-    <div class="body mid_blue">
+    <div class="body mid_@color">
         <div class="body__container">
 
             <partial name="Partial/LeftSiterBar" />

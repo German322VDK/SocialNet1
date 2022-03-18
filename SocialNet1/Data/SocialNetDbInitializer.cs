@@ -127,8 +127,8 @@ namespace SocialNet1.Data
                     SocNetItems = new SocNetEntityUser
                     {
                         CurrentImage = 1,
-                        X = 3,
-                        Y = 3,
+                        X = 2,
+                        Y = 2,
                         Posts = new List<PostDTO>()
                     },
                     Friends = new List<FriendStatus>()

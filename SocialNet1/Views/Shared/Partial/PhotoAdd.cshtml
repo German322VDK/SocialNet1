@@ -1,0 +1,23 @@
+﻿
+<div class="modal">
+    <div class="modal__dialog light_blue">
+        <button class="modal__close_btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8.95386" y="7.30435" width="11.6645" height="2.33291" transform="rotate(45 8.95386 7.30435)" fill="rgba(210, 210, 255)" />
+                <rect x="7.30432" y="15.5524" width="11.6645" height="2.33291" transform="rotate(-45 7.30432 15.5524)" fill="rgba(210, 210, 255)" />
+                <circle cx="12" cy="12" r="11" stroke="rgba(210, 210, 255)" stroke-width="2" />
+            </svg>
+        </button>
+        <div class="modal__dialog_container">
+            <h2 class="modal__add_foto_title">Загрузка фото</h2>
+            <p class="modal__add_foto_info">Вы можете выбрать изображение формата jpg, png или gif</p>
+            <div class="modal__add_foto_vibrat">
+                <form>
+                    <input accept="image/gif, image/jpeg, image/png" type="file" class="custom-file-input mid_blue_hover" id="files" name="files[]" /><br />
+                    <output id="list"></output>
+                    <input class="mid_blue_hover" type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
