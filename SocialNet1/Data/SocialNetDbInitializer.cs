@@ -123,11 +123,12 @@ namespace SocialNet1.Data
                     SecondName = "Сайта",
                     UserName = _godName,
                     Images = godImages,
+                    Status = "Обидно что frontent на js, когда мог быть на c#",
                     SocNetItems = new SocNetEntityUser
                     {
                         CurrentImage = 1,
-                        X = 10,
-                        Y = 10,
+                        X = 3,
+                        Y = 3,
                         Posts = new List<PostDTO>()
                     },
                     Friends = new List<FriendStatus>()
