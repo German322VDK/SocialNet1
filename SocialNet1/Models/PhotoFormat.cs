@@ -10,5 +10,6 @@ namespace SocialNet1.Models
         public string Format { get; set; }
 
         public string Image { get; set; }
+
     }
 }
