@@ -7,6 +7,8 @@ namespace SocialNet1.Models
 {
     public class FullPhotoFormat
     {
+        public int ImageId { get; set; }
+
         public string Format { get; set; }
 
         public string MainImage { get; set; }
