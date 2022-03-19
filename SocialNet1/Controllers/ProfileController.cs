@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SocialNet1.Data;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
+using SocialNet1.Infrastructure.Methods;
 using SocialNet1.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,21 @@ namespace SocialNet1.Controllers
 
         public IActionResult AddImage(IFormFile uploadedFile)
         {
+            if(uploadedFile is null)
+                return RedirectToAction("Error", "Home");
+
+            var arr = ImageMethods.GetByteArrFromFile(uploadedFile);
+
+            var result = ImageMethods.IsValid(arr);
+
+            if(!result)
+                return RedirectToAction("Error", "Home");
+
+            var resultAdding = _user.AddPhoto(arr, HttpContext.User.Identity.Name);
+
+            if (!resultAdding)
+                return RedirectToAction("Error", "Home");
+
             return RedirectToAction("Index", "Profile");
         }
     }

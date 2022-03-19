@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SocialNet1.Models;
 //using Social_Net.Models;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,9 @@ namespace SocialNet1.Controllers
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            throw new ApplicationException("Test Error!");
+            //throw new ApplicationException("Test Error!");
 
-            //return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public IActionResult Throw() => throw new ApplicationException("Test Error!");
