@@ -1,6 +1,8 @@
 ﻿@model ProfileViewModel
 @{
-    var imageArr = Model.User.Images.SingleOrDefault(el => el.ImageNumber == Model.User.SocNetItems.CurrentImage).Image;
+    var userMainImage = Model.User.Images.SingleOrDefault(el => el.ImageNumber == Model.User.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
 
     var strImage = ImageMethods.GetStringFromByteArr(imageArr);
 
@@ -20,19 +22,75 @@
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
-    var photos = new List<PhotoFormat>();
+    var fullPhotos = new List<FullPhotoFormat>();
 
     foreach (var item in user.Images)
     {
         var photo = ImageMethods.GetStringFromByteArr(item.Image);
         var formatPhoto = ImageMethods.GetFormat(item.Image);
 
-        photos.Add(new PhotoFormat
+        var coments = new List<PhotoUserInfo>();
+
+        foreach (var coment in item.Coments)
         {
-            Image = photo,
-            Format = formatPhoto
+            var commentator = userService.Get(coment.UserName);
+
+            var commentMainImage = commentator.Images.SingleOrDefault(el => el.ImageNumber == commentator.SocNetItems.CurrentImage);
+
+            var commentImageArr = userMainImage.Image;
+
+            var commentStrImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+            var commentFormat = ImageMethods.GetFormat(imageArr);
+
+            coments.Add(new PhotoUserInfo
+            {
+                DateTime = coment.DateTime.ToString("D"),
+                LikeCount = coment.LikeCount,
+                Comment = coment.Text,
+                AuthorFirstName = commentator.FirstName,
+                AuthorSecondName = commentator.SecondName,
+                AuthorCoordinatesImage = $"photo/coordinates/{commentator.SocNetItems.X}d{commentator.SocNetItems.Y}.jpg",
+                AuthorUserName = commentator.UserName,
+                AuthorImage = commentStrImage,
+                AuthorFormat = commentFormat
+            });
+        }
+
+        fullPhotos.Add(new FullPhotoFormat
+        {
+            ImageId = item.Id,
+            MainImage = photo,
+            Format = formatPhoto,
+
+            RepostCount = userMainImage.RepostCount,
+            Auhor = new PhotoUserInfo
+            {
+                AuthorUserName = Model.User.UserName,
+                AuthorFirstName = Model.User.FirstName,
+                AuthorSecondName = Model.User.SecondName,
+                AuthorImage = strImage,
+                AuthorFormat = format,
+                AuthorCoordinatesImage = Model.CoordImage,
+                DateTime = userMainImage.DateTime.ToString("D"),
+                LikeCount = userMainImage.LikeCount,
+            },
+
+            Comments = coments,
         });
     }
+
+    fullPhotos.Reverse();
+
+    var photos = fullPhotos
+        .Take(4)
+        .Select(el => new PhotoFormat
+        {
+            Image = el.MainImage,
+            Format = el.Format
+        })
+        .ToList();
+
 }
 
 <div class="profil_left">
@@ -45,13 +103,13 @@
         <button class="profil_left__add_foto add_foto">Добавить фото</button>
     </div>
 
-    <div class="profil_left__news light_blue">
+    <div class="profil_left__news light_@(color)">
         <button class="profil_left__news_btn">Добавить новость</button>
     </div>
-    <div class="profil_left__news_dif light_blue">
-        <button id="botton1" class="profil_left__news_dif_btn dark_blue_border_bottom_hover" data-path="one">Все записи</button>
-        <button id="botton2" class="profil_left__news_dif_btn dark_blue_border_bottom_hover" data-path="two">Мои записи</button>
-        <button id="botton3" class="profil_left__news_dif_btn dark_blue_border_bottom_hover" data-path="three">Архив записей</button>
+    <div class="profil_left__news_dif light_@(color)">
+        <button id="botton1" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="one">Все записи</button>
+        <button id="botton2" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="two">Мои записи</button>
+        <button id="botton3" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="three">Архив записей</button>
     </div>
 
     <!-- ПОСТ -->
@@ -773,4 +831,4 @@
 
 <partial name="Partial/PhotoAdd" />
 
-<partial name="Partial/Slider" />
+<partial name="Partial/Slider" model="@fullPhotos"/>
