@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNet1.Database.SQlite.Context;
 
 namespace SocialNet1.Database.SQlite.Migrations
 {
     [DbContext(typeof(SocialNetDBSQlite))]
-    partial class SocialNetDBSQliteModelSnapshot : ModelSnapshot
+    [Migration("20220319041003_AddImageComments")]
+    partial class AddImageComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,12 +433,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("BLOB");
 
                     b.Property<int>("ImageNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikeCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RepostCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserDTOId")

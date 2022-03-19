@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialNet1.Domain.Base
 {
@@ -9,5 +10,8 @@ namespace SocialNet1.Domain.Base
 
         [Required]
         public byte[] Image { get; set; }
+
+        [Required]
+        public DateTime DateTime { get; set; } = DateTime.Now;
     }
 }
