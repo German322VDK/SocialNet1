@@ -11,5 +11,9 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         ICollection<UserDTO> GetAll();
 
         UserDTO Get(string userName);
+
+        bool AddPhoto(byte[] arr, string userName);
+
+        UserImageComments AddCommentToPhoto(string userName, string senderName, string text, int imageId);
     }
 }
