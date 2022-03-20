@@ -1,4 +1,5 @@
-function OpenComForm(ComTwo, ComOld, clAct){
+ // Открвываем ФОРМУ С НАПИСАНИЕМ КОМЕНТА
+function OpenComForm(ComTwo, ComOld, clAct) {
 
     var cOld = document.getElementById(ComOld);
     var cTwo = document.getElementById(ComTwo);
@@ -7,7 +8,7 @@ function OpenComForm(ComTwo, ComOld, clAct){
     cTwo.classList.add(clAct); //modal__foto_right_my_comment_write_active , 'modal__foto_right_my_comment_write_active'
   }
   // ЗАКРЫВАЕМ ФОРМУ С НАПИСАНИЕМ КОМЕНТА
-  function CloseComForm(ComTwo, ComOld, clAct){
+ function CloseComForm(ComTwo, ComOld, clAct){
     var cOld = document.getElementById(ComOld);
     var cTwo = document.getElementById(ComTwo);
     cOld.classList.remove('display_none')
@@ -15,12 +16,12 @@ function OpenComForm(ComTwo, ComOld, clAct){
   }
 
   //суицид
-  function DeleteCom(c){
+ function DeleteCom(c){
     var child = document.getElementById(c);
     child.remove();
   }
 
-  // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ
+  // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
 function LikePlus(one, two, num){
 
   document.getElementById(two).classList.remove('heart_none');
@@ -32,7 +33,7 @@ function LikePlus(one, two, num){
 
   }
 
-  function LikeMinus(one, two, num){
+function LikeMinus(one, two, num){
   document.getElementById(one).classList.remove('heart_none');
   document.getElementById(two).classList.add('heart_none');
 
@@ -72,6 +73,7 @@ init();
 //     }
 // }
 
+//инициализация для репостов
 function init(){
     var elements = document.getElementsByClassName('jsrepost');
 
@@ -79,6 +81,7 @@ function init(){
         elements[i].style.display = "none";
 }
 
+//выводим окно репостов
 function repost(element){
     var text = document.getElementById(element); //"postadd"
 
@@ -111,8 +114,8 @@ function repost(element){
 
 }
 
-
-async function SendCom(divTextId, sender, recipient, imageId, url, comsId, i, j) {
+//на странице профиля отправляем комент на сервер, получаем ответ и рисуем коммент (js пидарас)
+async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount) {
 
     var text = document.getElementById(divTextId).innerText;
 
@@ -121,9 +124,6 @@ async function SendCom(divTextId, sender, recipient, imageId, url, comsId, i, j)
     var promise = await fetch(fullurl);
 
     var body = await promise.json();
-
-    if (body == null)
-        return;
 
     var autIm = body.authorImage;
     var autF = body.authorFormat;
@@ -169,28 +169,34 @@ async function SendCom(divTextId, sender, recipient, imageId, url, comsId, i, j)
 
     var s0 = $("#" + comsId).children()[0];
 
-    var s1 = s0.children[1];
-
-    var s2 = s1.children[0];
-
-    var s3 = s2.children[0];
-
-    var s4 = s3.children[0];
+    var s1 = s0.children[1].children[0].children[0].children[0];
 
     var memID = i + "mem" + j;
 
-    s4.id = memID;
+    s1.id = memID;
 
     $("#" + memID).append(html);
 
-    //$("#"+comsId).append(html);
+    var comcount = parseInt(document.getElementById(comCount).innerHTML);
 
-    //var parent = document.getElementById(comsId);
+    comcount++;
 
-    //parent.innerHTML = html;
+    document.getElementById(comCount).innerHTML = comcount;
 
-    var lol = 1;
 }
+
+//async function SendCom(fullurl) {
+//    var promise = await fetch(fullurl);
+
+//    return promise;
+
+//    //var body = await promise.json();
+
+//    //if(body == null)
+//    //    alert("Коментарий не добавлен");
+
+//    //return body;
+//}
 
 
 // //ОТКРЫВАЕМ ФОРМУ С НАПИСАНИЕМ КОМЕНТА

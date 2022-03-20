@@ -140,7 +140,7 @@
                         <button class="modal__foto_r_r_btn">
                             <i class="fa fa-comments-o color_dark_dark_blue fa-2x" aria-hidden="true"></i>
                         </button>
-                        <div class="profil_modal_foto_btn_quantity">@item.Comments.Count</div>
+                        <div class="profil_modal_foto_btn_quantity" id="photoComCount@(i)">@item.Comments.Count</div>
                     </div>
 
                     @{
@@ -228,8 +228,8 @@
               'modal__foto_right_my_comment_write_active')">
                                 Отменить
                             </button>
-                            <button class="my_comment_write_btn_send mid_blue" onclick="SendCom('@(i)com_input', '@name', '@item.Auhor.AuthorUserName',
-                                '@item.ImageId', '@addImageAPI', '@comsID')">
+                            <button class="my_comment_write_btn_send mid_blue" onclick="SendProfileImageCom('@(i)com_input', '@name', '@item.Auhor.AuthorUserName',
+                                '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)')">
                                 Отправить
                             </button>
                         </div>
