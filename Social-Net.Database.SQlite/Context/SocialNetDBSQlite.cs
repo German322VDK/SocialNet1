@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Social_Net.Domain.Security;
 using SocialNet1.Domain.Group;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Domain.Message;
@@ -16,6 +17,8 @@ namespace SocialNet1.Database.SQlite.Context
         public DbSet<PostDTO> PostDTOs { get; set; }
 
         public DbSet<ChatDTO> Chats { get; set; }
+
+        public DbSet<EmailConfirm> EmailConfirms { get; set; }
 
         public SocialNetDBSQlite(DbContextOptions<SocialNetDBSQlite> options) : base(options) { }
     }

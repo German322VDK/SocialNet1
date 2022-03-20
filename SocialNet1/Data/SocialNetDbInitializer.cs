@@ -131,7 +131,8 @@ namespace SocialNet1.Data
                         Y = 2,
                         Posts = new List<PostDTO>()
                     },
-                    Friends = new List<FriendStatus>()
+                    Friends = new List<FriendStatus>(),
+                    Email = "germean322@gmail.com"
                 };
 
                 var creation_result = await _userManager.CreateAsync(god, Passwords.God);
