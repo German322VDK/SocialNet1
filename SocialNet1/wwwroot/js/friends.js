@@ -22,6 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 
-friends__list_item_item
-friends__info_container
-friends__info_container_active
+//friends__list_item_item
+//friends__info_container
+//friends__info_container_active
