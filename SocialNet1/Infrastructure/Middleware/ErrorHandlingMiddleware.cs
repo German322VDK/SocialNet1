@@ -25,7 +25,7 @@ namespace Social_Net1.Infrastructure.Middleware
             catch (Exception error)
             {
                 HandleException(error, Context);
-                throw;
+                //throw;
             }
         }
 
