@@ -10,3 +10,52 @@ function togglePassword() {
     icon.classList.remove('selected');
   }
 }
+
+async function GetHash(act1, act2, act3, emailAdd, url) {
+
+    document.getElementById(act1).style = "display:none";
+    document.getElementById(act2).style = "display:none";
+    document.getElementById(act3).style = "display:none";
+
+    var email = document.getElementById(emailAdd).value;
+
+    var fullurl = url + "?email=" + email;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(act2).style = "display:block";
+        document.getElementById(act1).style = "display:none";
+        document.getElementById('but1').style = "display:none";
+        document.getElementById('but2').style = "display:block";
+    }
+    else {
+        document.getElementById(act1).style = "display:block";
+        document.getElementById(act3).style = "display:block";
+    }
+
+}
+
+async function Confirm(em, hsh, url) {
+
+    var email = document.getElementById(em).value;
+    var hash = document.getElementById(hsh).value;
+
+    var fullurl = url + "?email=" + email + "&hash=" + hash;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+
+        document.getElementById('nextdoor').click();
+    }
+    else {
+        document.getElementById('finaler').style = "display:block";
+    }
+
+    
+}

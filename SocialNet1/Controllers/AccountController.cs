@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Identity;
+using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,24 +17,38 @@ namespace SocialNet1.Controllers
         public readonly UserManager<UserDTO> _userManager;
         private readonly SignInManager<UserDTO> _signInManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly IUser _user;
 
         public AccountController(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, IUser user)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _user = user;
         }
 
         #region Register
 
         [AllowAnonymous]
-        public IActionResult Register() =>
-            View(new RegisterUserViewModel());
+        public IActionResult RegisterStart() =>
+            View(new RegisterStartViewModel
+            {
+
+            });
+
+        [AllowAnonymous]
+        public IActionResult Register(RegisterStartViewModel model)
+        {
+            return View(new RegisterUserViewModel
+            {
+
+            });
+        }
 
         [HttpPost, ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterUserViewModel Model)
+        public async Task<IActionResult> RegisterFinal(RegisterUserViewModel Model)
         {
             if (!ModelState.IsValid)
                 return View(Model);
