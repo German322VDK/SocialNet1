@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNet1.Data;
 using SocialNet1.Domain.Identity;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private IUser _user;
