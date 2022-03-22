@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
+using SocialNet1.Infrastructure.Methods;
 using SocialNet1.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,14 +49,23 @@ namespace SocialNet1.Controllers
         {
             return View(new RegisterUserViewModel
             {
-
+                Email = model.Email
             });
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterFinal(RegisterUserViewModel Model)
+        public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
+            var userNameIsExist = CheckUserName(Model.UserName);
+
+            if (userNameIsExist)
+            {
+                ModelState["UserName"].Errors.Add(new Exception("Логин обязателен и не должен использоваться другими"));
+                ModelState["UserName"].ValidationState = ModelValidationState.Invalid;
+            }
+                
+
             if (!ModelState.IsValid)
                 return View(Model);
 
@@ -59,7 +75,17 @@ namespace SocialNet1.Controllers
             {
                 var user = new UserDTO
                 {
-                    UserName = Model.UserName
+                    UserName = Model.UserName,
+                    FirstName = Model.FirstName,
+                    SecondName = Model.SecondName,
+                    Status = "",
+                    Email = Model.Email,
+                    SocNetItems = new SocNetEntityUser
+                    {
+                        X = 0,
+                        Y = 0,
+                        CurrentImage = 1
+                    },
                 };
 
                 var registration_result = await _userManager.CreateAsync(user, Model.Password);
@@ -82,7 +108,11 @@ namespace SocialNet1.Controllers
                     }
                     await _signInManager.SignInAsync(user, false);
 
-                    return RedirectToAction("Index", "Home", new { id = 0 });
+                    var arr = ImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
+
+                    _user.AddPhoto(arr, user.UserName);
+
+                    return RedirectToAction("Index", "News");
                 }
 
                 _logger.LogWarning("В процессе регистрации пользователя {0} возникли ошибки :( {1}",
@@ -96,6 +126,10 @@ namespace SocialNet1.Controllers
 
             return View(Model);
         }
+
+        public bool CheckUserName(string username) =>
+            _user.Get(username) is not null ? true : false;
+
 
         #endregion
 

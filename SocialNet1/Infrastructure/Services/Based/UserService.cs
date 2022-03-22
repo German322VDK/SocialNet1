@@ -34,7 +34,11 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (user is null || image is null)
                 return false;
 
-            var lastNum = user.Images.Max(el => el.ImageNumber);
+            int lastNum;
+            if (user.Images.Count == 0)
+                lastNum = 0;
+            else
+                lastNum = user.Images.Max(el => el.ImageNumber);
 
             var newLast = lastNum + 1;
 

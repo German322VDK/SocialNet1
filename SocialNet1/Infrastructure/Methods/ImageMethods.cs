@@ -88,6 +88,16 @@ namespace SocialNet1.Infrastructure.Methods
             return arr;
         }
 
+        public static byte[] GetByteArrFromFile(string fileName)
+        {
+            var newImage = Image.FromFile(fileName);
+            var memorystream = new MemoryStream();
+            newImage.Save(memorystream, ImageFormat.Jpeg);
+            var arr = memorystream.ToArray();
+
+            return arr;
+        }
+
         public static string GetStringFromByteArr(byte[] arr) =>
             Convert.ToBase64String(arr);
     }

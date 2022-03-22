@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/fontawesome.css">
     <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/all.min.css">
     <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/v4-shims.min.css">
-    <link rel="stylesheet"
+    @*<link rel="stylesheet"
           href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
-    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>*@
 
 </head>
 <body>
@@ -44,6 +44,12 @@
     </header>
 
     @RenderBody()
+
+    @*<script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>*@
+
+    <script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
 
     <script src="~/js/login.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

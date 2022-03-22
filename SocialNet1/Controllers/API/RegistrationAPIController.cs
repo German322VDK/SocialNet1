@@ -31,7 +31,7 @@ namespace SocialNet1.Controllers.API
             if (email is null || emails.Contains(email) || !SendMailMethods.CheckEmail(email))
                 return false;
 
-            var randString =  StringGenerationMethods.Generate(6);
+            var randString =  StringGenerationMethods.Generate(6, engLow:false, EngUp:true, numbers:true);
 
             var result = _emailConfirm.Set(email, randString);
 
@@ -39,7 +39,7 @@ namespace SocialNet1.Controllers.API
                 return false;
 
             await SendMailMethods.SendEmailAsync(Emails.MAIN_EMAIL, Emails.MAIN_NAME, Emails.MAIN_PASS, email, "Подтверждение почты", 
-                $"Код для регистрации {randString}. Никому кроме нас его не сообщайте)");
+                $"Код для регистрации <b>{randString}</b>. Никому кроме нас его не сообщайте)");
 
             return true;
         }
