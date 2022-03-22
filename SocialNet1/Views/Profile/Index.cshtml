@@ -45,7 +45,7 @@
 
             coments.Add(new PhotoUserInfo
             {
-                DateTime = coment.DateTime.ToString("D"),
+                DateTime = coment.DateTime.ToString("f"),
                 LikeCount = coment.LikeCount,
                 Comment = coment.Text,
                 AuthorFirstName = commentator.FirstName,
@@ -63,7 +63,7 @@
             MainImage = photo,
             Format = formatPhoto,
 
-            RepostCount = userMainImage.RepostCount,
+            RepostCount = item.RepostCount,
             Auhor = new PhotoUserInfo
             {
                 AuthorUserName = Model.User.UserName,
@@ -72,8 +72,8 @@
                 AuthorImage = strImage,
                 AuthorFormat = format,
                 AuthorCoordinatesImage = Model.CoordImage,
-                DateTime = userMainImage.DateTime.ToString("D"),
-                LikeCount = userMainImage.LikeCount,
+                DateTime = item.DateTime.ToString("f"),
+                LikeCount = item.LikeCount,
             },
 
             Comments = coments,

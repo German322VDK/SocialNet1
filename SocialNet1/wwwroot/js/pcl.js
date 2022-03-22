@@ -115,7 +115,7 @@ function repost(element){
 }
 
 //на странице профиля отправляем комент на сервер, получаем ответ и рисуем коммент (js пидарас)
-async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount) {
+async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount, color) {
 
     var text = document.getElementById(divTextId).innerText;
 
@@ -135,7 +135,7 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     var com = body.comment;
     var lc = body.likeCount;
 
-    var html = `<div class="modal__foto_right_comment dark_blue_border_bottom" id="${i}com${j})">
+    var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom" id="${i}com${j})">
                                 <div class="modal__foto_r_c_l">
                                     <a class="comment_ava_link" href="">
                                         <img class="comment_link_img" src="data:image/${autF};base64,${autIm}" alt="">
@@ -150,15 +150,15 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
                                         <div class="comment__date">${dt}</div>
                                         <div class="comment__icons">
                                             <div class="comment__plus">
-                                                <i class="fa fa-commenting-o color_dark_dark_blue" aria-hidden="true"></i>
+                                                <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
                                             <div id="${i}com${j}_like_on" onclick="LikePlus('${i}com${j}_like_on', '${i}com${j}_like_off', '${i}com${j}_like_num')"
                                                  class="comment__heart">
-                                                <i class="fa fa-heart-o color_dark_dark_blue" aria-hidden="true"></i>
+                                                <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
                                             <div id="${i}com${j}_like_off" onclick="LikeMinus('${i}com${j}_like_on', '${i}com${j}_like_off', '${i}com${j}_like_num')"
                                                  class="comment__heart_bac heart_none">
-                                                <i class="fa fa-heart color_dark_dark_blue heart_none" aria-hidden="true"></i>
+                                                <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
                                             </div>
                                             <div id="${i}com${j}_like_num" class="comment__quantity">${lc}</div>
                                         </div>
