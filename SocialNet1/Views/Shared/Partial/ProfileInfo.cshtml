@@ -7,12 +7,28 @@
     var user = userService.Get(name);
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+
+    string status;
+
+    if (string.IsNullOrEmpty(Model.User.Status))
+        status = "Статус пользователя";
+    else
+        status = Model.User.Status;
 }
 
 <div class="profil_left__container light_@(color)">
     <div class="profil_left__container_top">
         <h1 class="profil_left__name">@Model.User.FirstName @Model.User.SecondName</h1>
-        <p class="profil_left__status dark_@(color)_border_bottom">@Model.User.Status</p>
+        @*<p class="profil_left__status dark_@(color)_border_bottom">
+            <div contenteditable="true">@status</div>
+        </p>*@
+        <p class="profil_left__status dark_@(color)_border_bottom" contenteditable="true">
+            @status 
+            <button class="news__post_l_img">
+                <i class="fas fa-check-circle color_dark_dark_@color fa-2x"></i>
+            </button>
+        </p>
         <div class="kto_na_koord">
             <div class="kto_na_koord_polich">Поолитические координаты:</div>
             <div class="kto_na_koord_img_2">
@@ -22,6 +38,10 @@
                     <div class="kto_na_koord_poiasnen_2">Поздравляю, ты @Model.CoordName!</div>
                 </div>
             </div>
+        </div>
+        <div class="profil_left__birthday_info">
+            <div class="profil_left__birthday">Короткое имя</div>
+            <div class="profil_left__birthday_date">@Model.User.UserName</div>
         </div>
         <div class="profil_left__birthday_info">
             <div class="profil_left__birthday">День рождения</div>
