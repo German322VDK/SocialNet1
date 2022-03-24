@@ -135,7 +135,7 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     var com = body.comment;
     var lc = body.likeCount;
 
-    var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom" id="${i}com${j})">
+    var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${i}com${j})">
                                 <div class="modal__foto_r_c_l">
                                     <a class="comment_ava_link" href="">
                                         <img class="comment_link_img" src="data:image/${autF};base64,${autIm}" alt="">

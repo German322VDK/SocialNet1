@@ -24,5 +24,7 @@ namespace SocialNet1.Models
         public string Comment { get; set; }
 
         public int LikeCount { get; set; }
+
+        public string Color { get; set; }
     }
 }

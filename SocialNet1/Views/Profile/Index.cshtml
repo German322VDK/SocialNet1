@@ -18,7 +18,7 @@
 @{
     var name = User.Identity!.Name;
 
-    var user = userService.Get(name);
+    var user = userService.Get(Model.User.UserName);
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
@@ -37,11 +37,11 @@
 
             var commentMainImage = commentator.Images.SingleOrDefault(el => el.ImageNumber == commentator.SocNetItems.CurrentImage);
 
-            var commentImageArr = userMainImage.Image;
+            var commentImageArr = commentMainImage.Image;
 
-            var commentStrImage = ImageMethods.GetStringFromByteArr(imageArr);
+            var commentStrImage = ImageMethods.GetStringFromByteArr(commentImageArr);
 
-            var commentFormat = ImageMethods.GetFormat(imageArr);
+            var commentFormat = ImageMethods.GetFormat(commentImageArr);
 
             coments.Add(new PhotoUserInfo
             {
@@ -53,7 +53,8 @@
                 AuthorCoordinatesImage = $"photo/coordinates/{commentator.SocNetItems.X}d{commentator.SocNetItems.Y}.jpg",
                 AuthorUserName = commentator.UserName,
                 AuthorImage = commentStrImage,
-                AuthorFormat = commentFormat
+                AuthorFormat = commentFormat,
+                Color = UserMethods.GetColor(commentator.SocNetItems.X, commentator.SocNetItems.Y)
             });
         }
 
