@@ -1,4 +1,5 @@
 ﻿using SocialNet1.Database.SQlite.Context;
+using SocialNet1.Domain.Friends;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
@@ -23,6 +24,65 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         public ICollection<UserDTO> GetAll() =>
             _db.Users.ToList();
+
+        #endregion
+
+        #region Friend
+
+        public bool IsFriend(string userName1, string userName2)
+        {
+            var user1 = Get(userName1);
+
+            return user1.Friends.FirstOrDefault(el => el.FriendName == userName2) is not null;
+        }
+
+        public bool AddFriend(string userName1, string userName2)
+        {
+            if (IsFriend(userName1, userName2) && IsFriend(userName2, userName1))
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Friends
+                    .Add(new FriendStatus 
+                    { 
+                        FriendName = userName2,
+                        HiddenStatus = false
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+
+        }
+
+
+        public bool DeleteFriend(string userName1, string userName2)
+        {
+            if (!IsFriend(userName1, userName2))
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var friend1 = _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Friends
+                    .FirstOrDefault(el => el.FriendName == userName2);
+
+                _db.Remove(friend1);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
 
         #endregion
 
@@ -95,5 +155,6 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return comment;
         }
+
     }
 }
