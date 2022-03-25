@@ -156,5 +156,25 @@ namespace SocialNet1.Infrastructure.Services.Based
             return comment;
         }
 
+        public bool SetStatus(string text, string userName)
+        {
+            var user = Get(userName);
+
+            if (user is null || text is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users
+                    .FirstOrDefault(us => us.UserName == userName)
+                    .Status = text;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
     }
 }
