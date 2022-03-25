@@ -153,13 +153,15 @@
                         {
                             <div class="modal__foto_right_comment dark_@(com.Color)_border_bottom mid_@(com.Color)" id="@(i)com@(j)">
                                 <div class="modal__foto_r_c_l">
-                                    <a class="comment_ava_link" href="">
+                                    <a class="comment_ava_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.AuthorUserName">
                                         <img class="comment_link_img" src="data:image/@com.AuthorFormat;base64,@com.AuthorImage" alt="">
                                     </a>
                                 </div>
                                 <div class="modal__foto_r_c_r">
                                     <div class="comment__name_polit">
-                                        <a class="comment__name_link" href="">@com.AuthorSecondName @com.AuthorFirstName</a>
+                                        <a class="comment__name_link"  asp-controller="Profile" asp-action="Index" asp-route-userName="@com.AuthorUserName">
+                                            @com.AuthorSecondName @com.AuthorFirstName
+                                        </a>
                                         <img class="comment__polit_img" src="@com.AuthorCoordinatesImage" alt="">
                                     </div>
                                     <div class="comment__all_infa">

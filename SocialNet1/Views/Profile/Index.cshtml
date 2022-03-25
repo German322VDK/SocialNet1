@@ -11,7 +11,8 @@
     var ava = new PhotoFormat
     {
         Format = format,
-        Image = strImage
+        Image = strImage,
+        UserName = Model.User.UserName
     };
 }
 @inject IUser userService;

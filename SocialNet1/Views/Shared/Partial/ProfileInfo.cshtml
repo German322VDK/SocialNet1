@@ -15,6 +15,9 @@
         status = "Статус пользователя";
     else
         status = Model.User.Status;
+
+    var isOwner = (name == Model.User.UserName).ToString();
+
 }
 
 <div class="profil_left__container light_@(color)">
@@ -23,7 +26,7 @@
         @*<p class="profil_left__status dark_@(color)_border_bottom">
             <div contenteditable="true">@status</div>
         </p>*@
-        <p class="profil_left__status dark_@(color)_border_bottom" contenteditable="true">
+        <p class="profil_left__status dark_@(color)_border_bottom" contenteditable="@isOwner">
             @status 
             <button class="news__post_l_img">
                 <i class="fas fa-check-circle color_dark_dark_@color fa-2x"></i>
