@@ -328,6 +328,27 @@
     border-bottom: 2px solid rgba(192, 192, 192);
 }
 
+.dark_dark_green_border_bottom_focus:focus{
+  border: 2px solid rgba(153, 255, 153);
+  padding: 8px 18px 10px;
+}
+.dark_dark_red_border_bottom_focus:focus{
+  border: 2px solid rgba(255, 153, 153);
+  padding: 8px 18px 10px;
+}
+.dark_dark_blue_border_bottom_focus:focus{
+  border: 2px solid rgba(89, 106, 162);
+  padding: 8px 18px 10px;
+}
+.dark_dark_yellow_border_bottom_focus:focus{
+  border: 2px solid rgba(212, 212, 0);
+  padding: 8px 18px 10px;
+}
+.dark_dark_gray_border_bottom_focus:focus {
+    border: 2px solid rgba(192, 192, 192);
+    padding: 8px 18px 10px;
+}
+
 .mid_green_border_triangle:after{
   border: 10px solid transparent;
   border-top: 10px solid rgb(232, 255, 232);

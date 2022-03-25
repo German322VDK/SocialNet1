@@ -18,20 +18,32 @@
 
     var isOwner = (name == Model.User.UserName).ToString();
 
+    var setStatusUrl = $"/{APIUrls.SET_STATUS}";
+
 }
 
 <div class="profil_left__container light_@(color)">
     <div class="profil_left__container_top">
         <h1 class="profil_left__name">@Model.User.FirstName @Model.User.SecondName</h1>
-        @*<p class="profil_left__status dark_@(color)_border_bottom">
-            <div contenteditable="true">@status</div>
-        </p>*@
-        <p class="profil_left__status dark_@(color)_border_bottom" contenteditable="@isOwner">
-            @status 
-            <button class="news__post_l_img">
-                <i class="fas fa-check-circle color_dark_dark_@color fa-2x"></i>
-            </button>
-        </p>
+        @if (name == Model.User.UserName)
+        {
+            <div class="profil_left__st_b">
+                <div class="profil_left__status dark_gray_border_bottom dark_dark_gray_border_bottom_focus" contenteditable="True" id="status">
+                    @status
+                </div>
+                <button class="news__post_l_img" onclick="SetStatus('@setStatusUrl', '@name', 'status')">
+                    <i class="fas fa-check-circle color_dark_dark_gray fa-2x"></i>
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="profil_left__st_b">
+                <div class="profil_left__status dark_gray_border_bottom dark_dark_gray_border_bottom_focus">
+                    @status
+                </div>
+            </div>
+        }
         <div class="kto_na_koord">
             <div class="kto_na_koord_polich">Поолитические координаты:</div>
             <div class="kto_na_koord_img_2">

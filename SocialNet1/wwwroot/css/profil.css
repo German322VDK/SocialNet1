@@ -53,6 +53,15 @@ button{
   padding-right: 20px;
   padding-bottom: 10px;
   font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  min-width: 90%;
+}
+.profil_left__st_b{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 0 0;
 }
 
 .kto_na_koord_polich{
@@ -622,8 +631,8 @@ circle__tooltip_link_c{
 
 .modal__foto_right_my_comment_write{
   display: none;
-  position: absolute;
-  top: 400px;
+  /* position: absolute; */
+  /* top: 405px; */
   z-index: 10;
   width: 250px;
 }

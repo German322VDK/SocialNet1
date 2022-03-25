@@ -96,5 +96,17 @@ async function DeleteFriend(url, user1, user2, addId, deleteId) {
         document.getElementById(addId).style = "display:block";
         document.getElementById(deleteId).style = "display:none";
     }
+}
 
+async function SetStatus(url, userName, statusId) {
+
+    var text = document.getElementById(statusId).innerText;
+
+    var fullurl = url + "?text=" + text + "&username=" + userName;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    document.getElementById(statusId).innerText = body;
 }

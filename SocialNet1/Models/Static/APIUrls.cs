@@ -14,5 +14,7 @@ namespace SocialNet1.Models.Static
         public const string ADD_FRIEND = "api/friend/add";
         public const string DELETE_FRIEND = "api/friend/delete";
 
+        public const string SET_STATUS = "api/user/setstatus";
+
     }
 }
