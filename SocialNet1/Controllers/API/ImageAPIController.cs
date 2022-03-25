@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
@@ -17,10 +18,12 @@ namespace SocialNet1.Controllers.API
     public class ImageAPIController : ControllerBase
     {
         private IUser _user;
+        private readonly ILogger<ImageAPIController> _logger;
 
-       public ImageAPIController(IUser user)
+        public ImageAPIController(IUser user, ILogger<ImageAPIController> logger)
         {
             _user = user;
+            _logger = logger;
         }
 
         //[HttpPost]
@@ -34,9 +37,15 @@ namespace SocialNet1.Controllers.API
         {
             var com = _user.AddCommentToPhoto(recipient, sender, text, imageId);
 
-            if (com == null)
-                return null;
+            _logger.LogInformation($"{sender} пытается добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
 
+            if (com == null)
+            {
+                _logger.LogInformation($"{sender} не смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
+
+                return null;
+            }
+                
             var senderUser = _user.Get(sender);
 
             var curImageArr = senderUser.Images.SingleOrDefault(el => el.ImageNumber == senderUser.SocNetItems.CurrentImage).Image;
@@ -44,6 +53,8 @@ namespace SocialNet1.Controllers.API
             var format = ImageMethods.GetFormat(curImageArr);
 
             var curImage = ImageMethods.GetStringFromByteArr(curImageArr);
+
+            _logger.LogInformation($"{sender} смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
 
             return new PhotoUserInfo
             {

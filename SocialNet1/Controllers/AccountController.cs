@@ -38,15 +38,21 @@ namespace SocialNet1.Controllers
         #region Register
 
         [AllowAnonymous]
-        public IActionResult RegisterStart() =>
-            View(new RegisterStartViewModel
+        public IActionResult RegisterStart()
+        {
+            _logger.LogInformation("Кто-то пытается зарегестрироваться!");
+
+            return View(new RegisterStartViewModel
             {
 
             });
+        }
 
         [AllowAnonymous]
         public IActionResult Register(RegisterStartViewModel model)
         {
+            _logger.LogInformation($"Тип с почтой {model.Email} пытается зарегестрироваться!");
+
             return View(new RegisterUserViewModel
             {
                 Email = model.Email
@@ -61,6 +67,8 @@ namespace SocialNet1.Controllers
 
             if (userNameIsExist)
             {
+                _logger.LogInformation($"Тип с почтой {Model.Email} пытается забрать существующий {nameof(Model.UserName)}: {Model.UserName}");
+
                 ModelState["UserName"].Errors.Add(new Exception("Логин обязателен и не должен использоваться другими"));
                 ModelState["UserName"].ValidationState = ModelValidationState.Invalid;
             }

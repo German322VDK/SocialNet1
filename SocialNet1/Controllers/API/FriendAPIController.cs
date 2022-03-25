@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers.API
 {
@@ -13,19 +9,29 @@ namespace SocialNet1.Controllers.API
     public class FriendAPIController : ControllerBase
     {
         private IUser _user;
+        private readonly ILogger<FriendAPIController> _logger;
 
-        public FriendAPIController(IUser user)
+        public FriendAPIController(IUser user, ILogger<FriendAPIController> logger)
         {
             _user = user;
+            _logger = logger;
         }
 
         [HttpGet("add")]
         public bool Add(string username1, string username2)
         {
-            if (_user.IsFriend(username1, username2))
-                return false;
+            _logger.LogInformation($"{username1} хочет добавить в друзья {username2}");
 
+            if (_user.IsFriend(username1, username2))
+            {
+                _logger.LogInformation($"{username1} уже добавил в друзья {username2}");
+
+                return false;
+            }
+                
             var result = _user.AddFriend(username1, username2);
+
+            _logger.LogInformation($"Результат добавления человеком {username1} в друзья человека {username2}: {result}");
 
             return result;
         }
@@ -33,10 +39,18 @@ namespace SocialNet1.Controllers.API
         [HttpGet("delete")]
         public bool Delete(string username1, string username2)
         {
-            if (!_user.IsFriend(username1, username2))
-                return false;
+            _logger.LogInformation($"{username1} хочет удалить из друзей {username2}");
 
+            if (!_user.IsFriend(username1, username2))
+            {
+                _logger.LogInformation($"{username1} не может удалить так как он не был другом {username2}");
+
+                return false;
+            }
+                
             var result = _user.DeleteFriend(username1, username2);
+
+            _logger.LogInformation($"Результат удаление человеком {username1} из друзей человека {username2}: {result}");
 
             return result;
         }
