@@ -28,18 +28,18 @@
         @if (name == Model.User.UserName)
         {
             <div class="profil_left__st_b">
-                <div class="profil_left__status dark_gray_border_bottom dark_dark_gray_border_bottom_focus" contenteditable="True" id="status">
+                <div class="profil_left__status dark_@(color)_border_bottom dark_dark_@(color)_border_bottom_focus" contenteditable="True" id="status">
                     @status
                 </div>
                 <button class="news__post_l_img" onclick="SetStatus('@setStatusUrl', '@name', 'status')">
-                    <i class="fas fa-check-circle color_dark_dark_gray fa-2x"></i>
+                    <i class="fas fa-check-circle color_dark_dark_@(color) fa-2x"></i>
                 </button>
             </div>
         }
         else
         {
             <div class="profil_left__st_b">
-                <div class="profil_left__status dark_gray_border_bottom dark_dark_gray_border_bottom_focus">
+                <div class="profil_left__status dark_@(color)_border_bottom dark_dark_@(color)_border_bottom_focus">
                     @status
                 </div>
             </div>

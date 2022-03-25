@@ -25,8 +25,7 @@
         }
         else
         {
-            if ((userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name)) ||
-                (!userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name)))
+            if (userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name)) 
             {
                 <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
@@ -34,6 +33,19 @@
                     <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
                 </button>
                 <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="DeleteFriend('@deleteUrl', '@name',
+                    '@Model.UserName', 'addFriend', 'deleteFriend')">
+                    Удалить
+                    <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
+                </button>
+            }
+            else if (!userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name) )
+            {
+                <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="AddFriend('@addUrl', '@name',
+                    '@Model.UserName', 'addFriend', 'deleteFriend')">
+                    Добавить подписчика
+                    <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
+                </button>
+                <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="DeleteFriend('@deleteUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                     Удалить
                     <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
