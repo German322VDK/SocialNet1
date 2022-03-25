@@ -1,0 +1,205 @@
+﻿@model FriendsViewModel
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="all_friends">
+    <div class="friends light_@(color)">
+        <div class="friends__nav">
+            <ul class="friends__list">
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="one">
+                    Друзья:@Model.Friends.Count
+                </li>
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="two">
+                    Подписчики:@Model.Subscribers.Count
+                </li>
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="three">
+                    Подписки:@Model.Subscriptions.Count
+                </li>
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="four">
+                    Онлайн
+                </li>
+            </ul>
+        </div>
+        <div class="friends__search dark_@(color)_border_bottom dark_@(color)_border_top light_@(color)">
+            <input type="text" name="search" placeholder="Поиск" class="friends__search_input">
+        </div>
+        <div data-target="one" class="friends__info_container friends__info_container_active">
+            @foreach (var item in Model.Friends)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var itemColor = UserMethods.GetColor(x, y);
+
+                var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+                var format = ImageMethods.GetFormat(imageArr);
+
+                var coordImage = $"photo/coordinates/{x}d{y}.jpg";
+
+                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                    <div>
+                        <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
+                            <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div class="friends__content">
+                        <div class="friends__content_top">
+                            <ul class="friends__content_top_list">
+                                <li class="friends__content_top_list_item">
+                                    <div class="friends__content_top_list_item_chel">
+                                        <div class="friends__text_margin" style="margin-right: 5px">@item.FirstName</div>
+                                        <div class="friends__text_margin">@item.SecondName</div>
+                                        <div>
+                                            <img class="friends__little_ava" src="@coordImage" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Написать</span>
+                                    <span class="friends__list_item_span">Настройки</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="friends__content_botton">
+                            <div class="friends__content_botton_sam_status">@item.Status</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div data-target="two" class="friends__info_container">
+            @foreach (var item in Model.Subscribers)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var itemColor = UserMethods.GetColor(x, y);
+
+                var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+                var format = ImageMethods.GetFormat(imageArr);
+
+                var coordImage = $"photo/coordinates/{x}d{y}.jpg";
+
+                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                    <div>
+                        <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
+                            <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div class="friends__content">
+                        <div class="friends__content_top">
+                            <ul class="friends__content_top_list">
+                                <li class="friends__content_top_list_item">
+                                    <div class="friends__content_top_list_item_chel">
+                                        <div class="friends__text_margin" style="margin-right: 5px">@item.FirstName</div>
+                                        <div class="friends__text_margin">@item.SecondName</div>
+                                        <div>
+                                            <img class="friends__little_ava" src="@coordImage" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Написать</span>
+                                    <span class="friends__list_item_span">Настройки</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="friends__content_botton">
+                            <div class="friends__content_botton_sam_status">@item.Status</div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div data-target="three" class="friends__info_container">
+            @foreach (var item in Model.Subscriptions)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var itemColor = UserMethods.GetColor(x, y);
+
+                var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+                var format = ImageMethods.GetFormat(imageArr);
+
+                var coordImage = $"photo/coordinates/{x}d{y}.jpg";
+
+                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                    <div>
+                        <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
+                            <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div class="friends__content">
+                        <div class="friends__content_top">
+                            <ul class="friends__content_top_list">
+                                <li class="friends__content_top_list_item">
+                                    <div class="friends__content_top_list_item_chel">
+                                        <div class="friends__text_margin" style="margin-right: 5px">@item.FirstName</div>
+                                        <div class="friends__text_margin">@item.SecondName</div>
+                                        <div>
+                                            <img class="friends__little_ava" src="@coordImage" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Написать</span>
+                                    <span class="friends__list_item_span">Настройки</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="friends__content_botton">
+                            <div class="friends__content_botton_sam_status">@item.Status</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div data-target="four" class="friends__info_container">
+            <div class="friends__info dark_@(color)_border_bottom mid_@(color)_hover">
+                <div>
+                    <a href="">
+                        <img class="friends__big_ava" src="img/Mcd.png" alt="">
+                    </a>
+                </div>
+                <div class="friends__content">
+                    <div class="friends__content_top">
+                        <ul class="friends__content_top_list">
+                            <li class="friends__content_top_list_item">
+                                <div class="friends__content_top_list_item_chel">
+                                    <div class="friends__text_margin">Чел 44</div>
+                                    <div>
+                                        <img class="friends__little_ava" src="img/Mcd.png" alt="">
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Написать</span>
+                                <span class="friends__list_item_span">Настройки</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="friends__content_botton">
+                        <div class="friends__content_botton_sam_status">Кто не с нами, тот под нами</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="Partial/FriendRight" />
