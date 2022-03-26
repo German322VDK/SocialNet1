@@ -93,8 +93,10 @@
         <div class="profil_left__dop dark_@(color)_border_top">
             <ul class="profil_left__dop_list">
                 <li class="profil_left__dop_list_item">
-                    <div class="profil_left__dop_list_item_t_c">@Model.User.Friends.Count</div>
-                    <div class="profil_left__dop_list_item_t_c">друга</div>
+                    <a asp-controller="Friends" asp-action="Index" asp-route-username="@Model.User.UserName">
+                        <div class="profil_left__dop_list_item_t_c">@Model.User.Friends.Count</div>
+                        <div class="profil_left__dop_list_item_t_c">друга</div>
+                    </a>
                 </li>
                 <li class="profil_left__dop_list_item">
                     <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
