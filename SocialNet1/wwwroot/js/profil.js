@@ -110,3 +110,48 @@ async function SetStatus(url, userName, statusId) {
 
     document.getElementById(statusId).innerText = body;
 }
+
+// МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
+async function ProfileLikePlus(one, two, num, url, user1, user2, imageid) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2 + "&imageid=" + imageid;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(two).classList.remove('heart_none');
+        document.getElementById(one).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number++;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк не поставился(");
+    }
+
+}
+
+async function ProfileLikeMinus(one, two, num, url, user1, user2, imageid) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2 + "&imageid=" + imageid;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(one).classList.remove('heart_none');
+        document.getElementById(two).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number--;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк не Убрался(");
+    }
+
+}

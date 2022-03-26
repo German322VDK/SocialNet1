@@ -1,6 +1,8 @@
 ﻿using SocialNet1.Database.SQlite.Context;
+using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Friends;
 using SocialNet1.Domain.Identity;
+using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
 using System.Collections.Generic;
@@ -121,6 +123,58 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool AddLikePhoto(string userName1, string userName2, int imageID)
+        {
+
+            using (_db.Database.BeginTransaction())
+            {
+                var likes = _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageID)
+                    .Likes;
+
+                if (likes.FirstOrDefault(lk => lk.Likers == userName2) is not null)
+                    return false;
+
+                likes.Add(new Like 
+                { 
+                    Likers = userName2,
+                    Emoji = Emoji.Like
+                });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeleteLikePhoto(string userName1, string userName2, int imageID)
+        {
+            using(_db.Database.BeginTransaction())
+            {
+                var like = _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageID)
+                    .Likes
+                    .FirstOrDefault(lk => lk.Likers == userName2);
+
+                if (like is null)
+                    return false;
+
+                _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         public UserImageComments AddCommentToPhoto(string userName, string senderName, string text, int imageId)
         {
             UserImageComments comment = null;
@@ -176,5 +230,7 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return true;
         }
+
+        
     }
 }

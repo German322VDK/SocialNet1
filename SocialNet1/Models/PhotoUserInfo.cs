@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocialNet1.Domain.PostCom;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace SocialNet1.Models
 
         public string Comment { get; set; }
 
-        public int LikeCount { get; set; }
+        public ICollection<Like> Likes{ get; set; }
 
         public string Color { get; set; }
     }

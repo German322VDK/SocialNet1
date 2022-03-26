@@ -11,6 +11,9 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool AddPhoto(byte[] arr, string userName);
 
+        bool AddLikePhoto(string userName1, string userName2, int imageID);
+        bool DeleteLikePhoto(string userName1, string userName2, int imageID);
+
         UserImageComments AddCommentToPhoto(string userName, string senderName, string text, int imageId);
 
         bool SetStatus(string text, string userName);

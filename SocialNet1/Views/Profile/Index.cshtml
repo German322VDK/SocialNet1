@@ -47,7 +47,7 @@
             coments.Add(new PhotoUserInfo
             {
                 DateTime = coment.DateTime.ToString("f"),
-                LikeCount = coment.LikeCount,
+                //Likes = coment.LikeCount,
                 Comment = coment.Text,
                 AuthorFirstName = commentator.FirstName,
                 AuthorSecondName = commentator.SecondName,
@@ -75,7 +75,7 @@
                 AuthorFormat = format,
                 AuthorCoordinatesImage = Model.CoordImage,
                 DateTime = item.DateTime.ToString("f"),
-                LikeCount = item.LikeCount,
+                Likes = item.Likes
             },
 
             Comments = coments,
@@ -98,12 +98,14 @@
 <div class="profil_left">
     <partial name="Partial/ProfileInfo" model="@Model" />
 
-    <partial name="Partial/ProfilePhotos" model="@photos"/>
+    <partial name="Partial/ProfilePhotos" model="@photos" />
 
-
-    <div class="profil_left__add_f light_@(color)">
-        <button class="profil_left__add_foto add_foto">Добавить фото</button>
-    </div>
+    @if (Model.User.UserName == User.Identity!.Name)
+    {
+        <div class="profil_left__add_f light_@(color)">
+            <button class="profil_left__add_foto add_foto">Добавить фото</button>
+        </div>
+    }
 
     <div class="profil_left__news light_@(color)">
         <button class="profil_left__news_btn">Добавить новость</button>
@@ -831,6 +833,9 @@
 
 <partial name="Partial/ProfileRight" model="@ava" />
 
-<partial name="Partial/PhotoAdd" />
+@if (Model.User.UserName == User.Identity!.Name)
+{
+    <partial name="Partial/PhotoAdd" />
+}
 
-<partial name="Partial/Slider" model="@fullPhotos"/>
+<partial name="Partial/Slider" model="@fullPhotos" />

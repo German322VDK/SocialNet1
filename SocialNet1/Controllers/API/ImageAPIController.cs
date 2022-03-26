@@ -60,7 +60,7 @@ namespace SocialNet1.Controllers.API
             {
                 DateTime = com.DateTime.ToString("D"),
                 Comment = com.Text,
-                LikeCount = com.LikeCount,
+                //Likes = com.LikeCount,
                 AuthorFirstName = senderUser.FirstName,
                 AuthorSecondName = senderUser.SecondName,
                 AuthorUserName = senderUser.UserName,
@@ -68,6 +68,53 @@ namespace SocialNet1.Controllers.API
                 AuthorImage = curImage,
                 AuthorFormat = format
             };
+        }
+
+        [HttpGet("addlike")]
+        public bool AddLike(string username1, string username2, int imageid)
+        {
+            if (!(username1 is not null && username2 is not null))
+            {
+                _logger.LogInformation($"{username1 ?? ""} не смог поставить лайк {username2 ?? ""}!");
+                return false;
+            }
+
+            var result = _user.AddLikePhoto(username1, username2, imageid);
+
+            if (!result)
+            {
+                _logger.LogInformation($"{username1} уже до этого поставил лайк {username2} под фото {imageid}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{username1} поставил лайк {username2} под фото {imageid}!");
+            }
+
+            return result;
+        }
+
+
+        [HttpGet("deletelike")]
+        public bool DeleteLike(string username1, string username2, int imageid)
+        {
+            if (!(username1 is not null && username2 is not null))
+            {
+                _logger.LogInformation($"{username1 ?? ""} не смог убрать лайк {username2 ?? ""}!");
+                return false;
+            }
+
+            var result = _user.DeleteLikePhoto(username1, username2, imageid);
+
+            if (!result)
+            {
+                _logger.LogInformation($"{username1} ещё не ставил лайк {username2} под фото {imageid}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{username1} убрал лайк {username2} под фото {imageid}!");
+            }
+
+            return result;
         }
     }
 }
