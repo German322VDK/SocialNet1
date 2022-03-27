@@ -53,6 +53,7 @@ namespace SocialNet1
 
             services.AddTransient<IImage, ImageService>();
             services.AddTransient<IUser, UserService>();
+            services.AddTransient<IGroup, GroupService>(); 
             services.AddTransient<IEmailConfirm, EmailConfirmService>();
 
             services.AddTransient<IUserIdProvider, CustomUserIdProvider>();
