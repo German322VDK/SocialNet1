@@ -132,7 +132,8 @@ namespace SocialNet1.Data
                         Posts = new List<PostDTO>()
                     },
                     Friends = new List<FriendStatus>(),
-                    Email = "germean322@gmail.com"
+                    Email = "germean322@gmail.com",
+                    Groups = usersGodGroup
                 };
 
                 var creation_result = await _userManager.CreateAsync(god, Passwords.God);
@@ -180,14 +181,7 @@ namespace SocialNet1.Data
                     Image = _imageManager.GetSpecialImage("GodGroup")
                 });
 
-                var usersGodGroup = new List<UserGroupStatus>();
-
-                usersGodGroup.Add(new UserGroupStatus
-                {
-                    UserName = _godName,
-                    Status = Status.Admin,
-                    GroupName = _godShortGroupName
-                });
+                var usersGodGroup = _db.Users.FirstOrDefault(el => el.UserName == "God").Groups;
 
                 var godGroup = new GroupDTO
                 {
