@@ -197,8 +197,8 @@ namespace SocialNet1.Data
                     SocNetItems = new SocNetEntityGroup
                     {
                         CurrentImage = 1,
-                        X = 10,
-                        Y = 10,
+                        X = 2,
+                        Y = 2,
                         Posts = new List<PostDTO>()
                     },
                     Images = godGroupImages,

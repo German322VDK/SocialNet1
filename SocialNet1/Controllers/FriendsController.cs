@@ -3,10 +3,7 @@ using Microsoft.Extensions.Logging;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers
 {
