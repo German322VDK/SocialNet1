@@ -142,13 +142,27 @@ namespace SocialNet1.Infrastructure.Services.Based
                 var likes = image.Likes;
 
                 if(likes.Count > 0)
-                    _db.Remove(likes);
+                {
+                    //foreach (var like in likes)
+                    //{
+                    //    _db.Remove(like);
+                    //}
 
+                    _db.RemoveRange(likes);
+                }
+                    
                 var coms = image.Coments;
 
-                if (likes.Count > 0)
-                    _db.Remove(coms);
+                if (coms.Count > 0)
+                {
+                    //foreach (var com in coms)
+                    //{
+                    //    _db.Remove(com);
+                    //}
 
+                    _db.RemoveRange(coms);
+                }
+                    
                 _db.Remove(image);
 
                 _db.SaveChanges();
