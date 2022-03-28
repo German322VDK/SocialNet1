@@ -70,6 +70,30 @@ namespace SocialNet1.Controllers.API
             };
         }
 
+        [HttpPost("delete")]
+        public bool Delete(DeleteImageModel model)
+        {
+            if(model.UserName is null)
+            {
+                _logger.LogInformation("Удаление фото не получилось, пришли неправильные данные(");
+
+                return false;
+            }
+
+            var result = _user.DeletePhoto(model.ImageId, model.UserName);
+
+            if (!result)
+            {
+                _logger.LogInformation($"Удаление фото {model.ImageId} человека {model.UserName} не получилось(");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Удаление фото {model.ImageId} человека {model.UserName} получилось)");
+
+            return true;
+        }
+
         [HttpGet("addlike")]
         public bool AddLike(string username1, string username2, int imageid)
         {

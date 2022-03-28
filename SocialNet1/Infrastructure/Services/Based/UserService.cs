@@ -89,6 +89,8 @@ namespace SocialNet1.Infrastructure.Services.Based
         #endregion
 
 
+        #region Photo
+
         public bool AddPhoto(byte[] image, string userName)
         {
             var user = Get(userName);
@@ -108,8 +110,8 @@ namespace SocialNet1.Infrastructure.Services.Based
             {
                 _db.Users
                     .FirstOrDefault(us => us.UserName == userName)
-                    .Images.Add(new UserImages 
-                    { 
+                    .Images.Add(new UserImages
+                    {
                         Image = image,
                         ImageNumber = newLast
                     });
@@ -119,6 +121,40 @@ namespace SocialNet1.Infrastructure.Services.Based
                 _db.Database.CommitTransaction();
             }
 
+
+            return true;
+        }
+
+        public bool DeletePhoto(int imageId, string userName)
+        {
+            var user = Get(userName);
+
+            if (user is null)
+                return false;
+
+            var image = user.Images.FirstOrDefault(el => el.Id == imageId);
+
+            if (image is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var likes = image.Likes;
+
+                if(likes.Count > 0)
+                    _db.Remove(likes);
+
+                var coms = image.Coments;
+
+                if (likes.Count > 0)
+                    _db.Remove(coms);
+
+                _db.Remove(image);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
 
             return true;
         }
@@ -137,8 +173,8 @@ namespace SocialNet1.Infrastructure.Services.Based
                 if (likes.FirstOrDefault(lk => lk.Likers == userName2) is not null)
                     return false;
 
-                likes.Add(new Like 
-                { 
+                likes.Add(new Like
+                {
                     Likers = userName2,
                     Emoji = Emoji.Like
                 });
@@ -153,7 +189,7 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         public bool DeleteLikePhoto(string userName1, string userName2, int imageID)
         {
-            using(_db.Database.BeginTransaction())
+            using (_db.Database.BeginTransaction())
             {
                 var like = _db.Users
                     .FirstOrDefault(el => el.UserName == userName1)
@@ -209,6 +245,8 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return comment;
         }
+
+        #endregion
 
         public bool SetStatus(string text, string userName)
         {

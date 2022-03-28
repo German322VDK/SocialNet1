@@ -22,6 +22,8 @@
 
     var dellikeURL = $"/{APIUrls.DELETE_IMAGE_LIKE}";
 
+    var deleteImageAPI = $"/{APIUrls.DELETE_IMAGE}";
+
     int i = 1;
 
 }
@@ -38,7 +40,20 @@
                         <img class="modal__left_container_img_img" src="data:image/@item.Format;base64,@item.MainImage" alt="">
                     </div>
                     <div class="modal__left_container_dop">
-                        <div class="modal__left_dop_infa">Еще</div>
+                        <div class="modal__left_dop_infa">
+                            @if (name == user.UserName)
+                            {
+                                <div class="@(i)profil_photo_delete" onclick="DeletePhoto('@deleteImageAPI', '@item.ImageId', '@item.Auhor.AuthorUserName',
+                                    '@i', 'photo-@i')">
+                                    Удалить
+                                    <i class="fa fa-trash-o mid_@(color)_color"></i>
+                                </div>
+                            }
+                            else 
+                            { 
+                                
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="modal__foto_right mid_@(color)">
