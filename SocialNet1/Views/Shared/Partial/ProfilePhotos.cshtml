@@ -17,7 +17,7 @@
 
         @foreach (var item in Model)
         {
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('@i')">
+            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('@i')" id="photo-@i">
                 <img class="profil_left__all_foto_img"  src="data:image/@item.Format;base64,@item.Image" alt="">
             </span>
 

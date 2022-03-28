@@ -33,6 +33,13 @@ namespace SocialNet1.Controllers
             else
                 userDTO = _user.Get(currantUserName);
 
+            if(userDTO is null)
+            {
+                _logger.LogInformation($"Cтраницы {userName} нет(");
+
+                return RedirectToAction("Index", "News");
+            }
+
             _logger.LogInformation($"{currantUserName} заходит на страницу {userDTO.UserName}");
 
             var x = userDTO.SocNetItems.X;
@@ -58,7 +65,7 @@ namespace SocialNet1.Controllers
             {
                 _logger.LogInformation($"Фото не пришло(");
 
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Index", "News");
             }
                 
 
@@ -70,7 +77,7 @@ namespace SocialNet1.Controllers
             {
                 _logger.LogInformation($"Фото плохое(");
 
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Index", "News");
             }
                
             var resultAdding = _user.AddPhoto(arr, HttpContext.User.Identity.Name);
@@ -79,7 +86,7 @@ namespace SocialNet1.Controllers
             {
                 _logger.LogInformation($"Фото почему то не добавилось(");
 
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Index", "News");
             }
 
             _logger.LogInformation($"{currantUserName} успешно добавил фотографию");

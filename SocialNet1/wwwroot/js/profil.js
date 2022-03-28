@@ -102,11 +102,18 @@ async function SetStatus(url, userName, statusId) {
 
     var text = document.getElementById(statusId).innerText;
 
-    var fullurl = url + "?text=" + text + "&username=" + userName;
+    //var fullurl = url + "?text=" + text + "&username=" + userName;
 
-    var promise = await fetch(fullurl);
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName: userName,
+            text: text
+        })
+    });
 
-    var body = await promise.json();
+    var body = await response.json();
 
     document.getElementById(statusId).innerText = body;
 }
@@ -154,4 +161,27 @@ async function ProfileLikeMinus(one, two, num, url, user1, user2, imageid) {
         alert("Лайк не Убрался(");
     }
 
+}
+
+async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName: userName,
+            imageId: parseInt(imageid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        plusSlides();
+        document.getElementById(sliderId).remove();
+        document.getElementById(photoId).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
 }
