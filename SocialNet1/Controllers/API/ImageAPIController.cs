@@ -32,9 +32,20 @@ namespace SocialNet1.Controllers.API
 
         //}
 
-        [HttpGet("addcom")]
-        public PhotoUserInfo Add(string text, string sender, string recipient, int imageId)
+        [HttpPost("addcom")]
+        public PhotoUserInfo Add(/*string text, string sender, string recipient, int imageId*/ AddCommentImageModel model)
         {
+            if(model is null)
+            {
+                _logger.LogInformation($"Не получилось добавить комментарий, данные не пришли(");
+
+                return null;
+            }
+
+            string recipient = model.Recipient, text = model.Text, sender = model.Sender;
+
+            int imageId = model.ImageId;
+
             var com = _user.AddCommentToPhoto(recipient, sender, text, imageId);
 
             _logger.LogInformation($"{sender} пытается добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");

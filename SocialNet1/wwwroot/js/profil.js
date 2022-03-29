@@ -3,11 +3,22 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 
     var text = document.getElementById(divTextId).innerText;
 
-    var fullurl = url + "?text=" + text + "&sender=" + sender + "&recipient=" + recipient + "&imageId=" + imageId;
+    //var fullurl = url + "?text=" + text + "&sender=" + sender + "&recipient=" + recipient + "&imageId=" + imageId;
 
-    var promise = await fetch(fullurl);
+    //var promise = await fetch(fullurl);
 
-    var body = await promise.json();
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            sender: sender,
+            text: text,
+            recipient: recipient,
+            imageId: parseInt(imageId)
+        })
+    });
+
+    var body = await response.json();
 
     var autIm = body.authorImage;
     var autF = body.authorFormat;
