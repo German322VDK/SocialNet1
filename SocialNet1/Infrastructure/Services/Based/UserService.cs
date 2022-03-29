@@ -137,37 +137,40 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (image is null)
                 return false;
 
+            var imageNum = image.ImageNumber;
+
             using (_db.Database.BeginTransaction())
             {
                 var likes = image.Likes;
 
                 if(likes.Count > 0)
-                {
-                    //foreach (var like in likes)
-                    //{
-                    //    _db.Remove(like);
-                    //}
-
                     _db.RemoveRange(likes);
-                }
-                    
+
                 var coms = image.Coments;
 
                 if (coms.Count > 0)
-                {
-                    //foreach (var com in coms)
-                    //{
-                    //    _db.Remove(com);
-                    //}
-
                     _db.RemoveRange(coms);
-                }
-                    
+
                 _db.Remove(image);
 
                 _db.SaveChanges();
 
                 _db.Database.CommitTransaction();
+            }
+
+            var user1 = Get(userName);
+
+            if (imageNum == user1.SocNetItems.CurrentImage)
+            {
+                using (_db.Database.BeginTransaction())
+                {
+                    var fIm = user.Images.First();
+                    user.SocNetItems.CurrentImage = fIm.ImageNumber;
+
+                    _db.SaveChanges();
+
+                    _db.Database.CommitTransaction();
+                }
             }
 
             return true;
