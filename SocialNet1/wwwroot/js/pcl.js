@@ -15,13 +15,7 @@ function OpenComForm(ComTwo, ComOld, clAct) {
     cTwo.classList.remove(clAct)
   }
 
-  //суицид
- function DeleteCom(c){
-    var child = document.getElementById(c);
-    child.remove();
-  }
-
-  // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
+// МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
 function LikePlus(one, two, num){
 
   document.getElementById(two).classList.remove('heart_none');

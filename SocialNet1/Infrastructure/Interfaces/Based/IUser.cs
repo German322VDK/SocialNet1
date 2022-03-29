@@ -18,6 +18,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         UserImageComments AddCommentToPhoto(string userName, string senderName, string text, int imageId);
 
+        bool DeleteComToPhoto(string userName, int imageId, int comId);
+
         bool SetStatus(string text, string userName);
 
         bool IsFriend(string userName1, string userName2);

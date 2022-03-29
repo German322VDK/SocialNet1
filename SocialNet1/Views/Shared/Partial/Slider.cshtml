@@ -24,6 +24,8 @@
 
     var deleteImageAPI = $"/{APIUrls.DELETE_IMAGE}";
 
+    var deletecom = $"/{APIUrls.DELETE_COM}";
+
     int i = 1;
 
 }
@@ -205,6 +207,13 @@
                                     <div class="comment__all_infa">
                                         <div class="comment__date">@com.DateTime</div>
                                         <div class="comment__icons">
+                                            @if (com.AuthorUserName == name || item.Auhor.AuthorUserName == name)
+                                            {
+                                                <div class="comment__minus" onclick="DeleteCom('@(i)com@(j)', '@deletecom', '@item.Auhor.AuthorUserName',
+                                                    '@item.ImageId', '@com.CommId')">
+                                                    <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
+                                                </div>
+                                            }
                                             <div class="comment__plus">
                                                 <i class="fa fa-commenting-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                             </div>
@@ -216,7 +225,7 @@
                                                  class="comment__heart_bac heart_none">
                                                 <i class="fa fa-heart color_dark_dark_@(com.Color) heart_none" aria-hidden="true"></i>
                                             </div>
-                                            <div id="@(i)com@(j)_like_num" class="comment__quantity">@com.Likes?.Count</div>
+                                            <div id="@(i)com@(j)_like_num" class="comment__quantity">@(com.Likes?.Count ?? 0)</div>
                                         </div>
                                     </div>
                                     <div class="comment__content">@com.Comment</div>

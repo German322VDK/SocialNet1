@@ -263,6 +263,35 @@ namespace SocialNet1.Infrastructure.Services.Based
             return comment;
         }
 
+        public bool DeleteComToPhoto(string userName, int imageId, int comId)
+        {
+            var user = Get(userName);
+
+            if (user is null)
+                return false;
+
+            var image = user.Images.FirstOrDefault(im => im.Id == imageId);
+
+            if (image is null)
+                return false;
+
+            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+
+            if (com is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Remove(com);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)
@@ -286,6 +315,5 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
-        
     }
 }

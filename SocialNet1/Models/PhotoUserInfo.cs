@@ -8,6 +8,7 @@ namespace SocialNet1.Models
 {
     public class PhotoUserInfo
     {
+        public int CommId { get; set; }
         public string AuthorImage { get; set; }
 
         public string AuthorFormat { get; set; }

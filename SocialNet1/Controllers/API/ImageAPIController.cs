@@ -70,6 +70,32 @@ namespace SocialNet1.Controllers.API
             };
         }
 
+        [HttpGet("deletecom")]
+        public bool DeleteCom(string imageAutor, int imageId, int comId)
+        {
+            if (string.IsNullOrEmpty(imageAutor))
+            { 
+                _logger.LogInformation($"Не получилось удалить комментарий потому что я не знаю что удалять(");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Пытаемся удалить комментарий {comId} под фото {imageId} человека {imageAutor}");
+
+            var result = _user.DeleteComToPhoto(imageAutor, imageId, comId);
+
+            if (!result)
+            {
+                _logger.LogInformation($"Не получилось удалить комментарий {comId} под фото {imageId} человека {imageAutor} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Получилось удалить комментарий {comId} под фото {imageId} человека {imageAutor} )");
+
+            return true;
+        }
+
         [HttpPost("delete")]
         public bool Delete(DeleteImageModel model)
         {
@@ -94,6 +120,7 @@ namespace SocialNet1.Controllers.API
             return true;
         }
 
+
         [HttpGet("addlike")]
         public bool AddLike(string username1, string username2, int imageid)
         {
@@ -116,7 +143,6 @@ namespace SocialNet1.Controllers.API
 
             return result;
         }
-
 
         [HttpGet("deletelike")]
         public bool DeleteLike(string username1, string username2, int imageid)

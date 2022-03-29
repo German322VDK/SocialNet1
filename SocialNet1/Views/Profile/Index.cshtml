@@ -44,6 +44,8 @@
 
             var commentFormat = ImageMethods.GetFormat(commentImageArr);
 
+            var comId = coment.Id;
+
             coments.Add(new PhotoUserInfo
             {
                 DateTime = coment.DateTime.ToString("f"),
@@ -55,7 +57,8 @@
                 AuthorUserName = commentator.UserName,
                 AuthorImage = commentStrImage,
                 AuthorFormat = commentFormat,
-                Color = UserMethods.GetColor(commentator.SocNetItems.X, commentator.SocNetItems.Y)
+                Color = UserMethods.GetColor(commentator.SocNetItems.X, commentator.SocNetItems.Y),
+                CommId = comId
             });
         }
 

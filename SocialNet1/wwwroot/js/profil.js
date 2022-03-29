@@ -69,6 +69,26 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 
 }
 
+//суицид
+async function DeleteCom(c, url, user, imageId, comId) {
+
+    var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        var child = document.getElementById(c);
+        child.remove();
+    }
+    else {
+        alert("Не получилось удалить комментарий(");
+    }
+
+    
+}
+
 async function AddFriend(url, user1, user2, addId, deleteId) {
 
     var fullurl = url + "?username1=" + user1 + "&username2=" + user2;

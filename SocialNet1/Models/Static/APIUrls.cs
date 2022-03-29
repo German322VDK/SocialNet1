@@ -10,6 +10,8 @@ namespace SocialNet1.Models.Static
         public const string ADD_IMAGE = "api/image/add";
         public const string DELETE_IMAGE = "api/image/delete";
 
+        public const string DELETE_COM = "api/image/deletecom";
+
         public const string ADD_IMAGE_LIKE = "api/image/addlike";
         public const string DELETE_IMAGE_LIKE = "api/image/deletelike";
 
