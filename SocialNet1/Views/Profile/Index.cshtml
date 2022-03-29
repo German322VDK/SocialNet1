@@ -48,7 +48,7 @@
 
             coments.Add(new PhotoUserInfo
             {
-                DateTime = coment.DateTime.ToString("f"),
+                DateTime = coment.DateTime.ToString("g"),
                 //Likes = coment.LikeCount,
                 Comment = coment.Text,
                 AuthorFirstName = commentator.FirstName,
@@ -77,7 +77,7 @@
                 AuthorImage = strImage,
                 AuthorFormat = format,
                 AuthorCoordinatesImage = Model.CoordImage,
-                DateTime = item.DateTime.ToString("f"),
+                DateTime = item.DateTime.ToString("g"),
                 Likes = item.Likes
             },
 

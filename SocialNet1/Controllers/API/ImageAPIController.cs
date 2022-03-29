@@ -32,7 +32,7 @@ namespace SocialNet1.Controllers.API
 
         //}
 
-        [HttpGet("add")]
+        [HttpGet("addcom")]
         public PhotoUserInfo Add(string text, string sender, string recipient, int imageId)
         {
             var com = _user.AddCommentToPhoto(recipient, sender, text, imageId);
@@ -58,7 +58,7 @@ namespace SocialNet1.Controllers.API
 
             return new PhotoUserInfo
             {
-                DateTime = com.DateTime.ToString("D"),
+                DateTime = com.DateTime.ToString("g"),
                 Comment = com.Text,
                 //Likes = com.LikeCount,
                 AuthorFirstName = senderUser.FirstName,

@@ -7,7 +7,7 @@ namespace SocialNet1.Models.Static
 {
     public static class APIUrls
     {
-        public const string ADD_IMAGE = "api/image/add";
+        public const string ADD_IMAGE = "api/image/addcom";
         public const string DELETE_IMAGE = "api/image/delete";
 
         public const string DELETE_COM = "api/image/deletecom";

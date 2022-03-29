@@ -17,7 +17,8 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     var autCIm = body.authorCoordinatesImage;
     var dt = body.dateTime;
     var com = body.comment;
-    var lc = body.likeCount;
+    //var lc = body.likeCount;
+    var lc = 0;
 
     var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${i}com${j})">
                                 <div class="modal__foto_r_c_l">
