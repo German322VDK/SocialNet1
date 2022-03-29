@@ -7,8 +7,8 @@
     var url2 = APIUrls.CONFIRM_EMAIL;
 }
 
-<div class="registration">
-    <div class="">
+<div class="regs__registration">
+    <div class="regs__registration">
         <div>
 
         </div>
@@ -16,16 +16,16 @@
             <form asp-action="Register" asp-antiforgery="true" class="registration-form">
 
                 <div class="">
-                    <div id="act1">
+                    <div id="act1" class="regs__vved">
                         <input type="text" placeholder="Введите почту" asp-for="Email" id="Email">
                     </div>
 
                     <div id="act2" style="display:none">
-                        <div class="">
-                            <p>Мы отправили вам код подтверждения, пожалуйста введите его</p>
+                        <div class="regs__vved">
+                            <p class="regs__vved">Мы отправили вам код подтверждения, пожалуйста введите его</p>
                             <input type="text" placeholder="Код" asp-for="Hash" id="Hash">
                             <div class="">
-                                <button type="submit" class="" id="nextdoor" name="register" style="display: none">
+                                <button type="submit" class="regs__btns" id="nextdoor" name="register" style="display: none">
                                     <span class="">Войти</span>
                                 </button>
                             </div>
@@ -36,8 +36,8 @@
 
             </form>
 
-            <button class="" id="but1" onclick="GetHash('act1', 'act2', 'act3', 'Email', '/@url1')">Получить код</button>
-            <button class="" id="but2" style="display:none" onclick="Confirm('Email', 'Hash', '/@url2')">Ввести код</button>
+            <button class="regs__btns" id="but1" onclick="GetHash('act1', 'act2', 'act3', 'Email', '/@url1')">Получить код</button>
+            <button class="regs__btns" id="but2" style="display:none" onclick="Confirm('Email', 'Hash', '/@url2')">Ввести код</button>
 
             <p style="display:none" id="finaler">Не верный код(</p>
 
