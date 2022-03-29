@@ -217,3 +217,30 @@ async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
         alert("При удалении фото возникла ошибка(");
     }
 }
+
+function OpenSetPhoto() {
+    var modal = document.getElementById('SetPhoto');
+
+    modal.classList.add('photo_selection__modal__is_open');
+}
+
+function CloseSetPhoto() {
+    var modal = document.getElementById('SetPhoto');
+
+    modal.classList.remove('photo_selection__modal__is_open');
+}
+
+function ChosePhoto(color, imageId) {
+
+    var classActive = `dark_dark_${color}_border`;
+
+    var photos = document.getElementsByClassName("photo_selection__foto_img");
+
+    for (var i = 0; i < photos.length; i++) {
+        if (photos[i].classList.contains(classActive))
+            photos[i].classList.remove(classActive);
+    }
+
+    document.getElementById(imageId).classList.add(classActive);
+
+}

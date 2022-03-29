@@ -25,6 +25,8 @@
 
     var fullPhotos = new List<FullPhotoFormat>();
 
+    var avaIms = new List<SetAvaModel>();
+
     foreach (var item in user.Images)
     {
         var photo = ImageMethods.GetStringFromByteArr(item.Image);
@@ -83,7 +85,16 @@
 
             Comments = coments,
         });
+
+        avaIms.Add(new SetAvaModel
+        {
+            Image = photo,
+            Format = formatPhoto,
+            ImageNum = item.ImageNumber
+        });
     }
+
+
 
     fullPhotos.Reverse();
 
@@ -839,6 +850,7 @@
 @if (Model.User.UserName == User.Identity!.Name)
 {
     <partial name="Partial/PhotoAdd" />
+    <partial name="Partial/SetAva" model="@avaIms"/>
 }
 
 <partial name="Partial/Slider" model="@fullPhotos" />

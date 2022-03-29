@@ -1,0 +1,42 @@
+﻿@model List<SetAvaModel>
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<!-- photo_selection__modal__is_open -->
+<div class="photo_selection__modal" id="SetPhoto">
+    <div class="light_gray photo_selection__modal__dialog">
+        <button class="photo_selection_modal__close_btn" onclick="CloseSetPhoto()">
+            <i class="far fa-times-circle fa-2x color_dark_dark_@(color)"></i>
+        </button>
+        <div class="photo_selection__modal__dialog_container">
+            <h2 class="photo_selection__modal__title">Выбирете главную фотографию профиля</h2>
+            <div data-simplebar class="photo_selection__modal_foto_c">
+                @for (int i = 0; i < Model.Count / 4 + 1; i++)
+                {
+                    <div class="photo_selection__modal_foto_c_f">
+
+                        @for (int j = 0; j < 4; j++)
+                        {
+                            if( ((i * 4) + j) < Model.Count) 
+                            { 
+                                <div class="photo_selection__foto_img" id="@Model[(i * 4) + j].ImageNum"
+                                   onclick="ChosePhoto('@color', '@Model[(i * 4) + j].ImageNum')">
+                                    <img class="photo_selection__img" src="data:image/@Model[(i * 4) + j].Format;base64,@Model[(i * 4) + j].Image" alt="">
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+
+            </div>
+            <button class="photo_selection_choose_btn mid_gray_hover">Отправить</button>
+        </div>
+    </div>
+</div>
