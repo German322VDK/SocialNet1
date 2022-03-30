@@ -32,7 +32,7 @@
         var photo = ImageMethods.GetStringFromByteArr(item.Image);
         var formatPhoto = ImageMethods.GetFormat(item.Image);
 
-        var coments = new List<PhotoUserInfo>();
+        var coments = new List<PhotoUserInfoComms>();
 
         foreach (var coment in item.Coments)
         {
@@ -48,10 +48,10 @@
 
             var comId = coment.Id;
 
-            coments.Add(new PhotoUserInfo
+            coments.Add(new PhotoUserInfoComms
             {
                 DateTime = coment.DateTime.ToString("g"),
-                //Likes = coment.LikeCount,
+                Likes = coment.UserCommentLikes,
                 Comment = coment.Text,
                 AuthorFirstName = commentator.FirstName,
                 AuthorSecondName = commentator.SecondName,
@@ -71,7 +71,7 @@
             Format = formatPhoto,
 
             RepostCount = item.RepostCount,
-            Auhor = new PhotoUserInfo
+            Auhor = new PhotoUserInfoAut
             {
                 AuthorUserName = Model.User.UserName,
                 AuthorFirstName = Model.User.FirstName,

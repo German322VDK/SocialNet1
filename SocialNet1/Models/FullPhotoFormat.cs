@@ -15,8 +15,8 @@ namespace SocialNet1.Models
 
         public int RepostCount { get; set; }
 
-        public PhotoUserInfo Auhor { get; set; }
+        public PhotoUserInfoAut Auhor { get; set; }
 
-        public ICollection<PhotoUserInfo> Comments { get; set; } = new List<PhotoUserInfo>();
+        public ICollection<PhotoUserInfoComms> Comments { get; set; } = new List<PhotoUserInfoComms>();
     }
 }

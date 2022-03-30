@@ -27,6 +27,9 @@ namespace SocialNet1.Components
 
                 var user = _user.Get(userName);
 
+                if(user is null)
+                    return View();
+
                 var arr = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage)?.Image;
 
                 string image, format;

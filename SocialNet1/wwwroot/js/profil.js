@@ -271,3 +271,4 @@ function ChosePhoto(color, imageId) {
     document.getElementById(imageId).classList.add(classActive);
 
 }
+

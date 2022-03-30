@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SocialNet1.Models
 {
-    public class PhotoUserInfo
+    public class PhotoUserInfoComms
     {
         public int CommId { get; set; }
         public string AuthorImage { get; set; }
@@ -22,7 +22,7 @@ namespace SocialNet1.Models
 
         public string Comment { get; set; }
 
-        public ICollection<UserLike> Likes{ get; set; }
+        public ICollection<UserCommentLike> Likes{ get; set; }
 
         public string Color { get; set; }
     }

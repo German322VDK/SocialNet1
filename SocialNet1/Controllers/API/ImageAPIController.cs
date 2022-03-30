@@ -33,7 +33,7 @@ namespace SocialNet1.Controllers.API
         //}
 
         [HttpPost("addcom")]
-        public PhotoUserInfo Add(/*string text, string sender, string recipient, int imageId*/ AddCommentImageModel model)
+        public PhotoUserInfoComms Add(/*string text, string sender, string recipient, int imageId*/ AddCommentImageModel model)
         {
             if(model is null)
             {
@@ -67,7 +67,7 @@ namespace SocialNet1.Controllers.API
 
             _logger.LogInformation($"{sender} смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
 
-            return new PhotoUserInfo
+            return new PhotoUserInfoComms
             {
                 DateTime = com.DateTime.ToString("g"),
                 Comment = com.Text,
