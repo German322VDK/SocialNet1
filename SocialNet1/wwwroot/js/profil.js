@@ -195,6 +195,65 @@ async function ProfileLikeMinus(one, two, num, url, user1, user2, imageid) {
 
 }
 
+// МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
+async function ProfileComLikePlus(one, two, num, url, user1, user2, imageid, comid) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName1: user1,
+            userName2: user2,
+            imageId: parseInt(imageid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(two).classList.remove('heart_none');
+        document.getElementById(one).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number++;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не поставился(")
+    }
+    
+
+}
+
+async function ProfileComLikeMinus(one, two, num, url, user1, user2, imageid, comid) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName1: user1,
+            userName2: user2,
+            imageId: parseInt(imageid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(one).classList.remove('heart_none');
+        document.getElementById(two).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number--;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не поставился(")
+    }
+}
+
 async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
 
     const response = await fetch(url, {

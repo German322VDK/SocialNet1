@@ -167,5 +167,52 @@ namespace SocialNet1.Controllers.API
 
             return result;
         }
+
+
+        [HttpPost("addlikecom")]
+        public bool AddLikeCom(LikeComModel model)
+        {
+            if (!(model.UserName1 is not null && model.UserName2 is not null))
+            {
+                _logger.LogWarning($"{model.UserName1 ?? ""} не смог поставить лайк {model.UserName2 ?? ""}!");
+                return false;
+            }
+
+            var result = _user.AddLikeComPhoto(model.UserName1, model.UserName2, model.ImageId, model.ComId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"{model.UserName1} уже до этого поставил лайк {model.UserName2} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{model.UserName1} поставил лайк {model.UserName2} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+
+            return result;
+        }
+
+        [HttpPost("deletelikecom")]
+        public bool DeleteLikeCom(LikeComModel model)
+        {
+            if (!(model.UserName1 is not null && model.UserName2 is not null))
+            {
+                _logger.LogWarning($"{model.UserName1 ?? ""} не смог убрать лайк {model.UserName2 ?? ""}!");
+                return false;
+            }
+
+            var result = _user.DeleteLikeComPhoto(model.UserName1, model.UserName2, model.ImageId, model.ComId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"{model.UserName1} ещё не ставил лайк {model.UserName2} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{model.UserName1} убрал лайк {model.UserName2} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+
+            return result;
+        }
     }
 }

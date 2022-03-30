@@ -15,6 +15,9 @@ namespace SocialNet1.Models.Static
         public const string ADD_IMAGE_LIKE = "api/image/addlike";
         public const string DELETE_IMAGE_LIKE = "api/image/deletelike";
 
+        public const string ADD_IMAGE_COM_LIKE = "api/image/addlikecom";
+        public const string DELETE_IMAGE_COM_LIKE = "api/image/deletelikecom";
+
         public const string CONFIRM_EMAIL = "api/registr/confirm";
         public const string GIVE_HASH = "api/registr/givehash";
 

@@ -292,6 +292,92 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool AddLikeComPhoto(string userName1, string userName2, int imageId, int comId)
+        {
+            
+            var user = Get(userName1);
+
+            if (user is null)
+                return false;
+
+            var image = user.Images.FirstOrDefault(im => im.Id == imageId);
+
+            if (image is null)
+                return false;
+
+            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+
+            if (com is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var commentLikes = _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .FirstOrDefault(cm => cm.Id == comId)
+                    .UserCommentLikes;
+
+                if (commentLikes.FirstOrDefault(lk => lk.Likers == userName2) is not null)
+                    return false;
+
+                commentLikes.Add(new UserCommentLike
+                {
+                    Likers = userName2,
+                    Emoji = Emoji.Like,
+                });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeleteLikeComPhoto(string userName1, string userName2, int imageId, int comId)
+        {
+            var user = Get(userName1);
+
+            if (user is null)
+                return false;
+
+            var image = user.Images.FirstOrDefault(im => im.Id == imageId);
+
+            if (image is null)
+                return false;
+
+            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+
+            if (com is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var commentLike = _db.Users
+                    .FirstOrDefault(el => el.UserName == userName1)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .FirstOrDefault(cm => cm.Id == comId)
+                    .UserCommentLikes
+                    .FirstOrDefault(lk => lk.Likers == userName2);
+
+                if (commentLike is null)
+                    return false;
+
+                _db.Remove(commentLike);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         public bool SetAva(int num, string userName)
         {
             var user = Get(userName);
