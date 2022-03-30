@@ -36,7 +36,7 @@ namespace SocialNet1.Controllers.API
 
             if (email is null || emails.Contains(email) || !SendMailMethods.CheckEmail(email))
             {
-                _logger.LogInformation($"Тип с почтой {email} хочет получить хэшкод");
+                _logger.LogWarning($"Тип с почтой {email} не смог получить хэшкод");
 
                 return false;
             }
@@ -48,7 +48,7 @@ namespace SocialNet1.Controllers.API
 
             if (!result)
             {
-                _logger.LogInformation($"Типу с почтой {email} не получилось создать хэшкод");
+                _logger.LogWarning($"Типу с почтой {email} не получилось создать хэшкод");
 
                 return false;
             }
@@ -74,7 +74,7 @@ namespace SocialNet1.Controllers.API
 
             if(ec is null)
             {
-                _logger.LogInformation($"Для типа с почтой {email} нет хэшкода, видимо его почта не зарегестрирована в системе");
+                _logger.LogWarning($"Для типа с почтой {email} нет хэшкода, видимо его почта не зарегестрирована в системе");
 
                 return false;
             }
@@ -82,7 +82,7 @@ namespace SocialNet1.Controllers.API
 
             if(ec.Hash != hash)
             {
-                _logger.LogInformation($"Тип с почтой {email} ввёл не правильный хэшкод");
+                _logger.LogWarning($"Тип с почтой {email} ввёл не правильный хэшкод");
 
                 return false;
             }

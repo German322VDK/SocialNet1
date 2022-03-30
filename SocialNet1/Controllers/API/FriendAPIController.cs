@@ -24,7 +24,7 @@ namespace SocialNet1.Controllers.API
 
             if (_user.IsFriend(username1, username2))
             {
-                _logger.LogInformation($"{username1} уже добавил в друзья {username2}");
+                _logger.LogWarning($"{username1} уже добавил в друзья {username2}");
 
                 return false;
             }
@@ -43,7 +43,7 @@ namespace SocialNet1.Controllers.API
 
             if (!_user.IsFriend(username1, username2))
             {
-                _logger.LogInformation($"{username1} не может удалить так как он не был другом {username2}");
+                _logger.LogWarning($"{username1} не может удалить так как он не был другом {username2}");
 
                 return false;
             }

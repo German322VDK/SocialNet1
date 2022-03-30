@@ -35,7 +35,7 @@ namespace SocialNet1.Controllers
 
             if(userDTO is null)
             {
-                _logger.LogInformation($"Cтраницы {userName} нет(");
+                _logger.LogWarning($"Cтраницы {userName} нет(");
 
                 return RedirectToAction("Index", "News");
             }
@@ -63,7 +63,7 @@ namespace SocialNet1.Controllers
 
             if (uploadedFile is null)
             {
-                _logger.LogInformation($"Фото не пришло(");
+                _logger.LogWarning($"Фото не пришло(");
 
                 return RedirectToAction("Index", "News");
             }
@@ -75,7 +75,7 @@ namespace SocialNet1.Controllers
 
             if (!result)
             {
-                _logger.LogInformation($"Фото плохое(");
+                _logger.LogWarning($"Фото плохое(");
 
                 return RedirectToAction("Index", "News");
             }
@@ -84,7 +84,7 @@ namespace SocialNet1.Controllers
 
             if (!resultAdding)
             {
-                _logger.LogInformation($"Фото почему то не добавилось(");
+                _logger.LogWarning($"Фото почему то не добавилось(");
 
                 return RedirectToAction("Index", "News");
             }
@@ -99,7 +99,7 @@ namespace SocialNet1.Controllers
 
             if(userName is null)
             {
-                _logger.LogInformation($"Не понятно кому менять аву(");
+                _logger.LogWarning($"Не понятно кому менять аву(");
 
                 return RedirectToAction("Index", "Profile");
             }
@@ -108,7 +108,7 @@ namespace SocialNet1.Controllers
 
             if (!result)
             {
-                _logger.LogInformation($"Человек {userName} не смог выбрать авой фото № {ava}");
+                _logger.LogWarning($"Человек {userName} не смог выбрать авой фото № {ava}");
 
                 return RedirectToAction("Index", "Profile");
             }

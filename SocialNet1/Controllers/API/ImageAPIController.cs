@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
 using SocialNet1.Models.API;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers.API
 {
@@ -26,18 +21,13 @@ namespace SocialNet1.Controllers.API
             _logger = logger;
         }
 
-        //[HttpPost]
-        //public void Add([FromBody] AddCommentImageModel data)
-        //{
-
-        //}
-
+        
         [HttpPost("addcom")]
-        public PhotoUserInfoComms Add(/*string text, string sender, string recipient, int imageId*/ AddCommentImageModel model)
+        public PhotoUserInfoComms Add(AddCommentImageModel model)
         {
             if(model is null)
             {
-                _logger.LogInformation($"Не получилось добавить комментарий, данные не пришли(");
+                _logger.LogWarning($"Не получилось добавить комментарий, данные не пришли(");
 
                 return null;
             }
@@ -52,7 +42,7 @@ namespace SocialNet1.Controllers.API
 
             if (com == null)
             {
-                _logger.LogInformation($"{sender} не смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
+                _logger.LogWarning($"{sender} не смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
 
                 return null;
             }
@@ -86,7 +76,7 @@ namespace SocialNet1.Controllers.API
         {
             if (string.IsNullOrEmpty(imageAutor))
             { 
-                _logger.LogInformation($"Не получилось удалить комментарий потому что я не знаю что удалять(");
+                _logger.LogWarning($"Не получилось удалить комментарий потому что я не знаю что удалять(");
 
                 return false;
             }
@@ -97,7 +87,7 @@ namespace SocialNet1.Controllers.API
 
             if (!result)
             {
-                _logger.LogInformation($"Не получилось удалить комментарий {comId} под фото {imageId} человека {imageAutor} (");
+                _logger.LogWarning($"Не получилось удалить комментарий {comId} под фото {imageId} человека {imageAutor} (");
 
                 return false;
             }
@@ -112,7 +102,7 @@ namespace SocialNet1.Controllers.API
         {
             if(model.UserName is null)
             {
-                _logger.LogInformation("Удаление фото не получилось, пришли неправильные данные(");
+                _logger.LogWarning("Удаление фото не получилось, пришли неправильные данные(");
 
                 return false;
             }
@@ -121,7 +111,7 @@ namespace SocialNet1.Controllers.API
 
             if (!result)
             {
-                _logger.LogInformation($"Удаление фото {model.ImageId} человека {model.UserName} не получилось(");
+                _logger.LogWarning($"Удаление фото {model.ImageId} человека {model.UserName} не получилось(");
 
                 return false;
             }
@@ -137,7 +127,7 @@ namespace SocialNet1.Controllers.API
         {
             if (!(username1 is not null && username2 is not null))
             {
-                _logger.LogInformation($"{username1 ?? ""} не смог поставить лайк {username2 ?? ""}!");
+                _logger.LogWarning($"{username1 ?? ""} не смог поставить лайк {username2 ?? ""}!");
                 return false;
             }
 
@@ -145,7 +135,7 @@ namespace SocialNet1.Controllers.API
 
             if (!result)
             {
-                _logger.LogInformation($"{username1} уже до этого поставил лайк {username2} под фото {imageid}!");
+                _logger.LogWarning($"{username1} уже до этого поставил лайк {username2} под фото {imageid}!");
             }
             else
             {
@@ -160,7 +150,7 @@ namespace SocialNet1.Controllers.API
         {
             if (!(username1 is not null && username2 is not null))
             {
-                _logger.LogInformation($"{username1 ?? ""} не смог убрать лайк {username2 ?? ""}!");
+                _logger.LogWarning($"{username1 ?? ""} не смог убрать лайк {username2 ?? ""}!");
                 return false;
             }
 
@@ -168,7 +158,7 @@ namespace SocialNet1.Controllers.API
 
             if (!result)
             {
-                _logger.LogInformation($"{username1} ещё не ставил лайк {username2} под фото {imageid}!");
+                _logger.LogWarning($"{username1} ещё не ставил лайк {username2} под фото {imageid}!");
             }
             else
             {
