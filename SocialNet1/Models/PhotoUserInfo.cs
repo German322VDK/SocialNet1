@@ -1,8 +1,5 @@
-﻿using SocialNet1.Domain.PostCom;
-using System;
+﻿using Social_Net.Domain.Identity;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Models
 {
@@ -25,7 +22,7 @@ namespace SocialNet1.Models
 
         public string Comment { get; set; }
 
-        public ICollection<Like> Likes{ get; set; }
+        public ICollection<UserLike> Likes{ get; set; }
 
         public string Color { get; set; }
     }

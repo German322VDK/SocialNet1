@@ -1,10 +1,6 @@
 ﻿using SocialNet1.Domain.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Social_Net.Domain.Base
 {
@@ -12,9 +8,6 @@ namespace Social_Net.Domain.Base
     {
         [Required]
         public string UserName { get; set; }
-
-        [Required]
-        public int LikeCount { get; set; } = 0;
 
         [Required]
         public string Text { get; set; }

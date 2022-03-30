@@ -1,4 +1,5 @@
-﻿using SocialNet1.Database.SQlite.Context;
+﻿using Social_Net.Domain.Identity;
+using SocialNet1.Database.SQlite.Context;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Friends;
 using SocialNet1.Domain.Identity;
@@ -141,7 +142,7 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             using (_db.Database.BeginTransaction())
             {
-                var likes = image.Likes;
+                var likes = image.UserLikes;
 
                 if(likes.Count > 0)
                     _db.RemoveRange(likes);
@@ -185,12 +186,12 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .FirstOrDefault(el => el.UserName == userName1)
                     .Images
                     .FirstOrDefault(im => im.Id == imageID)
-                    .Likes;
+                    .UserLikes;
 
                 if (likes.FirstOrDefault(lk => lk.Likers == userName2) is not null)
                     return false;
 
-                likes.Add(new Like
+                likes.Add(new UserLike
                 {
                     Likers = userName2,
                     Emoji = Emoji.Like
@@ -212,7 +213,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .FirstOrDefault(el => el.UserName == userName1)
                     .Images
                     .FirstOrDefault(im => im.Id == imageID)
-                    .Likes
+                    .UserLikes
                     .FirstOrDefault(lk => lk.Likers == userName2);
 
                 if (like is null)
@@ -243,7 +244,6 @@ namespace SocialNet1.Infrastructure.Services.Based
             {
                 comment = new UserImageComments
                 {
-                    LikeCount = 0,
                     Text = text,
                     UserName = senderName
                 };

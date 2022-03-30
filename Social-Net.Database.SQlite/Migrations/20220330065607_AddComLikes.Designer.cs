@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNet1.Database.SQlite.Context;
 
 namespace SocialNet1.Database.SQlite.Migrations
 {
     [DbContext(typeof(SocialNetDBSQlite))]
-    partial class SocialNetDBSQliteModelSnapshot : ModelSnapshot
+    [Migration("20220330065607_AddComLikes")]
+    partial class AddComLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -896,28 +898,28 @@ namespace SocialNet1.Database.SQlite.Migrations
             modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
                 {
                     b.HasOne("Social_Net.Domain.Group.GroupImageComments", null)
-                        .WithMany("GroupCommentLikes")
+                        .WithMany("Likes")
                         .HasForeignKey("GroupImageCommentsId");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Group.GroupLike", b =>
                 {
                     b.HasOne("SocialNet1.Domain.Group.GroupImages", null)
-                        .WithMany("GroupLikes")
+                        .WithMany("Likes")
                         .HasForeignKey("GroupImagesId");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Identity.UserCommentLike", b =>
                 {
                     b.HasOne("SocialNet1.Domain.Identity.UserImageComments", null)
-                        .WithMany("UserCommentLikes")
+                        .WithMany("Likes")
                         .HasForeignKey("UserImageCommentsId");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Identity.UserLike", b =>
                 {
                     b.HasOne("SocialNet1.Domain.Identity.UserImages", null)
-                        .WithMany("UserLikes")
+                        .WithMany("Likes")
                         .HasForeignKey("UserImagesId");
                 });
 
@@ -932,7 +934,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                 {
                     b.Navigation("Coments");
 
-                    b.Navigation("GroupLikes");
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Group.SocNetEntityGroup", b =>
@@ -956,14 +958,14 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("SocialNet1.Domain.Identity.UserImageComments", b =>
                 {
-                    b.Navigation("UserCommentLikes");
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Identity.UserImages", b =>
                 {
                     b.Navigation("Coments");
 
-                    b.Navigation("UserLikes");
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Message.ChatDTO", b =>
@@ -990,7 +992,7 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
                 {
-                    b.Navigation("GroupCommentLikes");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

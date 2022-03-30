@@ -1,13 +1,14 @@
 ﻿using Social_Net.Domain.Base;
-using SocialNet1.Domain.Base;
-using System;
+using Social_Net.Domain.Identity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Domain.Identity
 {
-    public class UserImageComments : ImageComments { }
+    public class UserImageComments : ImageComments 
+    {
+
+        [Required]
+        public virtual ICollection<UserCommentLike> UserCommentLikes { get; set; } = new List<UserCommentLike>();
+    }
 }

@@ -12,7 +12,7 @@ namespace SocialNet1.Domain.Group
         public virtual ICollection<GroupImageComments> Coments { get; set; } = new List<GroupImageComments>();
 
         [Required]
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<GroupLike> GroupLikes { get; set; } = new List<GroupLike>();
 
         [Required]
         public int RepostCount { get; set; } = 0;
