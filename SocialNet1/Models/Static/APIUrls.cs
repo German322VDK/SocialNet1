@@ -23,5 +23,7 @@ namespace SocialNet1.Models.Static
 
         public const string SET_STATUS = "api/user/setstatus";
 
+        public const string SET_AVA = "Profile/SetAva";
+
     }
 }

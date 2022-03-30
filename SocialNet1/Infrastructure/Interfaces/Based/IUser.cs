@@ -20,6 +20,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool DeleteComToPhoto(string userName, int imageId, int comId);
 
+        bool SetAva(int num, string userName);
+
         bool SetStatus(string text, string userName);
 
         bool IsFriend(string userName1, string userName2);

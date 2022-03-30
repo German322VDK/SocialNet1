@@ -93,5 +93,29 @@ namespace SocialNet1.Controllers
 
             return RedirectToAction("Index", "Profile");
         }
+
+        public IActionResult SetAva(string userName, int ava)
+        {
+
+            if(userName is null)
+            {
+                _logger.LogInformation($"Не понятно кому менять аву(");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            var result = _user.SetAva(ava, userName);
+
+            if (!result)
+            {
+                _logger.LogInformation($"Человек {userName} не смог выбрать авой фото № {ava}");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            _logger.LogInformation($"Человек {userName} смог выбрать авой фото № {ava}");
+
+            return RedirectToAction("Index", "Profile");
+        }
     }
 }

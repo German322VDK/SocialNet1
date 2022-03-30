@@ -7,6 +7,8 @@
     var user = userService.Get(name);
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var url = $"/{APIUrls.SET_AVA}";
 }
 
 <!-- photo_selection__modal__is_open -->
@@ -26,8 +28,8 @@
                         {
                             if( ((i * 4) + j) < Model.Count) 
                             { 
-                                <div class="photo_selection__foto_img" id="@Model[(i * 4) + j].ImageNum"
-                                   onclick="ChosePhoto('@color', '@Model[(i * 4) + j].ImageNum')">
+                                <div class="photo_selection__foto_img" id="AVA-@Model[(i * 4) + j].ImageNum"
+                                   onclick="ChosePhoto('@color', 'AVA-@Model[(i * 4) + j].ImageNum')">
                                     <img class="photo_selection__img" src="data:image/@Model[(i * 4) + j].Format;base64,@Model[(i * 4) + j].Image" alt="">
                                 </div>
                             }
@@ -36,7 +38,7 @@
                 }
 
             </div>
-            <button class="photo_selection_choose_btn mid_gray_hover">Отправить</button>
+            <button class="photo_selection_choose_btn mid_gray_hover" onclick="SetAva('@url', '@name', '@color')">Отправить</button>
         </div>
     </div>
 </div>

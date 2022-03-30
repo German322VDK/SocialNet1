@@ -218,6 +218,31 @@ async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
     }
 }
 
+async function SetAva(url, user, color) {
+
+    var classActive = `dark_dark_${color}_border`;
+
+    var photo = document.getElementsByClassName(classActive)[0];
+
+    if (photo == null) {
+        alert("Не выбрано фото(");
+
+        return;
+    }
+
+    var avaId = photo.id;
+
+    var ava = avaId.split("-")[1];
+
+    var fullurl = url + "?userName=" + user + "&ava=" + ava;
+
+    var promise = await fetch(fullurl);
+
+    location.href = promise.url;
+
+
+}
+
 function OpenSetPhoto() {
     var modal = document.getElementById('SetPhoto');
 
@@ -240,6 +265,8 @@ function ChosePhoto(color, imageId) {
         if (photos[i].classList.contains(classActive))
             photos[i].classList.remove(classActive);
     }
+
+    //var ava = imageId.split("-")[1];
 
     document.getElementById(imageId).classList.add(classActive);
 

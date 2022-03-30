@@ -292,6 +292,30 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool SetAva(int num, string userName)
+        {
+            var user = Get(userName);
+
+            if (user is null)
+                return false;
+
+            var image = user.Images.FirstOrDefault(im => im.ImageNumber == num);
+
+            if(image is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users.FirstOrDefault(us => us.UserName == userName).SocNetItems.CurrentImage = num;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)
