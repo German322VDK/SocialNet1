@@ -4,10 +4,7 @@ using Microsoft.Extensions.Logging;
 using SocialNet1.Models;
 //using Social_Net.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers
 {

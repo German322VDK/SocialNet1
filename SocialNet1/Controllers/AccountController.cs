@@ -9,10 +9,6 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 

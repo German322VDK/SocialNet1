@@ -1,6 +1,5 @@
 ﻿using Social_Net.Domain.Group;
 using SocialNet1.Domain.Base;
-using SocialNet1.Domain.PostCom;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
