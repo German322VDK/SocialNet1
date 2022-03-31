@@ -1620,9 +1620,25 @@ input[type="submit"] {
     display: flex;
 }
 
-    .photo_selection__modal_foto_c_f:not(:last-child) {
-        margin-bottom: 5px;
-    }
+.photo_selection__modal_foto_c_f:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.cord__modal_foto_c_f {
+    display: flex;
+}
+
+.cord_selection__modal_foto_c_f:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+
+.coord__modal_foto_c_f {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    justify-content: center;
+}
 
 .photo_selection__foto_img {
     margin: 0 5px;
@@ -1634,6 +1650,18 @@ input[type="submit"] {
 .photo_selection__img {
     object-fit: cover;
     height: 100%;
+}
+
+.coord__img {
+    object-fit: cover;
+    height: 100%;
+}
+
+.coord__foto_img {
+    margin: 0 5px;
+    padding: 5px;
+    width: 80px;
+    height: 80px;
 }
 
 .photo_selection_choose_btn {

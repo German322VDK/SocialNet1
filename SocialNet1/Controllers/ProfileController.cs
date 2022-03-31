@@ -117,5 +117,30 @@ namespace SocialNet1.Controllers
 
             return RedirectToAction("Index", "Profile");
         }
+
+        public IActionResult SetCoord(string userName, int x, int y)
+        {
+
+            if (userName is null)
+            {
+                _logger.LogWarning($"Не понятно кому менять взгляды(");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            var result = _user.SetCoord(userName, x, y);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Человек {userName} не смог выбрать взгляды x:{x};y:{y}");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            _logger.LogInformation($"Человек {userName} смог выбрать взгляды x:{x};y:{y}");
+
+            return RedirectToAction("Index", "Profile");
+        }
+
     }
 }

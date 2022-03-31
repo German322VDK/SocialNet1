@@ -89,7 +89,6 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #endregion
 
-
         #region Photo
 
         public bool AddPhoto(byte[] image, string userName)
@@ -416,6 +415,31 @@ namespace SocialNet1.Infrastructure.Services.Based
                 _db.Users
                     .FirstOrDefault(us => us.UserName == userName)
                     .Status = text;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool SetCoord(string userName, int x, int y)
+        {
+            var user = Get(userName);
+
+            if (user is null || x > 2 || x < -2 || y > 2 || y < -2)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users
+                    .FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems.X = x;
+
+                _db.Users
+                   .FirstOrDefault(us => us.UserName == userName)
+                   .SocNetItems.Y = y;
 
                 _db.SaveChanges();
 

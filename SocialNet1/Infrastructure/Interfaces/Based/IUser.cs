@@ -28,6 +28,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool SetStatus(string text, string userName);
 
+        bool SetCoord(string userName, int x, int y);
+
         bool IsFriend(string userName1, string userName2);
 
         bool AddFriend(string userName1, string userName2);

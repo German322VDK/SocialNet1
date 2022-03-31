@@ -22,10 +22,11 @@
         @if (isOwner)
         {
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">Сменить фотографию</button>
+            <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenCord()">Сменить взгляды</button>
         }
         else
         {
-            if (userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name)) 
+            if (userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name))
             {
                 <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
@@ -38,7 +39,7 @@
                     <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
                 </button>
             }
-            else if (!userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name) )
+            else if (!userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name))
             {
                 <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">

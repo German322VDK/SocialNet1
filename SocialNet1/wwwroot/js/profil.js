@@ -331,3 +331,89 @@ function ChosePhoto(color, imageId) {
 
 }
 
+async function SetCord(url, user) {
+
+    var choscord = "chosen_coord";
+
+    var coord = document.getElementsByClassName(choscord)[0];
+
+    if (coord == null) {
+        alert("Не выбрано фото(");
+
+        return;
+    }
+
+    var coordId = coord.id;
+
+    var cord = coordId.split("/")[1];
+
+    var xy = cord.split("d");
+
+    var x = xy[0];
+
+    var y = xy[1];
+
+    var fullurl = url + "?userName=" + user + "&x=" + x + "&y=" + y;
+
+    var promise = await fetch(fullurl);
+
+    location.href = promise.url;
+
+}
+
+function OpenCord() {
+    var modal = document.getElementById('Cord');
+
+    modal.classList.add('photo_selection__modal__is_open');
+}
+
+function CloseCord() {
+    var modal = document.getElementById('Cord');
+
+    modal.classList.remove('photo_selection__modal__is_open');
+}
+
+function ChoseCoord(color, imageId) {
+    var classActive = color;
+
+    var choscord = "chosen_coord";
+
+    var blue = "dark_dark_blue_border";
+    var red = "dark_dark_red_border";
+    var green = "dark_dark_green_border";
+    var yellow = "dark_dark_yellow_border";
+    var gray = "dark_dark_gray_border";
+
+    var photos = document.getElementsByClassName("coord__foto_img");
+
+    for (var i = 0; i < photos.length; i++) {
+        if (photos[i].classList.contains(blue)) {
+            photos[i].classList.remove(blue);
+            photos[i].classList.remove(choscord);
+        }
+        else if (photos[i].classList.contains(red)) {
+            photos[i].classList.remove(red);
+            photos[i].classList.remove(choscord);
+        }
+        else if (photos[i].classList.contains(green)) {
+            photos[i].classList.remove(green);
+            photos[i].classList.remove(choscord);
+        }
+        else if (photos[i].classList.contains(yellow)) {
+            photos[i].classList.remove(yellow);
+            photos[i].classList.remove(choscord);
+        }
+        else if (photos[i].classList.contains(gray)) {
+            photos[i].classList.remove(gray);
+            photos[i].classList.remove(choscord);
+        }
+            
+    }
+
+    //var ava = imageId.split("-")[1];
+
+    document.getElementById(imageId).classList.add(classActive);
+
+    document.getElementById(imageId).classList.add(choscord);
+}
+
