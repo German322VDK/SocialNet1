@@ -1,4 +1,5 @@
 ﻿using SocialNet1.Domain.Identity;
+using SocialNet1.Domain.PostCom;
 using System.Collections.Generic;
 
 namespace SocialNet1.Infrastructure.Interfaces.Based
@@ -35,5 +36,11 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddFriend(string userName1, string userName2);
 
         bool DeleteFriend(string userName1, string userName2);
+
+        ICollection<PostDTO> GetUserPosts(string userName);
+
+        PostDTO GetUserPost(string userName, int postId);
+
+        bool AddUserPost(string userName, PostDTO post);
     }
 }

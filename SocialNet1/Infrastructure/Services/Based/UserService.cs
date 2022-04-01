@@ -403,6 +403,36 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #endregion
 
+        #region Posts
+
+        public ICollection<PostDTO> GetUserPosts(string userName) =>
+            Get(userName).SocNetItems.Posts;
+
+        public PostDTO GetUserPost(string userName, int postId) =>
+            GetUserPosts(userName).FirstOrDefault(p => p.Id == postId);
+
+        public bool AddUserPost(string userName, PostDTO post)
+        {
+            if(Get(userName) is null || GetUserPosts(userName) is null )
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .Add(post);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        #endregion
+
         public bool SetStatus(string text, string userName)
         {
             var user = Get(userName);

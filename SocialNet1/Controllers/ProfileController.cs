@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Data;
 using SocialNet1.Domain.Identity;
+using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
+using SocialNet1.Models;
 using SocialNet1.ViewModels;
 
 namespace SocialNet1.Controllers
@@ -138,6 +140,36 @@ namespace SocialNet1.Controllers
             }
 
             _logger.LogInformation($"Человек {userName} смог выбрать взгляды x:{x};y:{y}");
+
+            return RedirectToAction("Index", "Profile");
+        }
+
+        public IActionResult AddComm(ComModel model)
+        {
+            if(model is null || model.UserName is null || model.AuthorName is null || model.Text is null)
+            {
+                _logger.LogWarning("Данные для добавления поста не пришли");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            var result = _user.AddUserPost(model.AuthorName, new PostDTO 
+            { 
+                ThisPost = new CommentDTO
+                {
+                    CommentatorStatus = CommentatorStatus.User,
+                    CommentatorName = model.UserName,
+                    Content = model.Text,
+                }
+            });
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось добавить пост: {model.Text} человека {model.UserName} для человека {model.AuthorName}");
+                return RedirectToAction("Index", "Profile");
+            }
+
+            _logger.LogInformation($"Получилось добавить пост: {model.Text} человека {model.UserName} для человека {model.AuthorName}");
 
             return RedirectToAction("Index", "Profile");
         }
