@@ -25,6 +25,8 @@ namespace SocialNet1.Models.Static
         public const string DELETE_FRIEND = "api/friend/delete";
 
         public const string SET_STATUS = "api/user/setstatus";
+        public const string DELETE_POST = "api/user/deletepost";
+        
 
         public const string SET_AVA = "Profile/SetAva";
         public const string SET_COORD = "Profile/SetCoord";

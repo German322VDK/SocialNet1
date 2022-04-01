@@ -417,3 +417,19 @@ function ChoseCoord(color, imageId) {
     document.getElementById(imageId).classList.add(choscord);
 }
 
+async function DeletePost(url, postItem, postId, user) {
+
+    var fullurl = url + "?userName=" + user + "&postId=" + postId;
+
+    const response = await fetch(fullurl);
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(postItem).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
+}
+

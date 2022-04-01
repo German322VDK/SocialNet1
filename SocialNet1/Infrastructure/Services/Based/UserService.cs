@@ -431,6 +431,45 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool DeletePost(string userName, int postId)
+        {
+            if (Get(userName) is null || GetUserPosts(userName) is null || GetUserPosts(userName).FirstOrDefault(ps => ps.Id == postId) is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var post = _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId);
+
+                var thisPost = post.ThisPost;
+
+                var coms = post.Comments;
+
+                //удаляем сам пост
+                _db.RemoveRange(thisPost.Images);
+                _db.RemoveRange(thisPost.Likes);
+                _db.Remove(thisPost);
+
+                //удаляем комменты
+                foreach (var com in coms)
+                {
+                    _db.RemoveRange(com.Images);
+                    _db.RemoveRange(com.Likes);
+                }
+                _db.RemoveRange(coms);
+
+                _db.Remove(post);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)

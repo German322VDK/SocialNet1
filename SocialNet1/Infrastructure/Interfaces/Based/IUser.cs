@@ -42,5 +42,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         PostDTO GetUserPost(string userName, int postId);
 
         bool AddUserPost(string userName, PostDTO post);
+
+        bool DeletePost(string userName, int postId);
     }
 }

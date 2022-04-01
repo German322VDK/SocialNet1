@@ -44,5 +44,29 @@ namespace SocialNet1.Controllers.API
 
             return model.Text;
         }
+
+        [HttpGet("deletepost")]
+        public bool DeletePost(string userName, int postId)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("Не понятно кому удалять пост");
+
+                return false;
+            }
+
+            var result = _user.DeletePost(userName, postId);
+
+            if (!result)
+            {
+                _logger.LogInformation($"На странице человека {userName} не получилось удалить пост № {postId}");
+
+                return false;
+            }
+
+            _logger.LogInformation($"На странице человека {userName} был удалён пост № {postId}");
+
+            return true;
+        }
     }
 }

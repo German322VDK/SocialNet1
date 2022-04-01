@@ -121,9 +121,9 @@
         </div>
     }
 
-    <partial name="Partial/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}"/>
+    <partial name="Partial/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
 
-    <partial name="Partial/ProfilePosts" model="@Model.User.SocNetItems.Posts" />
+    <partial name="Partial/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />  
 
 </div>
 
