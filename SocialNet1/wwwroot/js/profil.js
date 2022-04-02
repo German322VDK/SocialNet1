@@ -475,4 +475,24 @@ async function PostLikeMinus(one, two, num, url, user, postId, liker) {
     }
 }
 
+async function AddCommentToUserPost(textId, url, user, postId, commenter) {
+
+    var textInput = document.getElementById(textId);
+
+    var text = textInput.innerText;
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName: user,
+            text: text,
+            commenter: commenter,
+            postId: parseInt(postId)
+        })
+    });
+
+    var body = await response.json();
+}
+
 

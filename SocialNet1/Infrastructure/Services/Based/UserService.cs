@@ -532,6 +532,41 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         }
 
+        public CommentDTO AddPostCom(string username, int postId, string commenter, string text)
+        {
+            if (Get(username) is null)
+                return null;
+
+            if (GetUserPost(username, postId) is null)
+                return null;
+
+            CommentDTO comment = null;
+
+            using (_db.Database.BeginTransaction())
+            {
+                comment = new CommentDTO
+                {
+                    CommentatorStatus = CommentatorStatus.User,
+                    CommentatorName = commenter,
+                    Content = text
+                };
+
+                _db.Users
+                    .FirstOrDefault(us => us.UserName == username)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .Add(comment);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return comment;
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)

@@ -23,6 +23,8 @@
     var likePlusURL = $"/{APIUrls.ADD_LIKE_POST}";
 
     var likeMinusURL = $"/{APIUrls.DELETE_LIKE_POST}";
+
+    var addPostCom = $"/{APIUrls.ADD_COM_POST}";
 }
 
 <div class="profil_left__news_dif light_@(color)">
@@ -52,6 +54,9 @@
         var photo = ImageMethods.GetStringFromByteArr(formatThisPost);
         var formatPhoto = ImageMethods.GetFormat(formatThisPost);
 
+        var isLiked = item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null;
+        int j = 1;
+
         <div class="profil__post light_@(colorPoster)" id="@(i)Post">
             <div class="profil__post_flex">
                 <div class="profil__post_blok">
@@ -80,28 +85,16 @@
             <div class="profil__post_lkr">
                 <!-- Лайки -->
                 <div class="profil__post_l">
-                    @if (item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null)
-                    {
-                        <button id="@(i)_newsPostLike1" class="profil__post_l_img" onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                    <button id="@(i)_newsPostLike1" class="profil__post_l_img @(isLiked ? "" : "heart_none")" 
+                            onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
                             '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
-                            <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
-                        </button>
-                        <button id="@(i)_newsPostLike2" class="profil__post_l_img heart_none" onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button id="@(i)_newsPostLike2" class="profil__post_l_img @(isLiked ? "heart_none" : "")" 
+                            onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
                             '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
-                            <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
-                        </button>
-                    }
-                    else
-                    {
-                        <button id="@(i)_newsPostLike1" class="profil__post_l_img heart_none" onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
-                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
-                            <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
-                        </button>
-                        <button id="@(i)_newsPostLike2" class="profil__post_l_img" onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
-                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
-                            <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
-                        </button>
-                    }
+                        <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
+                    </button>
                     <div id="@(i)_likeAll" class="profil__col_like_all">@item.ThisPost.Likes.Count</div>
                     @*<div class="profil__col_like_ally">36</div>
         <div class="profil__col_like_enemy">12</div>*@
@@ -200,71 +193,67 @@
 
             <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
             <div id="@(i)comentadd" style="display: none">
-                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll" data-simplebar id="@(i)coms">
-                    <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom dark_dark_@(colorPoster)_border_top" id="com1">
-                        <div class="profil_modal__foto_r_c_l">
-                            <a class="profil_comment_ava_link" href="">
-                                <img class="profil_comment_link_img" src="img/артем.jpg" alt="">
-                            </a>
-                        </div>
-                        <div class="profil_modal__foto_r_c_r">
-                            <div class="profil_comment__name_polit">
-                                <a class="profil_comment__name_link" href="">Шашлычков Герман</a>
-                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll"
+                     data-simplebar id="@(i)coms">
+                    @foreach (var com in item.Comments)
+                    {
+                        var commenter = userService.Get(com.CommentatorName);
+
+                        var arrComs = commenter.Images
+                                .FirstOrDefault(im => im.ImageNumber == commenter.SocNetItems.CurrentImage)
+                                .Image;
+
+                        var photoCom = ImageMethods.GetStringFromByteArr(arrComs);
+                        var formatPhotoCom = ImageMethods.GetFormat(arrComs);
+
+                        int x = commenter.SocNetItems.X, y = commenter.SocNetItems.Y;
+
+                        var commentorColor = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
+
+                        <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom light_@(commentorColor)
+                             @(j==1? $"dark_dark_{colorPoster}_border_top" : "")" id="@(i)com@(j)">
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" href="">
+                                    <img class="profil_comment_link_img" src="data:image/@formatPhotoCom;base64,@photoCom" alt="">
+                                </a>
                             </div>
-                            <div class="profil_comment__all_infa">
-                                <div class="profil_comment__date">26 фев 1947</div>
-                                <div class="profil_comment__icons">
-                                    <div class="profil_comment__plus">
-                                        <i class="fa fa-commenting-o color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com1_like_on" onclick="LikePlus('com1_like_on', 'com1_like_off', 'com1_like_num')" class="comment__heart">
-                                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com1_like_off" onclick="LikeMinus('com1_like_on', 'com1_like_off', 'com1_like_num')" class="comment__heart_bac heart_none">
-                                        <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com1_like_num" class="comment__quantity">5</div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" href="">@commenter.FirstName @commenter.SecondName</a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(x)d@(y).jpg" alt="">
                                 </div>
-                            </div>
-                            <div class="profil_comment__content">Был ужален сам, но мне ни жаль ужаленных ни капли трололололололололололололололололололололололол Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni soluta consequuntur ipsum neque voluptate ex eum sed, vitae molestias corporis optio architecto aut reprehenderit! Non perferendis eaque facere obcaecati ipsa!</div>
-                        </div>
-                    </div>
-                    <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom" id="com2">
-                        <div class="profil_modal__foto_r_c_l">
-                            <a class="profil_comment_ava_link" href="">
-                                <img class="profil_comment_link_img" src="img/ава.jpg" alt="">
-                            </a>
-                        </div>
-                        <div class="profil_modal__foto_r_c_r">
-                            <div class="profil_comment__name_polit">
-                                <a class="profil_comment__name_link" href="">Коза Виктория</a>
-                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
-                            </div>
-                            <div class="profil_comment__all_infa">
-                                <div class="profil_comment__date">27 фев 1947</div>
-                                <div class="profil_comment__icons">
-                                    <div class="profil_comment__pencil">
-                                        <i class="fa fa-pencil color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">@com.DateTime.ToString("g")</div>
+                                    <div class="profil_comment__icons">
+                                        @if (name == com.CommentatorName)
+                                        {
+                                            <div class="profil_comment__pencil">
+                                                <i class="fa fa-pencil color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="profil_comment__minus" onclick="DeleteCom('@(i)com@(j)')">
+                                                <i class="fa fa-trash-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>
+                                        }
+                                        <div class="profil_comment__plus">
+                                            <i class="fa fa-commenting-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_on" onclick="LikePlus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num')" class="comment__heart">
+                                            <i class="fa fa-heart-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_off" onclick="LikeMinus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num')" class="comment__heart_bac heart_none">
+                                            <i class="fa fa-heart color_dark_dark_@(commentorColor) heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_num" class="comment__quantity">@com.Likes.Count</div>
                                     </div>
-                                    <div class="profil_comment__minus" onclick="DeleteCom('com2')">
-                                        <i class="fa fa-trash-o color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="profil_comment__plus">
-                                        <i class="fa fa-commenting-o color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com2_like_on" onclick="LikePlus('com2_like_on', 'com2_like_off', 'com2_like_num')" class="comment__heart">
-                                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster)" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com2_like_off" onclick="LikeMinus('com2_like_on', 'com2_like_off', 'com2_like_num')" class="comment__heart_bac heart_none">
-                                        <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="com2_like_num" class="comment__quantity">56</div>
                                 </div>
+                                <div class="profil_comment__content">@com.Content</div>
                             </div>
-                            <div class="profil_comment__content">Очень жаль, но не очень Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus voluptates architecto voluptatem animi labore sed modi dolorum blanditiis, quisquam nostrum assumenda officia accusamus, sapiente deleniti nihil ducimus ex neque?</div>
                         </div>
-                    </div>
+
+                        j++;
+                    }
 
                 </div>
                 <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
@@ -291,7 +280,8 @@
                         </div>
                         <div class="profil_modal__foto_right_my_comment_write_t_r">
                             <div class="profil_modal__foto_right_my_comment_write_t_r_two">
-                                <div contenteditable="true" class="profil_my_comment__write_my_comment color_dark_dark_@(color)" data-simplebar>
+                                <div id="@(i)_text_input" contenteditable="true" 
+                                     class="profil_my_comment__write_my_comment color_dark_dark_@(color)" data-simplebar>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +300,10 @@
                     'profil_modal__foto_right_my_comment_write_active')">
                             Отменить
                         </button>
-                        <button class="profil_my_comment_write_btn_send mid_@(color)">Отправить</button>
+                        <button class="profil_my_comment_write_btn_send mid_@(color)" 
+                                onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name')">
+                            Отправить
+                        </button>
                     </div>
                 </div>
             </div>

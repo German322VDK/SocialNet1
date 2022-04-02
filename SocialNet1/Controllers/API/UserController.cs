@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Models.API;
 
@@ -115,6 +116,34 @@ namespace SocialNet1.Controllers.API
             _logger.LogInformation($"Человек {liker} смог убрать лайк с поста № {postId} человека {userName})");
 
             return true;
+        }
+
+        [HttpPost("addcompost")]
+
+        public CommentDTO AddComPost(AddCommentPostModel model)
+        {
+            if(model is null || string.IsNullOrEmpty(model.Commenter) || string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.UserName))
+            {
+                _logger.LogWarning("Данные не пришли или пришли повреждёнными(");
+
+                return null;
+            }
+
+            var result = _user.AddPostCom(model.UserName, model.PostId, model.Commenter, model.Text);
+
+            if(result is null)
+            {
+                _logger.LogWarning($"Не получилось добавить коммент '{model.Text}' человека {model.Commenter} под постом № {model.PostId} " +
+                    $"человека {model.UserName} (");
+
+                return null;
+            }
+
+            _logger.LogInformation($"Получилось добавить коммент '{model.Text}' человека {model.Commenter} под постом № {model.PostId} " +
+                    $"человека {model.UserName} )");
+
+            return result;
+
         }
     }
 }
