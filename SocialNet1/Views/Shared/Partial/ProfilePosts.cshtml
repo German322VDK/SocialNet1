@@ -8,9 +8,21 @@
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
+    var userMainImage = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
+
+    var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = ImageMethods.GetFormat(imageArr);
+
     int i = 1;
 
     var deletePostURL = $"/{APIUrls.DELETE_POST}";
+
+    var likePlusURL = $"/{APIUrls.ADD_LIKE_POST}";
+
+    var likeMinusURL = $"/{APIUrls.DELETE_LIKE_POST}";
 }
 
 <div class="profil_left__news_dif light_@(color)">
@@ -44,12 +56,13 @@
             <div class="profil__post_flex">
                 <div class="profil__post_blok">
                     <div>
-
                         @if (item.ThisPost.CommentatorStatus == CommentatorStatus.User)
                         {
-                            <img class="profil__post_ava"  src="data:image/@formatPhoto;base64,@photo" alt="">
+                            <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index" 
+                               asp-route-userName="@item.ThisPost.CommentatorName">
+                                <img class="profil__post_ava" src="data:image/@formatPhoto;base64,@photo" alt="">
+                            </a>
                         }
-
                     </div>
                 </div>
                 <div>
@@ -67,17 +80,31 @@
             <div class="profil__post_lkr">
                 <!-- Лайки -->
                 <div class="profil__post_l">
-                    <button id="@(i)_newsPostLike1" class="profil__post_l_img" onclick="LikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
-                            '@(i)_likeAll')">
-                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
-                    </button>
-                    <button id="@(i)_newsPostLike2" class="profil__post_l_img heart_none" onclick="LikeMinus('@(i)_newsPostLike1',
-                            '@(i)_newsPostLike2', '@(i)_likeAll')">
-                        <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
-                    </button>
-                    <div id="@(i)_likeAll" class="profil__col_like_all">46</div>
+                    @if (item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null)
+                    {
+                        <button id="@(i)_newsPostLike1" class="profil__post_l_img" onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                            <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                        </button>
+                        <button id="@(i)_newsPostLike2" class="profil__post_l_img heart_none" onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                            <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <button id="@(i)_newsPostLike1" class="profil__post_l_img heart_none" onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                            <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                        </button>
+                        <button id="@(i)_newsPostLike2" class="profil__post_l_img" onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                            <i class="fa fa-heart color_dark_dark_@(colorPoster) heart_none fa-2x" aria-hidden="true"></i>
+                        </button>
+                    }
+                    <div id="@(i)_likeAll" class="profil__col_like_all">@item.ThisPost.Likes.Count</div>
                     @*<div class="profil__col_like_ally">36</div>
-            <div class="profil__col_like_enemy">12</div>*@
+        <div class="profil__col_like_enemy">12</div>*@
                 </div>
                 <!-- Репосты -->
                 <div class="profil__post_r">
@@ -243,8 +270,8 @@
                 <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
                 <div id="@(i)modal__foto_right_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_@(color)_border_top light_@(color)">
                     <div class="profil_modal__foto_r_m_c_link_ava">
-                        <a class="profil_my_comment__ava_link" href="">
-                            <img class="profil_my_comment__link_img" src="img/ава.jpg" alt="">
+                        <a class="profil_my_comment__ava_link"  asp-controller="Profile" asp-action="Index">
+                            <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
                         </a>
                     </div>
                     <div id="@(i)profil_modal__foto_right_my_comment_one" class="profil_my_comment__container color_dark_dark_@(color)"
@@ -257,8 +284,8 @@
                     <div class="profil_modal__foto_right_my_comment_write_top mid_@(color)">
                         <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_@(color)">
                             <div class="profil_my_comment_write_ava">
-                                <a class="profil_my_comment_write_ava_link" href="">
-                                    <img class="profil_my_comment_write_ava_img" src="img/ава.jpg" alt="">
+                                <a class="profil_my_comment_write_ava_link" asp-controller="Profile" asp-action="Index">
+                                    <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
                                 </a>
                             </div>
                         </div>

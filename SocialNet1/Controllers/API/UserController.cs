@@ -68,5 +68,53 @@ namespace SocialNet1.Controllers.API
 
             return true;
         }
+
+        [HttpGet("addlikepost")]
+        public bool AddLikePost(string userName, int postId, string liker)
+        {
+            if(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(liker))
+            {
+                _logger.LogWarning("Владелец поста или лайкер не пришёл(");
+
+                return false;
+            }
+
+            var result = _user.AddPostLike(userName, postId, liker);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Человек {liker} почему-то не смог лайкнуть пост № {postId} человека {userName}(");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {liker} смог лайкнуть пост № {postId} человека {userName})");
+
+            return true;
+        }
+
+        [HttpGet("deletelikepost")]
+        public bool DeleteLikePost(string userName, int postId, string liker)
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(liker))
+            {
+                _logger.LogWarning("Владелец поста или лайкер не пришёл(");
+
+                return false;
+            }
+
+            var result = _user.DeletePostLike(userName, postId, liker);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Человек {liker} почему-то не смог убрать лайк с поста № {postId} человека {userName}(");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {liker} смог убрать лайк с поста № {postId} человека {userName})");
+
+            return true;
+        }
     }
 }

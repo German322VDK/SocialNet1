@@ -171,7 +171,7 @@ namespace SocialNet1.Controllers
 
             _logger.LogInformation($"Получилось добавить пост: {model.Text} человека {model.UserName} для человека {model.AuthorName}");
 
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Index", "Profile", new { userName = model.AuthorName });
         }
 
     }

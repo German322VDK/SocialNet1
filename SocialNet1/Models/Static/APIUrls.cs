@@ -11,7 +11,7 @@ namespace SocialNet1.Models.Static
         public const string DELETE_IMAGE = "api/image/delete";
 
         public const string DELETE_COM = "api/image/deletecom";
-
+        
         public const string ADD_IMAGE_LIKE = "api/image/addlike";
         public const string DELETE_IMAGE_LIKE = "api/image/deletelike";
 
@@ -26,7 +26,9 @@ namespace SocialNet1.Models.Static
 
         public const string SET_STATUS = "api/user/setstatus";
         public const string DELETE_POST = "api/user/deletepost";
-        
+        public const string ADD_LIKE_POST = "api/user/addlikepost";
+        public const string DELETE_LIKE_POST = "api/user/deletelikepost";
+
 
         public const string SET_AVA = "Profile/SetAva";
         public const string SET_COORD = "Profile/SetCoord";

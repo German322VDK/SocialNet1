@@ -44,5 +44,9 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddUserPost(string userName, PostDTO post);
 
         bool DeletePost(string userName, int postId);
+
+        bool AddPostLike(string userName, int postId, string liker);
+
+        bool DeletePostLike(string userName, int postId, string liker);
     }
 }

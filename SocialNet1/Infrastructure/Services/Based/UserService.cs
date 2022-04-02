@@ -470,6 +470,68 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool AddPostLike(string userName, int postId, string liker)
+        {
+            if (Get(userName) is null )
+                return false;
+
+            var userPosts = Get(userName).SocNetItems.Posts;
+
+            if (GetUserPost(userName, postId) is null)
+                return false;
+
+            if (GetUserPost(userName, postId).ThisPost.Likes.FirstOrDefault(lk => lk.Likers == liker) is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .ThisPost
+                    .Likes
+                    .Add(new Like 
+                    { 
+                        Emoji = Emoji.Like,
+                        Likers = liker
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePostLike(string userName, int postId, string liker)
+        {
+            if (Get(userName) is null || GetUserPost(userName, postId) is null
+                || GetUserPost(userName, postId).ThisPost.Likes.FirstOrDefault(lk => lk.Likers == liker) is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var like = _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .ThisPost
+                    .Likes
+                    .FirstOrDefault(lk => lk.Likers == liker);
+
+                _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)
