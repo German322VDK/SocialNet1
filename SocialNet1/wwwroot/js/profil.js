@@ -475,7 +475,7 @@ async function PostLikeMinus(one, two, num, url, user, postId, liker) {
     }
 }
 
-async function AddCommentToUserPost(textId, url, user, postId, commenter) {
+async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, commentCount, comsId, cn, co, cl) {
 
     var textInput = document.getElementById(textId);
 
@@ -493,6 +493,77 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter) {
     });
 
     var body = await response.json();
+
+    if (body == null) {
+        alert("Комментарий не создан(");
+        return;
+    }
+
+    var x = body.x;
+    var y = body.y;
+    var dateTime = body.dateTime;
+    var likes = body.likesCount;
+    var fn = body.firstName;
+    var sn = body.secondName;
+    var fP = body.formatPhotoCom;
+    var f = body.photoCom;
+    var text = body.text;
+    var color = body.color;
+    
+
+    var html = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" href="">
+                                    <img class="profil_comment_link_img" src="data:image/${fP};base64,${f}" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" href="">${fn} ${sn}</a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/${x}d${y}.jpg" alt="">
+                                </div>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">${dateTime}</div>
+                                    <div class="profil_comment__icons">
+                                        <div class="profil_comment__pencil">
+                                            <i class="fa fa-pencil color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="profil_comment__minus" onclick="DeleteCom('${i}com${j}')">
+                                            <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                         </div>
+                                        <div class="profil_comment__plus">
+                                            <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_on" onclick="LikePlus('${i}com${j}_like_on', '${i}com${j}_like_off',
+                                                    '${i}com${j}_like_num')" class="comment__heart">
+                                            <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_off" onclick="LikeMinus('${i}com${j}_like_on', '${i}com${j}_like_off',
+                                                    '${i}com${j}_like_num')" class="comment__heart_bac heart_none">
+                                            <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_num" class="comment__quantity">${likes}</div>
+                                    </div>
+                                </div>
+                                <div class="profil_comment__content">${text}</div>
+                            </div>
+                        </div>`;
+
+    var s0 = $("#" + comsId).children()[0];
+
+    var s1 = s0.children[1].children[0].children[0].children[0];
+
+    var memID = i + "mem" + j;
+
+    s1.id = memID;
+
+    $("#" + memID).append(html);
+
+    var comCount = parseInt(document.getElementById(commentCount).innerText) + 1;
+    document.getElementById(commentCount).innerText = comCount;
+
+    CloseComForm(cn, co, cl);
+
 }
 
 

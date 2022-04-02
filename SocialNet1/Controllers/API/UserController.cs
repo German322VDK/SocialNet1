@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Logging;
 using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
+using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models.API;
+using System.Linq;
 
 namespace SocialNet1.Controllers.API
 {
@@ -120,7 +122,7 @@ namespace SocialNet1.Controllers.API
 
         [HttpPost("addcompost")]
 
-        public CommentDTO AddComPost(AddCommentPostModel model)
+        public CommentModel AddComPost(AddCommentPostModel model)
         {
             if(model is null || string.IsNullOrEmpty(model.Commenter) || string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.UserName))
             {
@@ -142,7 +144,29 @@ namespace SocialNet1.Controllers.API
             _logger.LogInformation($"Получилось добавить коммент '{model.Text}' человека {model.Commenter} под постом № {model.PostId} " +
                     $"человека {model.UserName} )");
 
-            return result;
+            var commenter = _user.Get(result.CommentatorName);
+
+            var color = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
+
+            var imageArr = commenter.Images.SingleOrDefault(el => el.ImageNumber == commenter.SocNetItems.CurrentImage).Image;
+
+            var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+            var format = ImageMethods.GetFormat(imageArr);
+
+            return new CommentModel
+            {
+                X = commenter.SocNetItems.X,
+                Y = commenter.SocNetItems.Y,
+                FirstName = commenter.FirstName,
+                SecondName = commenter.SecondName,
+                LikesCount = 0,
+                Color = color,
+                DateTime = result.DateTime.ToString("g"),
+                PhotoCom = strImage,
+                FormatPhotoCom = format,
+                Text = result.Content
+            };
 
         }
     }

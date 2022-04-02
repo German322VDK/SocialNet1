@@ -175,7 +175,7 @@
                     <button class="profil__post_c_img" type="button" onclick="fun__but('@(i)comentadd')">
                         <i class="fa fa-comments-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
                     </button>
-                    <div class="profil__col_com_all">@item.Comments.Count</div>
+                    <div class="profil__col_com_all" id="@(i)coms_all_count">@item.Comments.Count</div>
                     @*<div class="profil__col_com_ally">257</div>
             <div class="profil__col_com_enemy">57</div>*@
                 </div>
@@ -193,7 +193,7 @@
 
             <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
             <div id="@(i)comentadd" style="display: none">
-                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll"
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll" 
                      data-simplebar id="@(i)coms">
                     @foreach (var com in item.Comments)
                     {
@@ -301,7 +301,9 @@
                             Отменить
                         </button>
                         <button class="profil_my_comment_write_btn_send mid_@(color)" 
-                                onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name')">
+                                onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name',
+                                '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)modal__foto_right_my_comment_two',
+                                '@(i)modal__foto_right_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
                             Отправить
                         </button>
                     </div>
