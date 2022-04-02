@@ -1672,8 +1672,15 @@ input[type="submit"] {
     display: block;
     padding: 5px 10px;
 }
-/* МОДАЛЬНОЕ ОКНО ДОБАВИТЬ ФОТО ВВЕРХУ*/
 
+.profil_post__name_link {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-left: 10px;
+    /*margin-bottom: 10px;*/
+}
+/* МОДАЛЬНОЕ ОКНО ДОБАВИТЬ ФОТО ВВЕРХУ*/
 @-webkit-keyframes fade {
     from {
         opacity: 1

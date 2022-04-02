@@ -55,7 +55,7 @@
         var formatPhoto = ImageMethods.GetFormat(formatThisPost);
 
         var isLiked = item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null;
-        int j = 1;
+        int j = 1, xp = poster.SocNetItems.X, yp = poster.SocNetItems.Y;
 
         <div class="profil__post light_@(colorPoster)" id="@(i)Post">
             <div class="profil__post_flex">
@@ -65,15 +65,22 @@
                         {
                             <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index" 
                                asp-route-userName="@item.ThisPost.CommentatorName">
-                                <img class="profil__post_ava" src="data:image/@formatPhoto;base64,@photo" alt="">
+                                <img class="profil__post_ava " src="data:image/@formatPhoto;base64,@photo" alt="">
                             </a>
                         }
                     </div>
                 </div>
                 <div>
-                    <div class="profil__post_gryp_name">
-                        @poster.FirstName @poster.SecondName
+                    @*<div class="profil__post_gryp_name">
+                        <a>@poster.FirstName @poster.SecondName</a>
                     </div>
+                    <img class="profil_comment__polit_img" src="photo/coordinates/@(xp)d@(yp).jpg" alt="">*@
+                    <div class="profil_comment__name_polit">
+                        <a class="profil_post__name_link" asp-controller="Profile" asp-action="Index"  asp-route-userName="@item.ThisPost.CommentatorName">
+                            @poster.FirstName @poster.SecondName
+                        </a>
+                        <img class="profil_comment__polit_img" src="photo/coordinates/@(xp)d@(yp).jpg" alt="">
+                     </div>
                     <div class="profil__post_gryp_time">
                         @item.ThisPost.DateTime.ToString("g")
                     </div>
@@ -206,21 +213,23 @@
                         var photoCom = ImageMethods.GetStringFromByteArr(arrComs);
                         var formatPhotoCom = ImageMethods.GetFormat(arrComs);
 
-                        int x = commenter.SocNetItems.X, y = commenter.SocNetItems.Y;
+                        int xCom = commenter.SocNetItems.X, yCom = commenter.SocNetItems.Y;
 
                         var commentorColor = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
 
                         <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom light_@(commentorColor)
                              @(j==1? $"dark_dark_{colorPoster}_border_top" : "")" id="@(i)com@(j)">
                             <div class="profil_modal__foto_r_c_l">
-                                <a class="profil_comment_ava_link" href="">
+                                <a class="profil_comment_ava_link" asp-controller="Profile" asp-action="Index"  asp-route-userName="@com.CommentatorName">
                                     <img class="profil_comment_link_img" src="data:image/@formatPhotoCom;base64,@photoCom" alt="">
                                 </a>
                             </div>
                             <div class="profil_modal__foto_r_c_r">
                                 <div class="profil_comment__name_polit">
-                                    <a class="profil_comment__name_link" href="">@commenter.FirstName @commenter.SecondName</a>
-                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(x)d@(y).jpg" alt="">
+                                    <a class="profil_comment__name_link" asp-controller="Profile" asp-action="Index"  asp-route-userName="@com.CommentatorName">
+                                        @commenter.FirstName @commenter.SecondName
+                                    </a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(xCom)d@(yCom).jpg" alt="">
                                 </div>
                                 <div class="profil_comment__all_infa">
                                     <div class="profil_comment__date">@com.DateTime.ToString("g")</div>
