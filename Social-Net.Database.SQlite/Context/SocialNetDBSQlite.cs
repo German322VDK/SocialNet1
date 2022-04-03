@@ -10,8 +10,6 @@ namespace SocialNet1.Database.SQlite.Context
 {
     public class SocialNetDBSQlite : IdentityDbContext<UserDTO, RoleDTO, string>
     {
-        public DbSet<UserImageComments> UserImageComments { get; set; }
-
         public DbSet<GroupDTO> Groups { get; set; }
 
         public DbSet<UserGroupStatus> UserGroupStatuses { get; set; }

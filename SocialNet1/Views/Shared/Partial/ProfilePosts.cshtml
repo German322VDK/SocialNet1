@@ -266,19 +266,19 @@
 
                 </div>
                 <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
-                <div id="@(i)modal__foto_right_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_@(color)_border_top light_@(color)">
+                <div id="@(i)post_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_@(color)_border_top light_@(color)">
                     <div class="profil_modal__foto_r_m_c_link_ava">
                         <a class="profil_my_comment__ava_link"  asp-controller="Profile" asp-action="Index">
                             <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
                         </a>
                     </div>
                     <div id="@(i)profil_modal__foto_right_my_comment_one" class="profil_my_comment__container color_dark_dark_@(color)"
-                         onclick="OpenComForm('@(i)modal__foto_right_my_comment_two', '@(i)modal__foto_right_my_comment_hyi',
+                         onclick="OpenComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
                   'profil_modal__foto_right_my_comment_write_active')">
                         Оставить комментарий
                     </div>
                 </div>
-                <div id="@(i)modal__foto_right_my_comment_two" class="profil_modal__foto_right_my_comment_write dark_dark_@(color)_border_top light_@(color)">
+                <div id="@(i)post_my_comment_two" class="profil_modal__foto_right_my_comment_write dark_dark_@(color)_border_top light_@(color)">
                     <div class="profil_modal__foto_right_my_comment_write_top mid_@(color)">
                         <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_@(color)">
                             <div class="profil_my_comment_write_ava">
@@ -305,14 +305,14 @@
                     </div>
                     <div class="profil_modal__foto_right_my_comment_write_bottom background-color_dark_dark_@(color)">
                         <button id="my_comment_write_btn_cancel" class="profil_my_comment_write_btn_cancel mid_@(color)"
-                                onclick="CloseComForm('@(i)modal__foto_right_my_comment_two', '@(i)modal__foto_right_my_comment_hyi',
+                                onclick="CloseComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
                     'profil_modal__foto_right_my_comment_write_active')">
                             Отменить
                         </button>
                         <button class="profil_my_comment_write_btn_send mid_@(color)" 
                                 onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name',
-                                '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)modal__foto_right_my_comment_two',
-                                '@(i)modal__foto_right_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
+                                '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)post_my_comment_two',
+                                '@(i)post_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
                             Отправить
                         </button>
                     </div>

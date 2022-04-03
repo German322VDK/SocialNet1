@@ -1,4 +1,5 @@
-﻿using SocialNet1.Domain.Base;
+﻿using Social_Net.Domain.PostCom;
+using SocialNet1.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,6 +45,6 @@ namespace SocialNet1.Domain.PostCom
         /// Лайки (Имя лайкнувшего)
         /// </summary>
         [Required]
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<CommentLike> Likes { get; set; } = new List<CommentLike>();
     }
 }

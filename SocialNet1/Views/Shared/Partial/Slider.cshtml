@@ -188,10 +188,10 @@
                     </div>
 
                     @{
-                        var comsID = $"{i}coms";
+                        var comsID = $"{i}image_coms";
                     }
 
-                    <div class="modal__foto_right_comment_container background-color_dark_dark_@(color)" data-simplebar id="@(i)coms">
+                    <div class="modal__foto_right_comment_container background-color_dark_dark_@(color)" data-simplebar id="@(comsID)">
 
                         @foreach (var com in item.Comments)
                         {

@@ -1,4 +1,5 @@
 ﻿using Social_Net.Domain.Identity;
+using Social_Net.Domain.PostCom;
 using SocialNet1.Database.SQlite.Context;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Friends;
@@ -494,7 +495,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .FirstOrDefault(ps => ps.Id == postId)
                     .ThisPost
                     .Likes
-                    .Add(new Like 
+                    .Add(new CommentLike 
                     { 
                         Emoji = Emoji.Like,
                         Likers = liker
