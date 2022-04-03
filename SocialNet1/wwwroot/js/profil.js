@@ -48,15 +48,17 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
                                             <div class="comment__plus">
                                                 <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
-                                            <div id="${i}com${j}_like_on" onclick="LikePlus('${i}com${j}_like_on', '${i}com${j}_like_off', '${i}com${j}_like_num')"
+                                            <div id="${i}com${j}_im_like_on" onclick="LikePlus('${i}com${j}_im_like_on', '${i}com${j}_im_like_off',
+                                                    '${i}com${j}_im_like_num')"
                                                  class="comment__heart">
                                                 <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
-                                            <div id="${i}com${j}_like_off" onclick="LikeMinus('${i}com${j}_like_on', '${i}com${j}_like_off', '${i}com${j}_like_num')"
+                                            <div id="${i}com${j}_im_like_off" onclick="LikeMinus('${i}com${j}_im_like_on', 
+                                                    '${i}com${j}_im_like_off', '${i}com${j}_im_like_num')"
                                                  class="comment__heart_bac heart_none">
                                                 <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
                                             </div>
-                                            <div id="${i}com${j}_like_num" class="comment__quantity">${lc}</div>
+                                            <div id="${i}com${j}_im_like_num" class="comment__quantity">${lc}</div>
                                         </div>
                                     </div>
                                     <div class="comment__content">${com}</div>
