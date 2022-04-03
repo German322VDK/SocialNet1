@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Domain.Identity;
 using SocialNet1.Infrastructure.Interfaces.Based;
@@ -7,6 +8,7 @@ using System.Linq;
 
 namespace SocialNet1.Controllers
 {
+    [Authorize]
     public class FriendsController : Controller
     {
         private readonly IUser _user;

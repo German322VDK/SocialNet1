@@ -4,7 +4,10 @@
 
     var user = userService.Get(name);
 
-    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+    string color = "gray";
+
+    if(user is not null)
+        color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 }
 
 <div class="leftsiterbar">

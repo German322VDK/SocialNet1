@@ -281,6 +281,9 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             using (_db.Database.BeginTransaction())
             {
+                if(com.UserCommentLikes is not null)
+                    _db.RemoveRange(com.UserCommentLikes);
+
                 _db.Remove(com);
 
                 _db.SaveChanges();
