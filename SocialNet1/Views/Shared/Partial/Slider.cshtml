@@ -189,6 +189,7 @@
 
                     @{
                         var comsID = $"{i}image_coms";
+                        int cmId = 0;
                     }
 
                     <div class="modal__foto_right_comment_container background-color_dark_dark_@(color)" data-simplebar id="@(comsID)">
@@ -242,6 +243,7 @@
                                 </div>
                             </div>
 
+                            cmId = com.CommId;
                             j++;
                         }
                     </div>
@@ -288,7 +290,7 @@
                                 Отменить
                             </button>
                             <button class="my_comment_write_btn_send mid_@(color)" onclick="SendProfileImageCom('@(i)com_input', '@name', '@item.Auhor.AuthorUserName',
-                                '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)', '@color')">
+                                '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)', '@color', '@cmId')">
                                 Отправить
                             </button>
                         </div>

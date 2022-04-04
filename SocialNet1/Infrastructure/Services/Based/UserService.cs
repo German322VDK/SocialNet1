@@ -254,6 +254,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .SingleOrDefault(im => im.Id == imageId)
                     .Coments.Add(comment);
 
+
                 _db.SaveChanges();
 
                 _db.Database.CommitTransaction();

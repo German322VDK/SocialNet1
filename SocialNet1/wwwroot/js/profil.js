@@ -1,5 +1,5 @@
 ﻿//на странице профиля отправляем комент на сервер, получаем ответ и рисуем коммент (js пидарас)
-async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount, color) {
+async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount, color, cmId) {
 
     var text = document.getElementById(divTextId).innerText;
 
@@ -31,7 +31,11 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     //var lc = body.likeCount;
     var lc = 0;
 
-    var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${i}com${j})">
+    var imComId = `${i}image_com${j})`
+    /*var deleteCOm = "/api/image/deletecom";*/
+    var deleteCOm = "";
+
+    var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${imComId}">
                                 <div class="modal__foto_r_c_l">
                                     <a class="comment_ava_link" href="">
                                         <img class="comment_link_img" src="data:image/${autF};base64,${autIm}" alt="">
@@ -45,6 +49,10 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
                                     <div class="comment__all_infa">
                                         <div class="comment__date">${dt}</div>
                                         <div class="comment__icons">
+                                            <div class="comment__minus" onclick="DeleteCom('${imComId}', '${deleteCOm}',
+                                                         '${recipient}', '${imageId}', '${cmId}')">
+                                                    <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                            </div>
                                             <div class="comment__plus">
                                                 <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
