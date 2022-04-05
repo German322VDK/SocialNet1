@@ -216,7 +216,7 @@
                                         <div class="comment__icons">
                                             @if (com.AuthorUserName == name || item.Auhor.AuthorUserName == name)
                                             {
-                                                <div class="comment__minus" onclick="DeleteCom('@(i)image_com@(j)', '@deletecom',
+                                                <div class="comment__minus" onclick="DeletePhotoCom('@(i)image_com@(j)', '@deletecom',
                                                          '@item.Auhor.AuthorUserName', '@item.ImageId', '@com.CommId')">
                                                     <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                                 </div>

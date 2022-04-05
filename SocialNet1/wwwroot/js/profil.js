@@ -1,4 +1,7 @@
-﻿//на странице профиля отправляем комент на сервер, получаем ответ и рисуем коммент (js пидарас)
+﻿//
+// Slider
+//
+//на странице профиля отправляем комент на сервер, получаем ответ и рисуем коммент (js пидарас)
 async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, comsId, i, j, comCount, color, cmId) {
 
     var text = document.getElementById(divTextId).innerText;
@@ -92,7 +95,7 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 }
 
 //суицид
-async function DeleteCom(c, url, user, imageId, comId) {
+async function DeletePhotoCom(c, url, user, imageId, comId) {
 
     var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
 
@@ -287,6 +290,8 @@ async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
     }
 }
 
+
+
 async function SetAva(url, user, color) {
 
     var classActive = `dark_dark_${color}_border`;
@@ -427,6 +432,10 @@ function ChoseCoord(color, imageId) {
     document.getElementById(imageId).classList.add(choscord);
 }
 
+
+//
+// Post
+//
 async function DeletePost(url, postItem, postId, user) {
 
     var fullurl = url + "?userName=" + user + "&postId=" + postId;
@@ -577,3 +586,59 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
 }
 
 
+async function PostComLikePlus(one, two, num, url, user1, user2, postid, comid) {
+
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName1: user1,
+            userName2: user2,
+            postId: parseInt(postid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(two).classList.remove('heart_none');
+        document.getElementById(one).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number++;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не поставился(")
+    }
+}
+
+async function PostComLikeMinus(one, two, num, url, user1, user2, postid, comid) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName1: user1,
+            userName2: user2,
+            postId: parseInt(postid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(one).classList.remove('heart_none');
+        document.getElementById(two).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number--;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не убрался(")
+    }
+}

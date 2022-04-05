@@ -572,6 +572,92 @@ namespace SocialNet1.Infrastructure.Services.Based
             return comment;
         }
 
+        public bool AddPostComLike(string userName, int postId, int comId, string liker)
+        {
+            if (Get(userName) is null || Get(liker) is null)
+                return false;
+
+            var userPosts = Get(userName).SocNetItems.Posts;
+
+            if (GetUserPost(userName, postId) is null)
+                return false;
+
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+                return false;
+
+            var like = _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .FirstOrDefault(cm => cm.Id == comId)
+                    .Likes
+                    .FirstOrDefault(lk => lk.Likers == liker);
+
+            if (like is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .FirstOrDefault(cm => cm.Id == comId)
+                    .Likes
+                    .Add(new CommentLike
+                    {
+                        Emoji = Emoji.Like,
+                        Likers = liker
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePostComLike(string userName, int postId, int comId, string liker)
+        {
+            if (Get(userName) is null || Get(liker) is null)
+                return false;
+
+            var userPosts = Get(userName).SocNetItems.Posts;
+
+            if (GetUserPost(userName, postId) is null)
+                return false;
+
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var like = _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .FirstOrDefault(cm => cm.Id == comId)
+                    .Likes
+                    .FirstOrDefault(lk => lk.Likers == liker);
+
+                if (like is null)
+                    return false;
+
+                _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)

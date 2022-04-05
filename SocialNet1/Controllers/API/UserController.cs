@@ -120,8 +120,8 @@ namespace SocialNet1.Controllers.API
             return true;
         }
 
-        [HttpPost("addcompost")]
 
+        [HttpPost("addcompost")]
         public CommentModel AddComPost(AddCommentPostModel model)
         {
             if(model is null || string.IsNullOrEmpty(model.Commenter) || string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.UserName))
@@ -168,6 +168,58 @@ namespace SocialNet1.Controllers.API
                 Text = result.Content
             };
 
+        }
+
+        [HttpPost("addlikecompost")]
+        public bool AddLikeComPost(LikeComPostModel model)
+        {
+            if(model is null || string.IsNullOrEmpty(model.UserName1) || string.IsNullOrEmpty(model.UserName2))
+            {
+                _logger.LogWarning("Не получается поставить лайк на коммент поста, данные повреждены (");
+
+                return false;
+            }
+
+            var result = _user.AddPostComLike(model.UserName1, model.PostId, model.ComId, model.UserName2);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Почему-то не получается человеку {model.UserName2} поставить лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници человека {model.UserName1} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {model.UserName2} смог поставить лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници человека {model.UserName1} )");
+
+            return true;
+        }
+
+        [HttpPost("deletelikecompost")]
+        public bool DeleteLikeComPost(LikeComPostModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.UserName1) || string.IsNullOrEmpty(model.UserName2))
+            {
+                _logger.LogWarning("Не получается убрать лайк с коммента поста, данные повреждены (");
+
+                return false;
+            }
+
+            var result = _user.DeletePostComLike(model.UserName1, model.PostId, model.ComId, model.UserName2);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Почему-то не получается человеку {model.UserName2} убрать лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници человека {model.UserName1} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {model.UserName2} смог убрать лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници человека {model.UserName1} )");
+
+            return true;
         }
     }
 }
