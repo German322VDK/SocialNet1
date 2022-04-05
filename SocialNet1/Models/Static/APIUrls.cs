@@ -31,6 +31,7 @@ namespace SocialNet1.Models.Static
         public const string ADD_LIKE_COM_POST = "api/user/addlikecompost";
         public const string DELETE_LIKE_COM_POST = "api/user/deletelikecompost";
         public const string ADD_COM_POST = "api/user/addcompost";
+        public const string DELETE_COM_POST = "api/user/deletecompost";
 
         public const string SET_AVA = "Profile/SetAva";
         public const string SET_COORD = "Profile/SetCoord";

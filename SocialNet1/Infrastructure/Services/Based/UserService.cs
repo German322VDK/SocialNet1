@@ -658,6 +658,42 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         }
 
+        public bool DeletePostCom(string userName, int postId, int comId)
+        {
+            if (Get(userName) is null)
+                return false;
+
+            var userPosts = Get(userName).SocNetItems.Posts;
+
+            if (GetUserPost(userName, postId) is null)
+                return false;
+
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var comment = _db.Users.FirstOrDefault(us => us.UserName == userName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .FirstOrDefault(cm => cm.Id == comId);
+
+                _db.RemoveRange(comment.Likes);
+
+                _db.RemoveRange(comment.Images);
+
+                _db.Remove(comment);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
 
         public bool SetStatus(string text, string userName)

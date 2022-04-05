@@ -642,3 +642,24 @@ async function PostComLikeMinus(one, two, num, url, user1, user2, postid, comid)
         alert("Лайк под комментарий не убрался(")
     }
 }
+
+async function DeleteComPost(c, url, user, postId, comId, comCount) {
+    var fullurl = url + "?user=" + user + "&postId=" + postId + "&comId=" + comId;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        var child = document.getElementById(c);
+        child.remove();
+
+        var number = parseInt(document.getElementById(comCount).innerHTML);
+        number--;
+        document.getElementById(comCount).innerHTML = number;
+
+    }
+    else {
+        alert("Не получилось удалить комментарий(");
+    }
+}

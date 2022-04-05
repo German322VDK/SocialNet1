@@ -120,7 +120,6 @@ namespace SocialNet1.Controllers.API
             return true;
         }
 
-
         [HttpPost("addcompost")]
         public CommentModel AddComPost(AddCommentPostModel model)
         {
@@ -168,6 +167,30 @@ namespace SocialNet1.Controllers.API
                 Text = result.Content
             };
 
+        }
+
+        [HttpGet("deletecompost")]
+        public bool DeleteComPost(string user, int postId, int comId)
+        {
+            if (string.IsNullOrEmpty(user))
+            {
+                _logger.LogWarning("Не понятно кому удалять коммент поста (");
+
+                return false;
+            }
+
+            var result = _user.DeletePostCom(user, postId, comId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить коммент № {comId} поста № {postId} человека {user} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Получилось удалить коммент № {comId} поста № {postId} человека {user} )");
+
+            return true;
         }
 
         [HttpPost("addlikecompost")]

@@ -29,6 +29,8 @@
     var comLikePlusURL = $"/{APIUrls.ADD_LIKE_COM_POST}";
 
     var comLikeMinusURL = $"/{APIUrls.DELETE_LIKE_COM_POST}";
+
+    var deleteComPost = $"/{APIUrls.DELETE_COM_POST}";
 }
 
 <div class="profil_left__news_dif light_@(color)">
@@ -245,7 +247,8 @@
                                             <div class="profil_comment__pencil">
                                                 <i class="fa fa-pencil color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
                                             </div>
-                                            <div class="profil_comment__minus" onclick="DeleteCom('@(i)com@(j)')">
+                                            <div class="profil_comment__minus" onclick="DeleteComPost('@(i)com@(j)', '@deleteComPost',
+                                                   '@Model.AuthorName', '@item.Id', '@com.Id', '@(i)coms_all_count')">
                                                 <i class="fa fa-trash-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
                                             </div>
                                         }

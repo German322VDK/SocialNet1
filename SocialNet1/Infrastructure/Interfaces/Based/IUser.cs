@@ -54,5 +54,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddPostComLike(string userName, int postId, int comId, string liker);
 
         bool DeletePostComLike(string userName, int postId, int comId, string liker);
+
+        bool DeletePostCom(string userName, int postId, int comId);
     }
 }
