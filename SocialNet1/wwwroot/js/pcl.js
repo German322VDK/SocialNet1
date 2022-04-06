@@ -108,7 +108,11 @@ function repost(element){
 
 }
 
-
+function TabMaster(i1, i2, i3, className) {
+    document.getElementById(i3).classList.remove(className)
+    document.getElementById(i2).classList.remove(className)
+    document.getElementById(i1).classList.add(className)
+}
 
 //async function SendCom(fullurl) {
 //    var promise = await fetch(fullurl);
