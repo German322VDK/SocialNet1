@@ -13,13 +13,16 @@
     <div class="friends light_@(color)">
         <div class="friends__nav">
             <ul class="friends__list">
-                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="one">
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one" id="but1"
+                    onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
                     Друзья:@Model.Friends.Count
                 </li>
-                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="two">
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="two" id="but2"
+                    onclick="TabMaster3('but2', 'but2', 'but1', 'dark_@(color)_border_bottom')">
                     Подписчики:@Model.Subscribers.Count
                 </li>
-                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="three">
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="three" id="but3"
+                    onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
                     Подписки:@Model.Subscriptions.Count
                 </li>
                 <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="four">

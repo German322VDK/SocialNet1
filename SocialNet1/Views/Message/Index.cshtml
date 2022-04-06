@@ -19,15 +19,15 @@
         <div class="chats__nav dark_@(color)_border_bottom">
             <div class="chats__list">
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one" id="but1"
-                    onclick="TabMaster('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
+                    onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
                     Открытые диалоги:@*@Model.Friends.Count*@
                 </div>
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="two" id="but2"
-                    onclick="TabMaster('but2', 'but1', 'but3', 'dark_@(color)_border_bottom')">
+                    onclick="TabMaster3('but2', 'but1', 'but3', 'dark_@(color)_border_bottom')">
                     Создать диалог с другом@*@Model.Subscribers.Count*@
                 </div>
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="three" id="but3"
-                    onclick="TabMaster('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
+                    onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
                     Подписки:@*@Model.Subscriptions.Count*@
                 </div>
                 @*<div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="four">

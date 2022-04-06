@@ -108,7 +108,7 @@ function repost(element){
 
 }
 
-function TabMaster(i1, i2, i3, className) {
+function TabMaster3(i1, i2, i3, className) {
     document.getElementById(i3).classList.remove(className)
     document.getElementById(i2).classList.remove(className)
     document.getElementById(i1).classList.add(className)
