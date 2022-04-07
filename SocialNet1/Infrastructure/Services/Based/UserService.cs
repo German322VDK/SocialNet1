@@ -17,11 +17,13 @@ namespace SocialNet1.Infrastructure.Services.Based
     {
         private readonly SocialNetDBSQlite _db;
 
-        #region BaseCRUD
+        
         public UserService(SocialNetDBSQlite db)
         {
             _db = db;
         }
+
+        #region BaseCRUD
 
         public UserDTO Get(string userName) =>
             GetAll().SingleOrDefault(el => el.UserName == userName);
