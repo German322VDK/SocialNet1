@@ -1,4 +1,4 @@
-﻿@model ChatViewModel
+﻿@model ChatsViewModel
 @inject IUser userService;
 @{
     var name = User.Identity!.Name;
@@ -67,13 +67,13 @@
                 var chatCoord = $"photo/coordinates/{chatUserX}d{chatUserY}.jpg";
 
                 <div class="chats__post dark_@(chatUserColor)_border_bottom mid_@(chatUserColor)_hover">
-                    <a class="chats__post_link" href="">
+                    <a class="chats__post_link" asp-controller="Chats" asp-action="Chat" asp-route-userName="@chatUserName">
                         <div class="chats__post_ava">
                             <img class="chats__post_ava_img" src="data:image/@chatFormat;base64,@chatStrImage" alt="Фото">
                         </div>
                         <div class="chats__post_block">
                             <div class="chats__post_block_name_time">
-                                <span class="chats__post_name">@chatUserName</span>
+                                <span class="chats__post_name">@chatUser.FirstName @chatUser.SecondName</span>
                                 <span class="chats__post_time">@chat.LastTimeMess.ToString("g")</span>
                             </div>
                             <div class="chats__post_ava2_text">

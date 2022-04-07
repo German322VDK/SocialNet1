@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace SocialNet1.ViewModels
 {
-    public class ChatViewModel
+    public class ChatsViewModel
     {
-        public ChatDTO Chat { get; set; }
-
         public string UserName { get; set; }
 
-        public string AutorName { get; set; }
-        
+        public ICollection<ChatDTO> Chats { get; set; }
     }
 }

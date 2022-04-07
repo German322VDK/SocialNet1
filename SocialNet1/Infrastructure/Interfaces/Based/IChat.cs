@@ -10,9 +10,12 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
     {
         ICollection<ChatDTO> Get(string userName);
 
+        ICollection<ChatDTO> Get();
+
         ChatDTO Get(int chatId);
 
-        ICollection<ChatDTO> Get();
+
+        ChatDTO Get(string userName1, string userName2);
 
         bool CreateChat(string userName1, string userName2);
     }

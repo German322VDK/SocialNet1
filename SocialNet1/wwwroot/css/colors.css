@@ -502,6 +502,12 @@
     border-right: none;
 }
 
+.mid_gray_border_triangle:after {
+    border: 10px solid transparent;
+    border-top: 10px solid rgba(235, 235, 235, 1);
+    border-left: none;
+}
+
 .mid_green_border_triangle_partner:after {
     border: 10px solid transparent;
     border-top: 10px solid rgb(232, 255, 232);
@@ -523,6 +529,12 @@
 .mid_yellow_border_triangle_partner:after {
     border: 10px solid transparent;
     border-top: 10px solid rgb(252, 255, 219);
+    border-left: none;
+}
+
+.mid_gray_border_triangle_partner:after {
+    border: 10px solid transparent;
+    border-top: 10px solid rgba(235, 235, 235, 1);
     border-left: none;
 }
 

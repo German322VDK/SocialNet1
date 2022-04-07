@@ -1,0 +1,93 @@
+﻿@model ChatViewModel
+@inject IUser userService;
+@{
+    var name = Model.UserName;
+
+    var autor = userService.Get(name);
+
+    var user = userService.Get(Model.UserName);
+
+    string colorAut = UserMethods.GetColor(autor.SocNetItems.X, autor.SocNetItems.Y);
+
+    string colorUs = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+
+    var userImageArr = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage).Image;
+
+    var userStrImage = ImageMethods.GetStringFromByteArr(userImageArr);
+
+    var userFormat = ImageMethods.GetFormat(userImageArr);
+
+
+    var authorImageArr = autor.Images.SingleOrDefault(el => el.ImageNumber == autor.SocNetItems.CurrentImage).Image;
+
+    var authorStrImage = ImageMethods.GetStringFromByteArr(authorImageArr);
+
+    var authorFormat = ImageMethods.GetFormat(authorImageArr);
+}
+
+<div class="messages light_@(colorAut)">
+    <div class="messages__background_top mid_@(colorAut)"></div>
+
+    <div class="messages__top dark_@(colorAut)_border_bottom light_@(colorAut)">
+        <div class="messages__top_back">
+            <a asp-controller="Chats" asp-action="Index">
+                Назад
+            </a>
+        </div>
+        <div>
+            <div class="messages__top_talker">
+                <div>
+                    <a asp-controller="Profile" asp-action="Index"  asp-route-userName="@Model.UserName">
+                        <img class="messages__top_img" src="data:image/@userFormat;base64,@userStrImage" alt="Фото">
+                    </a>
+                </div>
+                <div class="messages__top_name">
+                    <a asp-controller="Profile" asp-action="Index"  asp-route-userName="@Model.UserName">
+                        @user.FirstName @user.SecondName
+                    </a>
+                </div>
+            </div>
+            <div class="messages__top_time">@Model.Chat.LastTimeMess.ToString("g")</div>
+        </div>
+        <div class="messages__top_options">...</div>
+    </div>
+
+
+    <!-- chat-messages -->
+    <div class="messages__block">
+        <div class="messages__empty light_@(colorAut)"></div>
+        <!-- message-box-holder -->
+
+        @foreach (var message in Model.Chat.Messages)
+        {
+            <div class="message__box_holder @(message.SenderName == Model.AutorName ? "" : "message__partner")">
+                <div class="message__box mid_@(colorUs) mid_@(colorUs)_border @(message.SenderName == Model.AutorName ? "" : "message__partner_box")
+                     mid_@(colorUs)_border_triangle@(message.SenderName == Model.AutorName ? "" : "_partner")">
+                    @message.Content
+                    <div class="messages__block_m_l_t">@message.TimeMess.ToString("g")</div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <div class="messages__empty light_@(colorAut)"></div>
+
+    <div class="messages__down dark_@(colorAut)_border_top light_@(colorAut)">
+        <button class="messages__down_options">
+            <i class="fas fa-paperclip color_dark_dark_@(colorAut)"></i>
+        </button>
+        <div class="messages__down_input">
+            <textarea class="messages__down_textarea" name="" id="" cols="30" rows="1"
+                      placeholder="напиши что нибудь, если ты против Вики"></textarea>
+        </div>
+        <button class="messages__down_sent">
+            <i class="fas fa-paper-plane color_dark_dark_@(colorAut)"></i>
+        </button>
+    </div>
+    <div class="messages__down_down mid_@(colorAut)"></div>
+</div>
+
+<partial name="Partial/MessagesRightSiteBar" />
+

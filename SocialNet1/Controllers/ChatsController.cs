@@ -26,10 +26,26 @@ namespace SocialNet1.Controllers
 
             var chats = _chat.Get(userName);
 
-            return View(new ChatViewModel 
+            _logger.LogInformation($"Тип {userName} смотрит свои переписки");
+
+            return View(new ChatsViewModel 
             { 
                 UserName = userName,
                 Chats = chats
+            });
+        }
+
+        public IActionResult Chat(string userName)
+        {
+            var autorName = User.Identity.Name;
+
+            var chat = _chat.Get(autorName, userName);
+
+            return View(new ChatViewModel 
+            { 
+                Chat = chat,
+                UserName = userName,
+                AutorName = autorName
             });
         }
     }
