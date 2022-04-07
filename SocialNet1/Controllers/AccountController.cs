@@ -21,14 +21,16 @@ namespace SocialNet1.Controllers
         private readonly SignInManager<UserDTO> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUser _user;
+        private readonly IChat _chat;
 
         public AccountController(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager,
-            ILogger<AccountController> logger, IUser user)
+            ILogger<AccountController> logger, IUser user, IChat chat)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _user = user;
+            _chat = chat;
         }
 
         #region Register
@@ -115,6 +117,17 @@ namespace SocialNet1.Controllers
                     var arr = ImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
 
                     _user.AddPhoto(arr, user.UserName);
+
+                    var result = _chat.CreateChat(Model.UserName, Model.UserName);
+
+                    if (!result)
+                    {
+                        _logger.LogWarning($"Не удалось типу {Model.UserName} содать чат с самим собой");
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Удалось типу {Model.UserName} содать чат с самим собой");
+                    }
 
                     return RedirectToAction("Index", "News");
                 }

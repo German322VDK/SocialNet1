@@ -7,12 +7,12 @@ using SocialNet1.ViewModels;
 namespace SocialNet1.Controllers
 {
     [Authorize]
-    public class MessageController : Controller
+    public class ChatsController : Controller
     {
         private readonly IChat _chat;
-        private readonly ILogger<MessageController> _logger;
+        private readonly ILogger<ChatsController> _logger;
 
-        public MessageController(IChat chat, ILogger<MessageController> logger)
+        public ChatsController(IChat chat, ILogger<ChatsController> logger)
         {
             _chat = chat;
 

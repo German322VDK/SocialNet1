@@ -23,7 +23,32 @@ namespace SocialNet1.Infrastructure.Services.Based
         public ChatDTO Get(int chatId) =>
              Get().FirstOrDefault(ch => ch.Id == chatId);
 
+        public ChatDTO Get(string userName1, string userName2) =>
+             Get()
+            .FirstOrDefault(ch => ch.UserName1 == userName1 && ch.UserName2 == userName2 || ch.UserName2 == userName1 && ch.UserName1 == userName2);
+
         public ICollection<ChatDTO> Get() =>
             _db.Chats.ToList();
+
+        public bool CreateChat(string userName1, string userName2)
+        {
+            if (Get(userName1, userName2) is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Chats.Add(new ChatDTO 
+                { 
+                    UserName1 = userName1,
+                    UserName2 = userName2,
+                });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
     }
 }
