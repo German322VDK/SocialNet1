@@ -26,6 +26,10 @@ namespace Social_Net1.Infrastructure.Middleware
             {
                 HandleException(error, Context);
                 //throw;
+
+                //await Context.Response.WriteAsync("Token is invalid");
+
+                Context.Response.Redirect("/Home/Error");
             }
         }
 

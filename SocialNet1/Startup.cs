@@ -61,8 +61,6 @@ namespace SocialNet1
 
             services.AddTransient<ILogInfo, LogInfoService>();
 
-            services.AddSignalR();
-
             services.Configure<IdentityOptions>(opt =>
             {
 #if DEBUG
@@ -96,6 +94,8 @@ namespace SocialNet1
             });
 
             services.AddControllersWithViews();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,16 +112,17 @@ namespace SocialNet1
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseStaticFiles();
-
-            app.UseOnlineUsers();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseOnlineUsers();
 
             app.UseEndpoints(endpoints =>
             {
@@ -137,6 +138,7 @@ namespace SocialNet1
 
                 endpoints.MapHub<MessageHub>("/chat");
             });
+
         }
     }
 }
