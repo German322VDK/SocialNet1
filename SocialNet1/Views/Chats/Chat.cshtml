@@ -70,6 +70,8 @@
             </div>
         }
 
+        <div id="chatroom"></div>
+
     </div>
 
     <div class="messages__empty light_@(colorAut)"></div>
@@ -79,15 +81,21 @@
             <i class="fas fa-paperclip color_dark_dark_@(colorAut)"></i>
         </button>
         <div class="messages__down_input">
-            <textarea class="messages__down_textarea" name="" id="" cols="30" rows="1"
+            <textarea class="messages__down_textarea" name="" id="message" cols="30" rows="1"
                       placeholder="напиши что нибудь, если ты против Вики"></textarea>
         </div>
-        <button class="messages__down_sent">
+        <button class="messages__down_sent" id="sendBtn">
             <i class="fas fa-paper-plane color_dark_dark_@(colorAut)"></i>
         </button>
     </div>
     <div class="messages__down_down mid_@(colorAut)"></div>
 </div>
+
+<script>
+    
+    StartChat('@Model.Chat.Id', '@Model.AutorName', '@Model.UserName', '@colorAut', '@colorUs');
+
+</script>
 
 <partial name="Partial/MessagesRightSiteBar" />
 

@@ -19,5 +19,5 @@
             document.querySelector(`[data-target="${path}"]`).classList.add('chats__info_container_active')
         })
     })
-})
 
+})
