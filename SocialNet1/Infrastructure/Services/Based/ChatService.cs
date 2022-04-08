@@ -11,11 +11,15 @@ namespace SocialNet1.Infrastructure.Services.Based
     public class ChatService : IChat
     {
         private readonly SocialNetDBSQlite _db;
+        private readonly IUser _user;
 
-        public ChatService(SocialNetDBSQlite db)
+        public ChatService(SocialNetDBSQlite db, IUser user)
         {
             _db = db;
+            _user = user;
         }
+
+        #region Chat
 
         public ICollection<ChatDTO> Get(string userName) =>
              Get().Where(ch => ch.UserName1 == userName || ch.UserName2 == userName).ToList();
@@ -50,5 +54,38 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return true;
         }
+
+        #endregion
+
+        #region Message
+
+        public bool AddMessage(string sender, string recipient, int chatId, string text)
+        {
+            if (Get(chatId) is null)
+                return false;
+
+            if(_user.Get(sender) is null || _user.Get(recipient) is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Chats
+                    .FirstOrDefault(ch => ch.Id == chatId)
+                    .Messages
+                    .Add(new MessageDTO 
+                    { 
+                        SenderName = sender,
+                        Content = text,
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        #endregion
     }
 }

@@ -37,5 +37,7 @@ namespace SocialNet1.Models.Static
         public const string SET_COORD = "Profile/SetCoord";
 
 
+
+        public const string ADD_MESSAGE = "api/message/add";
     }
 }

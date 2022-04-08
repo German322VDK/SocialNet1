@@ -1,8 +1,5 @@
 ﻿using SocialNet1.Domain.Message;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Infrastructure.Interfaces.Based
 {
@@ -18,5 +15,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         ChatDTO Get(string userName1, string userName2);
 
         bool CreateChat(string userName1, string userName2);
+
+        bool AddMessage(string sender, string recipient, int chatId, string text);
     }
 }

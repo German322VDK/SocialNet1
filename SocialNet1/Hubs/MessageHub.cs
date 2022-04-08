@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Models.Hub;
+using SocialNet1.Models.Static;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
@@ -21,22 +20,33 @@ namespace SocialNet1.Hubs
 
         public async Task Send(SimpMessageModel message)
         {
+            if(message is null || string.IsNullOrEmpty(message.Content) || string.IsNullOrEmpty(message.SenderName)
+                || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Сообщение не пришло (");
+
+                return;
+            }
+
             message.Date = DateTime.Now.ToString("t");
 
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
             CancellationToken Cancel = default;
 
-            //var response = client.PostAsJsonAsync<SimpMessageModel>(API.AddMessAPI, message, Cancel).Result.Content.ReadAsStringAsync().Result;
+            //костыль
+            var url = "http://localhost:5000/";
 
-            //var responseresult = Convert.ToBoolean(response);
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.ADD_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
 
-            var responseresult = true;
+            var responseresult = Convert.ToBoolean(response);
+
+            //var responseresult = true;
 
             if (responseresult)
-                _logger.LogInformation($"Сообщение ({message.Content}) людей ({message.SenderName}) и " +
+                _logger.LogInformation($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
                     $"({message.RecipientName}) успешно сохранено в БД:)");
             else
-                _logger.LogWarning($"Сообщение ({message.Content}) людей ({message.SenderName}) и " +
+                _logger.LogWarning($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
                     $"({message.RecipientName}) обломаломь с БД:(");
 
             await Clients.Users(message.SenderName, message.RecipientName).SendAsync("Receive", message);
