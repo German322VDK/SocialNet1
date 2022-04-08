@@ -1,7 +1,7 @@
 ﻿@model ChatViewModel
 @inject IUser userService;
 @{
-    var name = Model.UserName;
+    var name = Model.AutorName;
 
     var autor = userService.Get(name);
 
@@ -48,7 +48,7 @@
                     </a>
                 </div>
             </div>
-            <div class="messages__top_time">@Model.Chat.LastTimeMess.ToString("g")</div>
+            <div class="messages__top_time" id="lastTime">@Model.Chat.LastTimeMess.ToString("g")</div>
         </div>
         <div class="messages__top_options">...</div>
     </div>
@@ -61,9 +61,11 @@
 
         @foreach (var message in Model.Chat.Messages)
         {
-            <div class="message__box_holder @(message.SenderName == Model.AutorName ? "" : "message__partner")">
-                <div class="message__box mid_@(colorUs) mid_@(colorUs)_border @(message.SenderName == Model.AutorName ? "" : "message__partner_box")
-                     mid_@(colorUs)_border_triangle@(message.SenderName == Model.AutorName ? "" : "_partner")">
+            bool isAut = message.SenderName == Model.AutorName;
+
+            <div class="message__box_holder @( isAut ? "" : "message__partner")">
+                <div class="message__box mid_@(isAut ? colorAut : colorUs) mid_@(isAut ? colorAut : colorUs)_border 
+                     @(isAut ? "" : "message__partner_box") mid_@(isAut ? colorAut : colorUs)_border_triangle@(isAut ? "" : "_partner")">
                     @message.Content
                     <div class="messages__block_m_l_t">@message.TimeMess.ToString("g")</div>
                 </div>

@@ -71,6 +71,10 @@ namespace SocialNet1.Infrastructure.Services.Based
             {
                 _db.Chats
                     .FirstOrDefault(ch => ch.Id == chatId)
+                    .LastTimeMess = DateTime.Now;
+
+                _db.Chats
+                    .FirstOrDefault(ch => ch.Id == chatId)
                     .Messages
                     .Add(new MessageDTO 
                     { 

@@ -44,6 +44,10 @@
 
             $("#chatroom").append(html);
 
+            document.getElementById("lastTime").innerText = date;
+
+            window.scrollTo(0, window.innerWidth);
+
             //document.getElementById("chatroom").appendChild(elem);
         }
     });
@@ -56,6 +60,8 @@
 
         hubConnection.invoke("Send", sendmess);
         /*hubConnection.invoke("Send", '2');*/
+
+        document.getElementById("message").value = "";
     });
 
     hubConnection.start();

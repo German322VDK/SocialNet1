@@ -1,5 +1,7 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
 
+    
+
     //Пользуемся методом объекта document.
     //querySelectorAll - метод. Позволяет передовать селекторы в формате css и получать DOM элементы, которые соответствуют данным селекторам.
     document.querySelectorAll('.chats__list_item_item').forEach(function (tabsLink) {
@@ -20,4 +22,7 @@
         })
     })
 
+    if (document.getElementById('chatroom') != null) {
+        window.scrollTo(0, window.innerWidth);
+    }
 })

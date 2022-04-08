@@ -41,6 +41,27 @@ namespace SocialNet1.Controllers
 
             var chat = _chat.Get(autorName, userName);
 
+            if(chat is null)
+            {
+                _logger.LogInformation($"Чата между {autorName} и {userName} не существует, щас создам )");
+
+                var result = _chat.CreateChat(autorName, userName);
+
+                if (result)
+                {
+                    _logger.LogInformation($"Чат между {autorName} и {userName} успешно создан )");
+
+                    chat = _chat.Get(autorName, userName);
+                }
+                else
+                {
+                    _logger.LogWarning($"Чат между {autorName} и {userName} не получилось создать, хз что делать (");
+
+                    return RedirectToAction("Index", "News");
+                }
+
+            }
+
             return View(new ChatViewModel 
             { 
                 Chat = chat,

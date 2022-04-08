@@ -9,6 +9,9 @@
 
     if (user is not null)
         color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var chats = Model.Chats.OrderBy(el => el.LastTimeMess).Reverse();
+
 }
 
 <div class="chats">
@@ -36,7 +39,7 @@
             </div>
         </div>
         <div data-target="one" class="chats__info_container chats__info_container_active">
-            @foreach (var chat in Model.Chats)
+            @foreach (var chat in chats)
             {
                 UserDTO chatUser = null;
                 string chatUserName = "";
@@ -66,7 +69,7 @@
 
                 var chatCoord = $"photo/coordinates/{chatUserX}d{chatUserY}.jpg";
 
-                <div class="chats__post dark_@(chatUserColor)_border_bottom mid_@(chatUserColor)_hover">
+                <div class="chats__post dark_@(color)_border_bottom mid_@(chatUserColor)_hover">
                     <a class="chats__post_link" asp-controller="Chats" asp-action="Chat" asp-route-userName="@chatUserName">
                         <div class="chats__post_ava">
                             <img class="chats__post_ava_img" src="data:image/@chatFormat;base64,@chatStrImage" alt="Фото">

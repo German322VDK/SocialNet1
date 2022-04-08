@@ -67,7 +67,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <span>Написать</span>
+                                    <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@item.UserName">Написать</a>
                                     @if (name == Model.User.UserName)
                                     {
                                         <span class="friends__list_item_span">Настройки</span>
