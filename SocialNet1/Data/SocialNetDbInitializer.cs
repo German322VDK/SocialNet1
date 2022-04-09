@@ -225,7 +225,8 @@ namespace SocialNet1.Data
                     var message = new MessageDTO
                     {
                         SenderName = "God",
-                        Content = "Hello from God"
+                        Content = "Hello from God",
+                        HelpId = 1
                     };
 
                     var mas = new List<MessageDTO>();

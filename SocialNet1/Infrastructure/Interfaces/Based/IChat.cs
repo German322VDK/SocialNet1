@@ -11,10 +11,14 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         ChatDTO Get(int chatId);
 
-
         ChatDTO Get(string userName1, string userName2);
 
         bool CreateChat(string userName1, string userName2);
+
+
+        ICollection<MessageDTO> GetMessages(int chatId);
+
+        MessageDTO GetMessage(int chatId, int messageHelpId);
 
         bool AddMessage(string sender, string recipient, int chatId, string text);
     }

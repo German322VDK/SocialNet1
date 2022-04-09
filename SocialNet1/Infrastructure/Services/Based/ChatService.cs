@@ -4,7 +4,6 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Infrastructure.Services.Based
 {
@@ -59,6 +58,12 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #region Message
 
+        public ICollection<MessageDTO> GetMessages(int chatId) =>
+            Get(chatId).Messages.ToList();
+
+        public MessageDTO GetMessage(int chatId, int messageHelpId) =>
+           Get(chatId).Messages.FirstOrDefault(ms => ms.HelpId == messageHelpId);
+
         public bool AddMessage(string sender, string recipient, int chatId, string text)
         {
             if (Get(chatId) is null)
@@ -69,6 +74,10 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             using (_db.Database.BeginTransaction())
             {
+                var messages = _db.Chats
+                    .FirstOrDefault(ch => ch.Id == chatId)
+                    .Messages;
+
                 _db.Chats
                     .FirstOrDefault(ch => ch.Id == chatId)
                     .LastTimeMess = DateTime.Now;
@@ -80,6 +89,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     { 
                         SenderName = sender,
                         Content = text,
+                        HelpId = messages is null || messages.Count == 0 ? 1 : messages.Last().HelpId + 1
                     });
 
                 _db.SaveChanges();
@@ -89,6 +99,8 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return true;
         }
+
+        
 
         #endregion
     }

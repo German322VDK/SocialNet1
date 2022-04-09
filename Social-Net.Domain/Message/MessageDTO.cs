@@ -10,6 +10,9 @@ namespace SocialNet1.Domain.Message
     /// </summary>
     public class MessageDTO : Entity
     {
+        [Required]
+        public int HelpId { get; set; }
+
         /// <summary>
         /// Имя отправителя
         /// </summary>
@@ -27,6 +30,13 @@ namespace SocialNet1.Domain.Message
         /// </summary>
         [Required]
         public string Content { get; set; }
+
+        /// <summary>
+        /// Сообщение изменено?
+        /// </summary>
+        [Required]
+        public bool IsUpdate { get; set; } = false;
+
 
         /// <summary>
         /// Фото
