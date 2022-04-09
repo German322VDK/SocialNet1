@@ -49,5 +49,31 @@ namespace SocialNet1.Controllers.API
 
             return result;
         }
+
+        [HttpPost("delete")]
+        public bool Delete(SimpMessageDeleteModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.SenderName) || string.IsNullOrEmpty(model.RecipientName))
+            {
+                _logger.LogWarning($"Не получилось добавить сообщение в бд (");
+
+                return false;
+            }
+
+            var result = _chat.DeleteMessage(model.ChatId, model.MessageHelpId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить сообщение № {model.MessageHelpId} человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Получилось удалить сообщение № {model.MessageHelpId} человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд (");
+
+            return true;
+        }
     }
 }

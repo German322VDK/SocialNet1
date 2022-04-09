@@ -12,6 +12,8 @@ namespace SocialNet1.Hubs
 {
     public class MessageHub : Hub
     {
+        private string url = "http://localhost:5000/";
+
         private readonly ILogger<MessageHub> _logger;
         public MessageHub(ILogger<MessageHub> logger)
         {
@@ -33,9 +35,6 @@ namespace SocialNet1.Hubs
             var client = new HttpClient();
             CancellationToken Cancel = default;
 
-            //костыль
-            var url = "http://localhost:5000/";
-
             var response = client.PostAsJsonAsync($"{url}{APIUrls.ADD_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
 
             var responseresult = Convert.ToInt32(response);
@@ -52,6 +51,34 @@ namespace SocialNet1.Hubs
             message.MessageHelpId = responseresult;
 
             await Clients.Users(message.SenderName, message.RecipientName).SendAsync("Receive", message);
+        }
+
+        public async Task ToDelete(SimpMessageDeleteModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.SenderName) || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Не знаю какое сообщение удалять (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.DELETE_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            bool responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+                _logger.LogInformation($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) успешно удалено из БД:)");
+            else
+                _logger.LogWarning($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) обломаломь с удалением в БД:(");
+
+            message.IsSuccess = responseresult;
+
+            await Clients.Users(message.SenderName, message.RecipientName).SendAsync("FromDelete", message);
         }
     }
 }

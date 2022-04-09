@@ -73,10 +73,10 @@
                     <div class="messages__block_m_l_t">
                         @if (isAut)
                         {
-                            <button id="@(message.Id)_message_delete" class="" onclick="DeletePost()">
+                            <button id="@(message.HelpId)_message_delete" class="message_delete">
                                 <i class="fa fa-trash-o color_dark_dark_@(isAut ? colorAut : colorUs) fa-1x" aria-hidden="true"></i>
                             </button>
-                            <button id="@(message.Id)_message_update" class="">
+                            <button id="@(message.HelpId)_message_update" class="">
                                 <i class="fa fa-pencil fa-1x color_dark_dark_@(isAut ? colorAut : colorUs)" aria-hidden="true"></i>
                             </button>
                         }

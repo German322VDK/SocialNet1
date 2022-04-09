@@ -106,7 +106,27 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         public bool DeleteMessage(int chatId, int messageHelpId)
         {
+            if (Get(chatId) is null || GetMessage(chatId, messageHelpId) is null)
+                return false;
 
+            using (_db.Database.BeginTransaction())
+            {
+                var message = _db.Chats
+                    .FirstOrDefault(ch => ch.Id == chatId)
+                    .Messages
+                    .FirstOrDefault(ms => ms.HelpId == messageHelpId);
+
+                var images = message.Images;
+
+                if (images is not null)
+                    _db.RemoveRange(images);
+
+                _db.Remove(message);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
 
             return true;
         }
