@@ -64,13 +64,15 @@ namespace SocialNet1.Infrastructure.Services.Based
         public MessageDTO GetMessage(int chatId, int messageHelpId) =>
            Get(chatId).Messages.FirstOrDefault(ms => ms.HelpId == messageHelpId);
 
-        public bool AddMessage(string sender, string recipient, int chatId, string text)
+        public int AddMessage(string sender, string recipient, int chatId, string text)
         {
             if (Get(chatId) is null)
-                return false;
+                return 0;
 
             if(_user.Get(sender) is null || _user.Get(recipient) is null)
-                return false;
+                return 0;
+
+            int helpId = 0;
 
             using (_db.Database.BeginTransaction())
             {
@@ -82,6 +84,8 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .FirstOrDefault(ch => ch.Id == chatId)
                     .LastTimeMess = DateTime.Now;
 
+                helpId = messages is null || messages.Count == 0 ? 1 : messages.Last().HelpId + 1;
+
                 _db.Chats
                     .FirstOrDefault(ch => ch.Id == chatId)
                     .Messages
@@ -89,7 +93,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     { 
                         SenderName = sender,
                         Content = text,
-                        HelpId = messages is null || messages.Count == 0 ? 1 : messages.Last().HelpId + 1
+                        HelpId = helpId
                     });
 
                 _db.SaveChanges();
@@ -97,10 +101,15 @@ namespace SocialNet1.Infrastructure.Services.Based
                 _db.Database.CommitTransaction();
             }
 
-            return true;
+            return helpId;
         }
 
-        
+        public bool DeleteMessage(int chatId, int messageHelpId)
+        {
+
+
+            return true;
+        }
 
         #endregion
     }

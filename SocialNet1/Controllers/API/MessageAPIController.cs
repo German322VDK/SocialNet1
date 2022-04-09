@@ -24,30 +24,30 @@ namespace SocialNet1.Controllers.API
         }
 
         [HttpPost("add")]
-        public bool Add(SimpMessageModel model)
+        public int Add(SimpMessageModel model)
         {
             if (model is null || string.IsNullOrEmpty(model.Content) || string.IsNullOrEmpty(model.SenderName)
                 || string.IsNullOrEmpty(model.RecipientName))
             {
                 _logger.LogWarning($"Не получилось добавить сообщение в бд (");
 
-                return false;
+                return 0;
             }
 
             var result = _chat.AddMessage(model.SenderName, model.RecipientName, model.Id, model.Content);
 
-            if (!result)
+            if (result == 0)
             {
                 _logger.LogWarning($"Не получилось добавить сообщение '{model.Content}' человека {model.SenderName} " +
                     $"человеку {model.RecipientName} в бд (");
 
-                return false;
+                return 0;
             }
 
             _logger.LogInformation($"Получилось добавить сообщение '{model.Content}' человека {model.SenderName} " +
                     $"человеку {model.RecipientName} в бд )");
 
-            return true;
+            return result;
         }
     }
 }

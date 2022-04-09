@@ -11,6 +11,7 @@
             let senderName = message.senderName;
             let content = message.content;
             let date = message.date;
+            let messageHelpId = message.messageHelpId;
             // создаем элемент <b> для имени пользователя
             //let userNameElem = document.createElement("b");
             //userNameElem.appendChild(document.createTextNode(userName + ' : ' + date + ': '));
@@ -23,7 +24,7 @@
             //var lastElem = document.getElementById("chatroom").lastChild;
 
             if (sender == senderName) {
-                var html = `<div class="message__box_holder">
+                var html = `<div class="message__box_holder" id="${messageHelpId}_message">
                 <div class="message__box mid_${colorAut} mid_${colorAut}_border
                      mid_${colorAut}_border_triangle">
                     ${content}
@@ -32,7 +33,7 @@
             </div>`;
             }
             else {
-                var html = `<div class="message__box_holder message__partner">
+                var html = `<div class="message__box_holder message__partner" id="${messageHelpId}_message">
                 <div class="message__box mid_${colorUser} mid_${colorUser}_border message__partner_box
                      mid_${colorUser}_border_triangle_partner">
                     ${content}

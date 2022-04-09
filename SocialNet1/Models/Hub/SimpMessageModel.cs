@@ -16,5 +16,7 @@ namespace SocialNet1.Models.Hub
         public string Date { get; set; }
 
         public int Id { get; set; }
+
+        public int MessageHelpId { get; set; }
     }
 }

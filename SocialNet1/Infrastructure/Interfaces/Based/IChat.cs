@@ -20,6 +20,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         MessageDTO GetMessage(int chatId, int messageHelpId);
 
-        bool AddMessage(string sender, string recipient, int chatId, string text);
+        int AddMessage(string sender, string recipient, int chatId, string text);
+
+        bool DeleteMessage(int chatId, int messageHelpId);
     }
 }

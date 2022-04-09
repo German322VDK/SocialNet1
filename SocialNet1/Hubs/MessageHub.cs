@@ -38,16 +38,18 @@ namespace SocialNet1.Hubs
 
             var response = client.PostAsJsonAsync($"{url}{APIUrls.ADD_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
 
-            var responseresult = Convert.ToBoolean(response);
+            var responseresult = Convert.ToInt32(response);
 
             //var responseresult = true;
 
-            if (responseresult)
+            if (responseresult != 0)
                 _logger.LogInformation($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
                     $"({message.RecipientName}) успешно сохранено в БД:)");
             else
                 _logger.LogWarning($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
                     $"({message.RecipientName}) обломаломь с БД:(");
+
+            message.MessageHelpId = responseresult;
 
             await Clients.Users(message.SenderName, message.RecipientName).SendAsync("Receive", message);
         }
