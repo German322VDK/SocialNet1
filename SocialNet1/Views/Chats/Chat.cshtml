@@ -64,10 +64,24 @@
             bool isAut = message.SenderName == Model.AutorName;
 
             <div class="message__box_holder @( isAut ? "" : "message__partner")">
-                <div class="message__box mid_@(isAut ? colorAut : colorUs) mid_@(isAut ? colorAut : colorUs)_border 
+                <div class="message__box mid_@(isAut ? colorAut : colorUs) mid_@(isAut ? colorAut : colorUs)_border
                      @(isAut ? "" : "message__partner_box") mid_@(isAut ? colorAut : colorUs)_border_triangle@(isAut ? "" : "_partner")">
-                    @message.Content
-                    <div class="messages__block_m_l_t">@message.TimeMess.ToString("g")</div>
+                    <div>
+                        @message.Content
+                    </div>
+                    
+                    <div class="messages__block_m_l_t">
+                        @if (isAut)
+                        {
+                            <button id="@(message.Id)_message_delete" class="" onclick="DeletePost()">
+                                <i class="fa fa-trash-o color_dark_dark_@(isAut ? colorAut : colorUs) fa-1x" aria-hidden="true"></i>
+                            </button>
+                            <button id="@(message.Id)_message_update" class="">
+                                <i class="fa fa-pencil fa-1x color_dark_dark_@(isAut ? colorAut : colorUs)" aria-hidden="true"></i>
+                            </button>
+                        }
+                        @message.TimeMess.ToString("g")
+                    </div>
                 </div>
             </div>
         }
