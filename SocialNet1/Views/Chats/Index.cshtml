@@ -69,6 +69,16 @@
 
                 var chatCoord = $"photo/coordinates/{chatUserX}d{chatUserY}.jpg";
 
+                var lastMessage = "";
+
+                if(chat.Messages.Count > 0)
+                {
+                    if (chat.Messages.Last().Content.Length > 31)
+                        lastMessage = chat.Messages.Last().Content.Substring(0, 30);
+                    else
+                        lastMessage = chat.Messages.Last().Content;
+                }
+
                 <div class="chats__post dark_@(color)_border_bottom mid_@(chatUserColor)_hover">
                     <a class="chats__post_link" asp-controller="Chats" asp-action="Chat" asp-route-userName="@chatUserName">
                         <div class="chats__post_ava">
@@ -83,7 +93,7 @@
                                 <div class="chats__post_ava2">
                                     <img class="chats__post_ava2_img" src="@chatCoord" alt="">
                                 </div>
-                                <div class="chats__post_text">@(chat.Messages.Count > 0 ? chat.Messages.Last().Content : "") </div>
+                                <div class="chats__post_text">@(lastMessage) </div>
                             </div>
                         </div>
                     </a>

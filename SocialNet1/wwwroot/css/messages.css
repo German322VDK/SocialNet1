@@ -269,7 +269,9 @@
     padding-left: 5%;
 }
 
-.message_text{
-    /*max-width: 100px;*/
+.message_text {
+    outline: none;
+    word-wrap: break-word;
+    max-width: 100%;
 }
 
