@@ -75,5 +75,33 @@ namespace SocialNet1.Controllers.API
 
             return true;
         }
+
+
+        [HttpPost("update")]
+        public bool Update(SimpMessageUpdateModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.SenderName) || string.IsNullOrEmpty(model.RecipientName) 
+                || string.IsNullOrEmpty(model.Text))
+            {
+                _logger.LogWarning($"Не получилось изменить сообщение в бд (");
+
+                return false;
+            }
+
+            var result = _chat.UpdateMessage(model.ChatId, model.MessageHelpId, model.Text);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось изменить сообщение № {model.MessageHelpId} '{model.Text}' человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Получилось изменить сообщение № {model.MessageHelpId} '{model.Text}' человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд (");
+
+            return true;
+        }
     }
 }

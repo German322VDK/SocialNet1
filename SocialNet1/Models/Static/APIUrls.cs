@@ -40,5 +40,6 @@ namespace SocialNet1.Models.Static
 
         public const string ADD_MESSAGE = "api/message/add";
         public const string DELETE_MESSAGE = "api/message/delete";
+        public const string UPDATE_MESSAGE = "api/message/update";
     }
 }

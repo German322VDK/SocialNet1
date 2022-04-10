@@ -97,10 +97,8 @@
         }
     });
 
-    let deletes = document.querySelectorAll('.message_delete');
-    
     //отправка удаление сообщение у всех
-    deletes.forEach(function (el) {
+    document.querySelectorAll('.message_delete').forEach(function (el) {
 
         el.addEventListener("click", function (e) {
             var messageId = e.currentTarget.id.split("_")[0];
@@ -111,6 +109,30 @@
 
         });
         
+    });
+
+    hubConnection.on('FromUpdate', function (message) {
+
+        var helpid = message.messageHelpId;
+
+        var text = message.text;
+
+        document.getElementById(`${helpid}_message_text`).innerText = text
+    });
+
+    document.querySelectorAll('.message_update').forEach(function (el) {
+
+        el.addEventListener("click", function (e) {
+            var messageId = e.currentTarget.id.split("_")[0];
+
+            var text = document.getElementById(`${messageId}_message_text`).innerText;
+
+            let sendmess = new UpdateMessage(sender, recipient, parseInt(id), parseInt(messageId), text);
+
+            hubConnection.invoke("ToUpdate", sendmess);
+
+        });
+
     });
 
     hubConnection.start();
@@ -133,5 +155,15 @@ class DeleteMessage {
         this.ChatId = chatId;
         this.MessageHelpId = messageHelpId;
         this.IsSuccess = isSuccess;
+    }
+}
+
+class UpdateMessage {
+    constructor(senderName, recipientName, chatId, messageHelpId, text) {
+        this.SenderName = senderName;
+        this.RecipientName = recipientName;
+        this.ChatId = chatId;
+        this.MessageHelpId = messageHelpId;
+        this.Text = text;
     }
 }

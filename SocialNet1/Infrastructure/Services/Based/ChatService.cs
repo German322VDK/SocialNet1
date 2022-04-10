@@ -131,6 +131,27 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool UpdateMessage(int chatId, int messageHelpId, string text)
+        {
+            if (Get(chatId) is null || GetMessage(chatId, messageHelpId) is null || string.IsNullOrEmpty(text))
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Chats
+                    .FirstOrDefault(ch => ch.Id == chatId)
+                    .Messages
+                    .FirstOrDefault(ms => ms.HelpId == messageHelpId)
+                    .Content = text;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }

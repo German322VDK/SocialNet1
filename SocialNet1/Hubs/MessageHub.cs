@@ -80,5 +80,31 @@ namespace SocialNet1.Hubs
 
             await Clients.Users(message.SenderName, message.RecipientName).SendAsync("FromDelete", message);
         }
+
+        public async Task ToUpdate(SimpMessageUpdateModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.SenderName) || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Не знаю какое сообщение удалять (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.UPDATE_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            bool responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+                _logger.LogInformation($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) успешно изменено из БД:)");
+            else
+                _logger.LogWarning($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) обломаломь с изменением в БД:(");
+
+            await Clients.Users(message.SenderName, message.RecipientName).SendAsync("FromUpdate", message);
+        }
     }
 }

@@ -23,5 +23,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         int AddMessage(string sender, string recipient, int chatId, string text);
 
         bool DeleteMessage(int chatId, int messageHelpId);
+
+        bool UpdateMessage(int chatId, int messageHelpId, string text);
     }
 }
