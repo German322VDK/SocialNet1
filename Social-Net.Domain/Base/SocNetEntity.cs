@@ -29,7 +29,7 @@ namespace SocialNet1.Domain.Base
         /// <summary>
         /// Номер текущего фото
         /// </summary>
-        public int CurrentImage { get; set; }
+        public int CurrentImage { get; set; } = 0;
 
         /// <summary>
         /// Работает или удалена

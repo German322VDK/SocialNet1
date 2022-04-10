@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
@@ -26,14 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\Components\" />
+    <Folder Include="Areas\Admin\Views\Shared\Partial\" />
+    <Folder Include="Areas\Admin\ViewModels\" />
     <Folder Include="Infrastructure\Mapping\" />
-    <Folder Include="Views\Group\" />
-    <Folder Include="Views\Message\" />
-    <Folder Include="Views\News\" />
-    <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Shared\Components\" />
-    <Folder Include="Views\Shared\Partial\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
   
 </Project>

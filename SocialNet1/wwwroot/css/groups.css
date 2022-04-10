@@ -1,0 +1,270 @@
+/* .body{
+  min-height: 100%;
+} */
+
+.body__container3{
+  min-height: 100vh;
+}
+
+.groups{
+  width: 550px;
+  min-height: 88vh;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.groups__background_top{
+  width: 50vh;
+  height: 2vh;
+  z-index: 2;
+  top: 8.2vh;
+  position: fixed;
+  display: none;
+}
+
+.settings__groups{
+    padding-left: 30px;
+    padding-right: 10px;
+    width: 210px;
+}
+.filter__groups{
+  position: sticky;
+  top: 85px;
+  width: 170px;
+  border-radius: 12px;
+}
+.filter__groups_title{
+  margin: 0;
+  padding: 10px;
+  font-size: 14px;
+}
+.filter__groups_list_item{
+  text-align: left;
+  padding-left: 10px;
+  font-size: 14px;
+  height: 25px;
+  transform: scale(1);
+  transition: all 0.2s;
+}
+
+.filter__groups_list_item:hover{
+  transform: scale(1.05);
+}
+
+.recommendations{
+  position: sticky;
+  top: 205px;
+  width: 170px;
+  border-radius: 12px;
+  margin-top: 20px;
+  padding-top: 10px;
+}
+
+.recommendations__title{
+  margin: 0;
+  padding: 10px;
+  font-size: 14px;
+}
+.recommendations__list{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.recommendations__list_item{
+  margin-bottom: 10px;
+  display: flex;
+  transform: scale(1);
+  transition: all 0.2s;
+}
+.recommendations__list_item:hover{
+    transform: scale(1.05);
+}
+
+.recommendations__ava_img{
+  display: inline-block;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border: 2px solid black;
+}
+.recommendations__ava{
+  margin-top: 3%;
+  margin-right: 5%;
+  text-align: center;
+}
+
+.group__title{
+  font-size: 14px;
+}
+.recommendations__name_group_link,
+.recommendations__friends,
+.recommendations__add_link{
+  font-size: 14px;
+}
+
+/* .leftsitebar__list_item{
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 9px;
+    font-size: 20px;
+    margin-top: 15px;
+    height: 40px;
+    /* box-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 10px rgba(0,0,0,0.22);
+    transform: scale(1);
+    transition: all 0.2s;
+} */
+
+
+
+.groups__dark_background{
+  width: 100%;
+  height: 20px;
+}
+.groups__block_img{
+  min-height: 150px;
+  padding: 10px;
+  border-radius: 12px;
+}
+.groups__slider_img{
+  width: 100%;
+  height: 81%;
+  background-image: url('../img/аниме_фак.jpg')
+}
+.groups__content{
+  border-radius: 12px;
+}
+.groups__content_top{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 14px;;
+}
+
+.groups__content_search{
+  margin-top: 10px;
+  padding-bottom: 10px;
+  position: sticky;
+  z-index: 5;
+  top: 61.5px;
+}
+
+.groups__content_search_input{
+  background-color: transparent;
+  border-color: transparent;
+  margin-top: 5px;
+  margin-left: 15px;
+  width: 60%;
+  height: 25px;
+}
+
+.groups__content_gg{
+  min-height: 65vh;
+}
+.groups__content_list_item{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+}
+.groups__content_list_item:not(:last-child){
+  padding-bottom: 5px;
+}
+.groups__content_list_item_c{
+  display: flex;
+}
+.groups__content_ava{
+  margin-right: 15px;
+}
+.groups__content_ava_img{
+  border: 1px black solid;
+  width: 60px;
+  height: 60px;
+}
+.groups__content_politcor_img{
+  width: 20px;
+  height: 20px;
+}
+.groups__content_tk{
+  font-weight: bold;
+  font-size: 14px;
+}
+.groups__content_list_item_m{
+  margin-bottom: 3px;
+}
+.groups__content_list{
+  margin-top: 10px;
+}
+
+.groups__block_title{
+  margin: 0;
+  font-size: 14px;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  font-weight: normal;
+}
+.groups__block_block_img{
+  display: flex;
+  height: 70%;
+}
+.groups__content_ava_link{
+  height: auto;
+}
+
+.groups__block_img_in{
+  text-align: center;
+}
+.groups__content_group_type{
+  font-size: 14px;
+}
+
+.group__img{
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  border: 2px solid black;
+}
+
+/* @media (max-width:1920px){
+  .groups__block_img_in{
+    height: 100%;
+    width: 20%;
+    padding-left: 5px;
+    padding-top: 5px;
+    text-align: center;
+  }
+  .groups__content_list_item{
+      padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .groups__content_ava{
+    margin-right: 20px;
+  }
+  .groups__content_politcor_img{
+    width: 25px;
+    height: 25px;
+  }
+  .groups__content_name_g,
+  .groups__content_quantity{
+    font-size: 14px;
+  }
+}
+
+@media (max-width:1080px){
+  .groups__block_img{
+    height: 15vh;
+  }
+  .groups__block_img_in{
+    height: 100%;
+    width: 16.5%;
+    padding-left: 5px;
+    padding-top: 5px;
+    text-align: center;
+  }
+  .group__title{
+    font-size: 14px;
+  }
+
+} */
+

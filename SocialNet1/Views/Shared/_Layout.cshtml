@@ -1,48 +1,87 @@
-﻿<!DOCTYPE html>
+﻿@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    string color;
+
+    if (user is null)
+        color = "gray";
+    else
+        color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SocialNet1</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+
+    <link rel="stylesheet" href="~/css/profil.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/colors.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/header_leftbar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/messages.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/friends.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/groups.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/chats.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/pcl.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/news.css" asp-append-version="true">
+
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/fontawesome.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/v4-shims.min.css">
+
+    @*<link rel="stylesheet"
+        href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />*@
+
+    <link rel="stylesheet" href="~/css/simplebar.css" />
+
+    @*<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>*@
+    @*<script src="~/js/simplebar.min.js"></script>*@
+
+    @*<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>*@
+
+    <script src="~/lib/microsoft-signalr/signalr.js" ></script>
+
+    <script src="~/js/ChatHub.js" asp-append-version="true"></script>
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SocialNet1</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - SocialNet1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <partial name="Partial/Header" />
+
+    <div class="body mid_@color">
+        <div class="body__container">
+
+            <partial name="Partial/LeftSiterBar" />
+
+            @RenderBody()
+
         </div>
-    </footer>
+    </div>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>*@
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/simplebar/simplebar.min.js"></script>
+
+    <script src="~/js/pcl.js" asp-append-version="true"></script>
+    <script src="~/js/profil_modal.js" asp-append-version="true"></script>
+    <script src="~/js/profil_tabs.js" asp-append-version="true"></script>
+    <script src="~/js/profil_slider.js" asp-append-version="true"></script>
+    <script src="~/js/profil.js" asp-append-version="true"></script>
+    <script src="~/js/friends.js" asp-append-version="true"></script>
+    <script src="~/js/slider_group.js" asp-append-version="true"></script>
+    <script src="~/js/chats.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

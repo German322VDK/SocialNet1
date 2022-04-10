@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SocialNet1.Domain.Identity
+﻿namespace SocialNet1.Domain.Identity
 {
     public static class Passwords
     {

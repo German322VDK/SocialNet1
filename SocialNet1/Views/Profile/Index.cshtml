@@ -1,0 +1,139 @@
+﻿@model ProfileViewModel
+@{
+    var userMainImage = Model.User.Images.SingleOrDefault(el => el.ImageNumber == Model.User.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
+
+    var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = ImageMethods.GetFormat(imageArr);
+
+    var ava = new PhotoFormat
+    {
+        Format = format,
+        Image = strImage,
+        UserName = Model.User.UserName
+    };
+}
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(Model.User.UserName);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var fullPhotos = new List<FullPhotoFormat>();
+
+    var avaIms = new List<SetAvaModel>();
+
+    foreach (var item in user.Images)
+    {
+        var photo = ImageMethods.GetStringFromByteArr(item.Image);
+        var formatPhoto = ImageMethods.GetFormat(item.Image);
+
+        var coments = new List<PhotoUserInfoComms>();
+
+        foreach (var coment in item.Coments)
+        {
+            var commentator = userService.Get(coment.UserName);
+
+            var commentMainImage = commentator.Images.SingleOrDefault(el => el.ImageNumber == commentator.SocNetItems.CurrentImage);
+
+            var commentImageArr = commentMainImage.Image;
+
+            var commentStrImage = ImageMethods.GetStringFromByteArr(commentImageArr);
+
+            var commentFormat = ImageMethods.GetFormat(commentImageArr);
+
+            var comId = coment.Id;
+
+            coments.Add(new PhotoUserInfoComms
+            {
+                DateTime = coment.DateTime.ToString("g"),
+                Likes = coment.UserCommentLikes,
+                Comment = coment.Text,
+                AuthorFirstName = commentator.FirstName,
+                AuthorSecondName = commentator.SecondName,
+                AuthorCoordinatesImage = $"photo/coordinates/{commentator.SocNetItems.X}d{commentator.SocNetItems.Y}.jpg",
+                AuthorUserName = commentator.UserName,
+                AuthorImage = commentStrImage,
+                AuthorFormat = commentFormat,
+                Color = UserMethods.GetColor(commentator.SocNetItems.X, commentator.SocNetItems.Y),
+                CommId = comId
+            });
+        }
+
+        fullPhotos.Add(new FullPhotoFormat
+        {
+            ImageId = item.Id,
+            MainImage = photo,
+            Format = formatPhoto,
+
+            RepostCount = item.RepostCount,
+            Auhor = new PhotoUserInfoAut
+            {
+                AuthorUserName = Model.User.UserName,
+                AuthorFirstName = Model.User.FirstName,
+                AuthorSecondName = Model.User.SecondName,
+                AuthorImage = strImage,
+                AuthorFormat = format,
+                AuthorCoordinatesImage = Model.CoordImage,
+                DateTime = item.DateTime.ToString("g"),
+                Likes = item.UserLikes
+            },
+
+            Comments = coments,
+        });
+
+        avaIms.Add(new SetAvaModel
+        {
+            Image = photo,
+            Format = formatPhoto,
+            ImageNum = item.ImageNumber
+        });
+    }
+
+
+
+    fullPhotos.Reverse();
+
+    var photos = fullPhotos
+        .Take(4)
+        .Select(el => new PhotoFormat
+        {
+            Image = el.MainImage,
+            Format = el.Format
+        })
+        .ToList();
+
+}
+
+<div class="profil_left">
+    <partial name="Partial/ProfileInfo" model="@Model" />
+
+    <partial name="Partial/ProfilePhotos" model="@photos" />
+
+    @if (Model.User.UserName == User.Identity!.Name)
+    {
+        <div class="profil_left__add_f light_@(color)">
+            <button class="profil_left__add_foto add_foto">Добавить фото</button>
+        </div>
+    }
+
+    <partial name="Partial/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
+
+    <partial name="Partial/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />  
+
+</div>
+
+<partial name="Partial/ProfileRight" model="@ava" />
+
+@if (Model.User.UserName == User.Identity!.Name)
+{
+    <partial name="Partial/PhotoAdd" />
+    <partial name="Partial/SetAva" model="@avaIms"/>
+    <partial name="Partial/Coord" />
+}
+
+<partial name="Partial/Slider" model="@fullPhotos" />

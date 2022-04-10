@@ -1,0 +1,158 @@
+﻿@model ICollection<GroupViewModel>
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="groups">
+    <div class="groups__dark_background mid_@(color)"></div>
+    <div class="groups__block_img light_@(color)">
+        <h2 class="groups__block_title">Недвано посещали</h2>
+        <div class="groups__block_block_img">
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+            <div class="groups__block_img_in">
+                <img class="group__img" src="img/felix.jpg" alt="ава группы">
+                <div class="group__title">Название группы</div>
+            </div>
+        </div>
+    </div>
+    <div class="groups__dark_background mid_@(color)"></div>
+    <div class="groups__content light_@(color)">
+        <div class="groups__content_top">
+            <div class="groups__content_all">Все группы</div>
+            <div class="groups__content_management">Управление</div>
+            <div class="groups__content_create">Создать группу</div>
+        </div>
+
+        <div class="groups__content_search dark_@(color)_border_bottom dark_@(color)_border_top light_@(color)">
+            <input type="text" name="search" placeholder="Поиск" class="groups__content_search_input">
+        </div>
+
+        <div class="groups__content_gg">
+            <ul class="groups__content_list">
+
+                @foreach (var item in Model)
+                {
+                    <li class="groups__content_list_item mid_@(color)_hover">
+                        <div class="groups__content_list_item_c">
+                            <div class="groups__content_ava">
+                                <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                    <img class="groups__content_ava_img" src="data:image/@item.MainFormat;base64,@item.MainImage" alt="">
+                                </a>
+                            </div>
+                            <div class="groups__content_links">
+                                <div class="groups__content_politcor groups__content_list_item_m">
+                                    <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
+                                    <span class="groups__content_group_type">Хуитика</span>
+                                </div>
+                                <div class="groups__content_name_g groups__content_list_item_m">@item.MainName</div>
+                                <div class="groups__content_quantity">@item.UserCount учасников</div>
+                            </div>
+                        </div>
+                        <div class="groups__content_tk">...</div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="settings__groups">
+    <div class="filter__groups light_@(color)">
+        <h2 class="filter__groups_title">Фильтры групп</h2>
+        <ul class="filter__groups_list">
+            <li class="filter__groups_list_item">Тут</li>
+            <li class="filter__groups_list_item">Наверное</li>
+            <li class="filter__groups_list_item">Список</li>
+        </ul>
+    </div>
+    <div class="recommendations light_@(color)">
+        <h2 class="recommendations__title">
+            <a href="">
+                Рекомендации
+            </a>
+        </h2>
+        <ul class="recommendations__list dark_@(color)_border_bottom">
+            <li class="recommendations__list_item mid_@(color)_hover">
+                <div class="recommendations__ava">
+                    <a class="recommendations__ava_link" href="">
+                        <img class="recommendations__ava_img" src="img/felix.jpg" alt="">
+                    </a>
+                </div>
+                <div class="recommendations__links">
+                    <div class="recommendations__name_group">
+                        <a href="#" class="recommendations__name_group_link">Подслушано фефу</a>
+                    </div>
+                    <div class="recommendations__friends">0 друзей</div>
+                    <div class="recommendations__add">
+                        <a href="#" class="recommendations__add_link">Подписаться</a>
+                    </div>
+                </div>
+            </li>
+            <li class="recommendations__list_item mid_@(color)_hover">
+                <div class="recommendations__ava">
+                    <a href="">
+                        <img class="recommendations__ava_img" src="img/кошка.jpg" alt="">
+                    </a>
+                </div>
+                <div class="recommendations__links">
+                    <div class="recommendations__name_group">
+                        <a href="#" class="recommendations__name_group_link">Подслушано фефу</a>
+                    </div>
+                    <div class="recommendations__friends">0 друзей</div>
+                    <div class="recommendations__add">
+                        <a href="#" class="recommendations__add_link">Подписаться</a>
+                    </div>
+                </div>
+            </li>
+            <li class="recommendations__list_item mid_@(color)_hover">
+                <div class="recommendations__ava">
+                    <a href="">
+                        <img class="recommendations__ava_img" src="img/ведьма.jpg.crdownload" alt="">
+                    </a>
+                </div>
+                <div class="recommendations__links">
+                    <div class="recommendations__name_group">
+                        <a href="#" class="recommendations__name_group_link">Подслушано фефу</a>
+                    </div>
+                    <div class="recommendations__friends">0 друзей</div>
+                    <div class="recommendations__add">
+                        <a href="#" class="recommendations__add_link">Подписаться</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <span class="possible__get_all mid_@(color)_hover">Посмотреть всех</span>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

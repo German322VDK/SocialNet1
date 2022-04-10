@@ -118,7 +118,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Friends.FriendStatus", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Friends.FriendStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,7 +141,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("FriendStatus");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.GroupDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,11 +165,14 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.GroupImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("GroupDTOId")
                         .HasColumnType("INTEGER");
@@ -181,6 +184,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<int>("ImageNumber")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("RepostCount")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupDTOId");
@@ -188,7 +194,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("GroupImages");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.SocNetEntityGroup", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.SocNetEntityGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -214,7 +220,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("SocNetEntityGroup");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.UserGroupStatus", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.UserGroupStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,7 +252,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("UserGroupStatuses");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.RoleDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.RoleDTO", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -278,7 +284,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.SocNetEntityUser", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.SocNetEntityUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -304,7 +310,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("SocNetEntityUser");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.UserDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserDTO", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -384,17 +390,50 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.UserImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImageComments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserImagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserImagesId");
+
+                    b.ToTable("UserImageComments");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<int>("ImageNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RepostCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserDTOId")
@@ -407,7 +446,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("UserImages");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.ChatDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.ChatDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -429,7 +468,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.MessageDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.MessageDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -441,6 +480,12 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsUpdate")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SenderName")
                         .IsRequired()
@@ -456,11 +501,14 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("MessageDTO");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.MessageImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.MessageImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -479,7 +527,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("MessageImages");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.CommentDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -509,7 +557,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("CommentDTO");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.CommentImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -517,6 +565,9 @@ namespace SocialNet1.Database.SQlite.Migrations
 
                     b.Property<int?>("CommentDTOId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -532,30 +583,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("CommentImages");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CommentDTOId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Emoji")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Likers")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentDTOId");
-
-                    b.ToTable("Like");
-                });
-
-            modelBuilder.Entity("Social_Net.Domain.PostCom.PostDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.PostDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -581,9 +609,182 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("PostDTOs");
                 });
 
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GroupImageCommentsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPutinAdminGroupCom")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupImageCommentsId");
+
+                    b.ToTable("GroupCommentLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("GroupImagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupImagesId");
+
+                    b.ToTable("GroupImageComments");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GroupImagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPutinAdminGroup")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupImagesId");
+
+                    b.ToTable("GroupLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Identity.UserCommentLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserImageCommentsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserImageCommentsId");
+
+                    b.ToTable("UserCommentLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Identity.UserLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPutinUser")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserImagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserImagesId");
+
+                    b.ToTable("UserLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CommentDTOId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPutinLiked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentDTOId");
+
+                    b.ToTable("CommentLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Security.EmailConfirm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailConfirms");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.RoleDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.RoleDTO", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -592,7 +793,7 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -601,7 +802,7 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -610,13 +811,13 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.RoleDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.RoleDTO", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -625,133 +826,182 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Friends.FriendStatus", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Friends.FriendStatus", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany("Friends")
                         .HasForeignKey("UserDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.GroupDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Group.SocNetEntityGroup", "SocNetItems")
+                    b.HasOne("SocialNet1.Domain.Group.SocNetEntityGroup", "SocNetItems")
                         .WithMany()
                         .HasForeignKey("SocNetItemsId");
 
                     b.Navigation("SocNetItems");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.GroupImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupImages", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Group.GroupDTO", null)
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", null)
                         .WithMany("Images")
                         .HasForeignKey("GroupDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.UserGroupStatus", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.UserGroupStatus", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Group.GroupDTO", null)
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", null)
                         .WithMany("Users")
                         .HasForeignKey("GroupDTOId");
 
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany("Groups")
                         .HasForeignKey("UserDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.UserDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.SocNetEntityUser", "SocNetItems")
+                    b.HasOne("SocialNet1.Domain.Identity.SocNetEntityUser", "SocNetItems")
                         .WithMany()
                         .HasForeignKey("SocNetItemsId");
 
                     b.Navigation("SocNetItems");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.UserImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImageComments", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserImages", null)
+                        .WithMany("Coments")
+                        .HasForeignKey("UserImagesId");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImages", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
                         .WithMany("Images")
                         .HasForeignKey("UserDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.MessageDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.MessageDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Message.ChatDTO", null)
+                    b.HasOne("SocialNet1.Domain.Message.ChatDTO", null)
                         .WithMany("Messages")
                         .HasForeignKey("ChatDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.MessageImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.MessageImages", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Message.MessageDTO", null)
+                    b.HasOne("SocialNet1.Domain.Message.MessageDTO", null)
                         .WithMany("Images")
                         .HasForeignKey("MessageDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.CommentDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.PostCom.PostDTO", null)
+                    b.HasOne("SocialNet1.Domain.PostCom.PostDTO", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentImages", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.CommentImages", b =>
                 {
-                    b.HasOne("Social_Net.Domain.PostCom.CommentDTO", null)
+                    b.HasOne("SocialNet1.Domain.PostCom.CommentDTO", null)
                         .WithMany("Images")
                         .HasForeignKey("CommentDTOId");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.Like", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.PostDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.PostCom.CommentDTO", null)
-                        .WithMany("Likes")
-                        .HasForeignKey("CommentDTOId");
-                });
-
-            modelBuilder.Entity("Social_Net.Domain.PostCom.PostDTO", b =>
-                {
-                    b.HasOne("Social_Net.Domain.Group.SocNetEntityGroup", null)
+                    b.HasOne("SocialNet1.Domain.Group.SocNetEntityGroup", null)
                         .WithMany("Posts")
                         .HasForeignKey("SocNetEntityGroupId");
 
-                    b.HasOne("Social_Net.Domain.Identity.SocNetEntityUser", null)
+                    b.HasOne("SocialNet1.Domain.Identity.SocNetEntityUser", null)
                         .WithMany("Posts")
                         .HasForeignKey("SocNetEntityUserId");
 
-                    b.HasOne("Social_Net.Domain.PostCom.CommentDTO", "ThisPost")
+                    b.HasOne("SocialNet1.Domain.PostCom.CommentDTO", "ThisPost")
                         .WithMany()
                         .HasForeignKey("ThisPostId");
 
                     b.Navigation("ThisPost");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.GroupDTO", b =>
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
+                {
+                    b.HasOne("Social_Net.Domain.Group.GroupImageComments", null)
+                        .WithMany("GroupCommentLikes")
+                        .HasForeignKey("GroupImageCommentsId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Group.GroupImages", null)
+                        .WithMany("Coments")
+                        .HasForeignKey("GroupImagesId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupLike", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Group.GroupImages", null)
+                        .WithMany("GroupLikes")
+                        .HasForeignKey("GroupImagesId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Identity.UserCommentLike", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Identity.UserImageComments", null)
+                        .WithMany("UserCommentLikes")
+                        .HasForeignKey("UserImageCommentsId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Identity.UserLike", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Identity.UserImages", null)
+                        .WithMany("UserLikes")
+                        .HasForeignKey("UserImagesId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.PostCom.CommentDTO", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentDTOId");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupDTO", b =>
                 {
                     b.Navigation("Images");
 
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Group.SocNetEntityGroup", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Group.GroupImages", b =>
+                {
+                    b.Navigation("Coments");
+
+                    b.Navigation("GroupLikes");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Group.SocNetEntityGroup", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.SocNetEntityUser", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.SocNetEntityUser", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Identity.UserDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserDTO", b =>
                 {
                     b.Navigation("Friends");
 
@@ -760,26 +1010,43 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.ChatDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImageComments", b =>
+                {
+                    b.Navigation("UserCommentLikes");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Identity.UserImages", b =>
+                {
+                    b.Navigation("Coments");
+
+                    b.Navigation("UserLikes");
+                });
+
+            modelBuilder.Entity("SocialNet1.Domain.Message.ChatDTO", b =>
                 {
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.MessageDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.Message.MessageDTO", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.CommentDTO", b =>
                 {
                     b.Navigation("Images");
 
                     b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.PostCom.PostDTO", b =>
+            modelBuilder.Entity("SocialNet1.Domain.PostCom.PostDTO", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
+                {
+                    b.Navigation("GroupCommentLikes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,23 @@
+.reg__registration {
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.reg__p {
+  margin-bottom: 10px;
+}
+.reg__text-center{
+  margin-top: 20px;
+}
+.reg__btn{
+  font-size: 16px;
+  padding: 8px 13px;
+  border: 2px solid rgba(192, 192, 192, 1);
+}
+.reg__btn:hover{
+  background-color: rgb(235, 235, 235);
+}
+.text-danger{
+  color: red;
+}

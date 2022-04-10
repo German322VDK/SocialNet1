@@ -18,6 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SocialNet1.Infrastructure.Services.Admin;
+using SocialNet1.Infrastructure.Interfaces.Admin;
+using SocialNet1.Infrastructure.Interfaces.Based;
+using SocialNet1.Infrastructure.Services.Based;
 
 namespace SocialNet1
 {
@@ -33,13 +37,13 @@ namespace SocialNet1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SocialNetDBSQlite>(opt =>
-               opt
+            services.AddDbContext<SocialNetDBSQlite>(opt => opt
                .UseSqlite(Configuration.GetConnectionString("Sqlite"))
                .UseLazyLoadingProxies()
            //opt.UseSqlServer(Configuration.GetConnectionString("SqlServer"))
            //.UseLazyLoadingProxies()
            );
+
 
             services.AddIdentity<UserDTO, RoleDTO>()
                 .AddEntityFrameworkStores<SocialNetDBSQlite>()
@@ -48,8 +52,14 @@ namespace SocialNet1
             services.AddTransient<SocialNetDbInitializer>();
 
             services.AddTransient<IImage, ImageService>();
+            services.AddTransient<IUser, UserService>();
+            services.AddTransient<IChat, ChatService>(); 
+            services.AddTransient<IGroup, GroupService>(); 
+            services.AddTransient<IEmailConfirm, EmailConfirmService>();
 
             services.AddTransient<IUserIdProvider, CustomUserIdProvider>();
+
+            services.AddTransient<ILogInfo, LogInfoService>();
 
             services.AddSignalR();
 
@@ -86,6 +96,7 @@ namespace SocialNet1
             });
 
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,25 +113,34 @@ namespace SocialNet1
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseStaticFiles();
-
-            app.UseOnlineUsers();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseOnlineUsers();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
                 endpoints.MapHub<MessageHub>("/chat");
+
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=News}/{action=Index}/{id?}"
+                );
+
             });
+
         }
     }
 }

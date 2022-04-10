@@ -1,0 +1,11 @@
+﻿@{ 
+    ViewBag.Title = "Привет Админ";
+}
+
+<p>Обасть администратора</p>
+
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <p>Логи</p>
+    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="FullLogs">Все логи</a>
+    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="ErrorLogs">Логи ошибок</a>
+</div>

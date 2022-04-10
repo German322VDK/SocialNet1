@@ -1,0 +1,46 @@
+﻿@model UserInfoComponentViewModel
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="header__blue_ava_link light_@color">
+    <a href="#">
+        <img class="header__blue_ava" src="data:image/@Model.Format;base64,@Model.Photo" alt="Фото">
+    </a>
+</div>
+@*<a href="" class="header__blue_aaa light_blue">
+        <span class="header__polzovatel_name">
+            @name
+        </span>
+    </a>*@
+<div class="header__blue_aaa light_@color">
+    @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
+    {
+        <a class="light_@color" asp-area="Admin" asp-controller="Home" , asp-action="Index">
+            <i class="fa fa-keyboard-o"></i>
+        </a>
+    }
+    <a class="light_@color" asp-controller="Account" asp-action="Logout">
+        <i class="fa fa-lock"></i>
+    </a>
+</div>
+
+
+@*<ul class="navbar-nav flex-grow-1">
+        @if (User.IsInRole(Role.Administrator) || User.IsInRole(Role.God))
+        {
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" , asp-action="Index"><i class="fa fa-keyboard-o"></i> Админка</a></li>
+        }
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="UserProfile" asp-action="Index" asp-route-name="@name">
+                <img src="data:image/@Model.Item2;base64,@Model.Item1" alt="Фото" width="50" height="50">
+                @name
+            </a>
+        </li>
+        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Logout"><i class="fa fa-lock"></i> Выход</a></li>
+    </ul>*@

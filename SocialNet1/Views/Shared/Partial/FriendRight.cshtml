@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="settings">
+    <div class="filter light_@(color)">
+        <h2 class="filter__title">Фильтры друзей</h2>
+        <ul class="filter__list">
+            <li class="filter__list_item">Тут</li>
+            <li class="filter__list_item">Наверное</li>
+            <li class="filter__list_item">Список</li>
+        </ul>
+    </div>
+    <div class="possible light_@(color)">
+        <h2 class="possible__title">Возможные друзья</h2>
+        <ul class="possible__list dark_@(color)_border_bottom">
+            <li class="possible__list_item">
+                <div class="possible__ava">
+                    <a href="">
+                        <img class="possible__ava_img" src="img/Mcd.png" alt="">
+                    </a>
+                </div>
+                <div class="possible__center">
+                    <div class="possible__name">Чел</div>
+                    <div class="possible__n_f_g">
+                        <div class="possible_3_4">
+                            <div class="possible__n_f">3 / 4</div>
+                            <div class="possible__dop_n_f">3 общих друга</div>
+                            <div class="possible__dop_n_g">4 общих группы</div>
+                        </div>
+                        <div class="possible__add">
+                            <!-- <a class="possible__add_add" href="#">+</a> -->
+                            <div class="possible__add_add">+</div>
+                            <div class="possible__dop_add">Добавить</div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+            <li class="possible__list_item">
+                <div class="possible__ava">
+                    <a href="">
+                        <img class="possible__ava_img" src="img/Mcd.png" alt="">
+                    </a>
+                </div>
+                <div class="possible__center">
+                    <div class="possible__name">Чел</div>
+                    <div class="possible__n_f_g">
+                        <div class="possible_3_4">
+                            <div class="possible__n_f">3 / 4</div>
+                            <div class="possible__dop_n_f">3 общих друга</div>
+                            <div class="possible__dop_n_g">4 общих группы</div>
+                        </div>
+                        <div class="possible__add">
+                            <div class="possible__add_add">+</div>
+                            <div class="possible__dop_add">Добавить</div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+            <li class="possible__list_item">
+                <div class="possible__ava">
+                    <a href="">
+                        <img class="possible__ava_img" src="img/Mcd.png" alt="">
+                    </a>
+                </div>
+                <div class="possible__center">
+                    <div class="possible__name">Чел</div>
+                    <div class="possible__n_f_g">
+                        <div class="possible_3_4">
+                            <div class="possible__n_f">3 / 4</div>
+                            <div class="possible__dop_n_f">3 общих друга</div>
+                            <div class="possible__dop_n_g">4 общих группы</div>
+                        </div>
+                        <div class="possible__add">
+                            <div class="possible__add_add">+</div>
+                            <div class="possible__dop_add">Добавить</div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+        <span class="possible__get_all mid_@(color)_hover">Посмотреть всех</span>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

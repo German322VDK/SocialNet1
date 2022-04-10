@@ -123,14 +123,17 @@ namespace SocialNet1.Data
                     SecondName = "Сайта",
                     UserName = _godName,
                     Images = godImages,
+                    Status = "Обидно что frontent на js, когда мог быть на c#",
                     SocNetItems = new SocNetEntityUser
                     {
                         CurrentImage = 1,
-                        X = 10,
-                        Y = 10,
+                        X = 2,
+                        Y = 2,
                         Posts = new List<PostDTO>()
                     },
-                    Friends = new List<FriendStatus>()
+                    Friends = new List<FriendStatus>(),
+                    Email = "germean322@gmail.com",
+                    Groups = usersGodGroup
                 };
 
                 var creation_result = await _userManager.CreateAsync(god, Passwords.God);
@@ -178,14 +181,7 @@ namespace SocialNet1.Data
                     Image = _imageManager.GetSpecialImage("GodGroup")
                 });
 
-                var usersGodGroup = new List<UserGroupStatus>();
-
-                usersGodGroup.Add(new UserGroupStatus
-                {
-                    UserName = _godName,
-                    Status = Status.Admin,
-                    GroupName = _godShortGroupName
-                });
+                var usersGodGroup = _db.Users.FirstOrDefault(el => el.UserName == "God").Groups;
 
                 var godGroup = new GroupDTO
                 {
@@ -195,8 +191,8 @@ namespace SocialNet1.Data
                     SocNetItems = new SocNetEntityGroup
                     {
                         CurrentImage = 1,
-                        X = 10,
-                        Y = 10,
+                        X = 2,
+                        Y = 2,
                         Posts = new List<PostDTO>()
                     },
                     Images = godGroupImages,
@@ -229,7 +225,8 @@ namespace SocialNet1.Data
                     var message = new MessageDTO
                     {
                         SenderName = "God",
-                        Content = "Hello from God"
+                        Content = "Hello from God",
+                        HelpId = 1
                     };
 
                     var mas = new List<MessageDTO>();

@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SocialNet1</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+
+    <link rel="stylesheet" href="~/css/profil.css">
+    <link rel="stylesheet" href="~/css/colors.css">
+    <link rel="stylesheet" href="~/css/header_leftbar.css">
+    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="~/css/messages.css">
+    <link rel="stylesheet" href="~/css/friends.css">
+    <link rel="stylesheet" href="~/css/groups.css">
+    <link rel="stylesheet" href="~/css/chats.css">
+    <link rel="stylesheet" href="~/css/reg.css">
+    <link rel="stylesheet" href="~/css/regs.css">
+
+    <link rel="stylesheet" href="~/css/news.css">
+    <link rel="stylesheet" href="~/css/news.css">
+
+
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/fontawesome.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/font-awesome/css/v4-shims.min.css">
+    @*<link rel="stylesheet"
+              href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+        <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>*@
+
+</head>
+<body>
+
+    <header class="header__container container">
+        <div class="header__left">
+            <div class="header__red dark_red"></div>
+            <div class="header__green dark_green"></div>
+        </div>
+        <div class="header__center">
+            <a class="header__logo" href=""></a>
+        </div>
+        <div class="header__right">
+            <div class="header__blue dark_blue">
+            </div>
+            <div class="header__yellow dark_yellow"></div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    @*<script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>*@
+
+    <script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+
+    <script src="~/js/login.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

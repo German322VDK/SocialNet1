@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
+using SocialNet1.Models.Hub;
+using SocialNet1.Models.Static;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
@@ -11,30 +12,99 @@ namespace SocialNet1.Hubs
 {
     public class MessageHub : Hub
     {
-        public MessageHub()
-        {
+        private string url = "http://localhost:5000/";
 
+        private readonly ILogger<MessageHub> _logger;
+        public MessageHub(ILogger<MessageHub> logger)
+        {
+            _logger = logger;
         }
 
-        //public async Task Send(SimpMessage message)
-        //{
-        //    message.Date = DateTime.Now.ToString("g");
+        public async Task Send(SimpMessageModel message)
+        {
+            if(message is null || string.IsNullOrEmpty(message.Content) || string.IsNullOrEmpty(message.SenderName)
+                || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Сообщение не пришло (");
 
-        //    HttpClient client = new HttpClient();
-        //    CancellationToken Cancel = default;
+                return;
+            }
 
-        //    var response = client.PostAsJsonAsync<SimpMessage>(API.AddMessAPI, message, Cancel).Result.Content.ReadAsStringAsync().Result;
+            message.Date = DateTime.Now.ToString("t");
 
-        //    var responseresult = Convert.ToBoolean(response);
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
 
-        //    if (responseresult)
-        //        _Logger.LogInformation($"Сообщение ({message.Content}) людей ({message.UserName}) и " +
-        //            $"({message.RecipientName}) успешно сохранено в БД:)");
-        //    else
-        //        _Logger.LogInformation($"Сообщение ({message.Content}) людей ({message.UserName}) и " +
-        //            $"({message.RecipientName}) обломаломь с БД:(");
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.ADD_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
 
-        //    await Clients.Users(message.UserName, message.RecipientName).SendAsync("Receive", message);
-        //}
+            var responseresult = Convert.ToInt32(response);
+
+            //var responseresult = true;
+
+            if (responseresult != 0)
+                _logger.LogInformation($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) успешно сохранено в БД:)");
+            else
+                _logger.LogWarning($"Сообщение '{message.Content}' людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) обломаломь с БД:(");
+
+            message.MessageHelpId = responseresult;
+
+            await Clients.Users(message.SenderName, message.RecipientName).SendAsync("Receive", message);
+        }
+
+        public async Task ToDelete(SimpMessageDeleteModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.SenderName) || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Не знаю какое сообщение удалять (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.DELETE_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            bool responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+                _logger.LogInformation($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) успешно удалено из БД:)");
+            else
+                _logger.LogWarning($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) обломаломь с удалением в БД:(");
+
+            message.IsSuccess = responseresult;
+
+            await Clients.Users(message.SenderName, message.RecipientName).SendAsync("FromDelete", message);
+        }
+
+        public async Task ToUpdate(SimpMessageUpdateModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.SenderName) || string.IsNullOrEmpty(message.RecipientName))
+            {
+                _logger.LogWarning("Не знаю какое сообщение удалять (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.UPDATE_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            bool responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+                _logger.LogInformation($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) успешно изменено из БД:)");
+            else
+                _logger.LogWarning($"Сообщение № {message.MessageHelpId} людей '{message.SenderName}' и " +
+                    $"({message.RecipientName}) обломаломь с изменением в БД:(");
+
+            await Clients.Users(message.SenderName, message.RecipientName).SendAsync("FromUpdate", message);
+        }
     }
 }
