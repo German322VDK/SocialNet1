@@ -94,8 +94,6 @@
         });
     }
 
-
-
     fullPhotos.Reverse();
 
     var photos = fullPhotos
@@ -110,9 +108,9 @@
 }
 
 <div class="profil_left">
-    <partial name="Partial/ProfileInfo" model="@Model" />
+    <partial name="Partial/Profile/ProfileInfo" model="@Model" />
 
-    <partial name="Partial/ProfilePhotos" model="@photos" />
+    <partial name="Partial/Profile/ProfilePhotos" model="@photos" />
 
     @if (Model.User.UserName == User.Identity!.Name)
     {
@@ -121,19 +119,19 @@
         </div>
     }
 
-    <partial name="Partial/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
+    <partial name="Partial/Profile/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
 
-    <partial name="Partial/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />  
+    <partial name="Partial/Profile/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />  
 
 </div>
 
-<partial name="Partial/ProfileRight" model="@ava" />
+<partial name="Partial/Profile/ProfileRight" model="@ava" />
 
 @if (Model.User.UserName == User.Identity!.Name)
 {
-    <partial name="Partial/PhotoAdd" />
-    <partial name="Partial/SetAva" model="@avaIms"/>
-    <partial name="Partial/Coord" />
+    <partial name="Partial/Profile/PhotoAdd" />
+    <partial name="Partial/Profile/SetAva" model="@avaIms"/>
+    <partial name="Partial/Profile/Coord" />
 }
 
-<partial name="Partial/Slider" model="@fullPhotos" />
+<partial name="Partial/Profile/Slider" model="@fullPhotos" />
