@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.ViewModels;
+using System.Linq;
 
 namespace SocialNet1.Controllers
 {
@@ -23,21 +24,30 @@ namespace SocialNet1.Controllers
 
         public IActionResult Index()
         {
-            if (_user.Get(User.Identity.Name) is null)
+            var userName = User.Identity.Name;
+
+            var user = _user.Get(userName);
+
+            if (user is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
             }
 
-            var userName = User.Identity.Name;
-
             var chats = _chat.Get(userName);
+
+            var allFriends = user.Friends.Select(el => _user.Get(el.FriendName)).ToList();
+
+            var friends = allFriends
+                .Where(el => _user.IsFriend(el.UserName, user.UserName))
+                .ToList();
 
             _logger.LogInformation($"Тип {userName} смотрит свои переписки");
 
             return View(new ChatsViewModel 
             { 
                 UserName = userName,
-                Chats = chats
+                Chats = chats,
+                Friends = friends
             });
         }
 

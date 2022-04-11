@@ -27,12 +27,12 @@
             @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
             {
                 <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
-                    <a asp-area="Admin" asp-controller="Home" , asp-action="Index">
-                        <i class="fa fa-keyboard-o"></i> Админка
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+                        <i class="fa fa-keyboard-o fa-1x color_dark_dark_@(color)"></i> Админка
                     </a>
                 </button>
-                
             }
+
         }
         else
         {
@@ -41,12 +41,12 @@
                 <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                     Добавить подписчика
-                    <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
+                    <i class="fas fa-user-check fa-1x color_dark_dark_@(color)"></i>
                 </button>
                 <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="DeleteFriend('@deleteUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                     Удалить
-                    <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
+                    <i class="fas fa-user-alt-slash fa-1x color_dark_dark_@(color)"></i>
                 </button>
             }
             else if (!userService.IsFriend(name, Model.UserName) && userService.IsFriend(Model.UserName, name))
@@ -54,12 +54,12 @@
                 <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                     Добавить подписчика
-                    <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
+                    <i class="fas fa-user-check fa-1x color_dark_dark_@(color)"></i>
                 </button>
                 <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="DeleteFriend('@deleteUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                     Удалить
-                    <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
+                    <i class="fas fa-user-alt-slash fa-1x color_dark_dark_@(color)"></i>
                 </button>
             }
             else
@@ -69,12 +69,12 @@
                     <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                         Подписаться
-                        <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
+                        <i class="fas fa-user-check fa-1x color_dark_dark_@(color)"></i>
                     </button>
                     <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="DeleteFriend('@deleteUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                         Отписаться
-                        <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
+                        <i class="fas fa-user-alt-slash fa-1x color_dark_dark_@(color)"></i>
                     </button>
                 }
                 else
@@ -82,15 +82,21 @@
                     <button id="addFriend" class="profil_right__ava_btn mid_@(color)_hover" onclick="AddFriend('@addUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                         Подписаться
-                        <i class="fas fa-user-check fa-2x color_dark_dark_@(color)"></i>
+                        <i class="fas fa-user-check fa-1x color_dark_dark_@(color)"></i>
                     </button>
                     <button id="deleteFriend" class="profil_right__ava_btn mid_@(color)_hover" style='display:none' onclick="DeleteFriend('@deleteUrl', '@name',
                     '@Model.UserName', 'addFriend', 'deleteFriend')">
                         Отписаться
-                        <i class="fas fa-user-alt-slash fa-2x color_dark_dark_@(color)"></i>
+                        <i class="fas fa-user-alt-slash fa-1x color_dark_dark_@(color)"></i>
                     </button>
                 }
             }
+
+            <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
+                <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@Model.UserName">
+                    <i class="far fa-envelope fa-1x color_dark_dark_@(color)"></i> Написать
+                </a>
+            </button>
         }
 
         <a class="profil_right__lol mid_@(color)_hover" href="">ы</a>

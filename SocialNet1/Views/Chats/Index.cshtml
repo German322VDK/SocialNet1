@@ -10,7 +10,7 @@
     if (user is not null)
         color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
-    var chats = Model.Chats.OrderBy(el => el.LastTimeMess).Reverse();
+    var chats = Model.Chats.OrderBy(el => el.LastTimeMess).Reverse().Where(ch => ch.Messages.Count > 0);
 
 }
 
@@ -101,135 +101,40 @@
             }
         </div>
         <div data-target="two" class="chats__info_container">
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название 2</span>
-                            <span class="chats__post_time">4:20</span>
+            @foreach (var friend in Model.Friends)
+            {
+                int friendUserX = friend.SocNetItems.X, friendUserY = friend.SocNetItems.Y;
+
+                var friendUserColor = UserMethods.GetColor(friendUserX, friendUserY);
+
+                var friendImageArr = friend.Images.SingleOrDefault(el => el.ImageNumber == friend.SocNetItems.CurrentImage).Image;
+
+                var friendStrImage = ImageMethods.GetStringFromByteArr(friendImageArr);
+
+                var friendFormat = ImageMethods.GetFormat(friendImageArr);
+
+                var friendCoord = $"photo/coordinates/{friendUserX}d{friendUserY}.jpg";
+
+                <div class="chats__post dark_@(color)_border_bottom mid_@(friendUserColor)_hover">
+                    <a class="chats__post_link" asp-controller="Chats" asp-action="Chat" asp-route-userName="@friend.UserName">
+                        <div class="chats__post_ava">
+                            <img class="chats__post_ava_img" src="data:image/@friendFormat;base64,@friendStrImage" alt="Фото">
                         </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
+                        <div class="chats__post_block">
+                            <div class="chats__post_block_name_time">
+                                <span class="chats__post_name">@friend.FirstName @friend.SecondName</span>
+                                <span class="chats__post_time">@DateTime.Now.ToString("g")</span>
                             </div>
-                            <div class="chats__post_text">Сам ты псина </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название</span>
-                            <span class="chats__post_time">4:20</span>
-                        </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
-                            </div>
-                            <div class="chats__post_text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Quia aliquid
+                            <div class="chats__post_ava2_text">
+                                <div class="chats__post_ava2">
+                                    <img class="chats__post_ava2_img" src="@friendCoord" alt="">
+                                </div>
+                                <div class="chats__post_text">Написать? </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название</span>
-                            <span class="chats__post_time">4:20</span>
-                        </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
-                            </div>
-                            <div class="chats__post_text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Quia aliquid
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название</span>
-                            <span class="chats__post_time">4:20</span>
-                        </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
-                            </div>
-                            <div class="chats__post_text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Quia aliquid
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название</span>
-                            <span class="chats__post_time">4:20</span>
-                        </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
-                            </div>
-                            <div class="chats__post_text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Quia aliquid
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
-                <a class="chats__post_link" href="">
-                    <div class="chats__post_ava">
-                        <img class="chats__post_ava_img" src="img/123.png" alt="">
-                    </div>
-                    <div class="chats__post_block">
-                        <div class="chats__post_block_name_time">
-                            <span class="chats__post_name">Название</span>
-                            <span class="chats__post_time">4:20</span>
-                        </div>
-                        <div class="chats__post_ava2_text">
-                            <div class="chats__post_ava2">
-                                <img class="chats__post_ava2_img" src="img/123.png" alt="">
-                            </div>
-                            <div class="chats__post_text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing
-                                elit. Quia aliquid
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            }
         </div>
         <div data-target="three" class="chats__info_container">
             <div class="chats__post dark_@(color)_border_bottom mid_@(color)_hover">
