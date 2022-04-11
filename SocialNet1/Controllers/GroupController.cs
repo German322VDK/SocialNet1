@@ -25,6 +25,11 @@ namespace SocialNet1.Controllers
 
         public IActionResult Index(string userName = null)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+            }
             string username;
 
             if (userName is not null)
@@ -66,6 +71,11 @@ namespace SocialNet1.Controllers
 
         public IActionResult Group(string groupName)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+            }
             return View();
         }
 

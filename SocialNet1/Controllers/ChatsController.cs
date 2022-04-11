@@ -10,18 +10,24 @@ namespace SocialNet1.Controllers
     public class ChatsController : Controller
     {
         private readonly IChat _chat;
+        private readonly IUser _user;
         private readonly ILogger<ChatsController> _logger;
 
-        public ChatsController(IChat chat, ILogger<ChatsController> logger)
+        public ChatsController(IChat chat, IUser user, ILogger<ChatsController> logger)
         {
             _chat = chat;
-
+            _user = user;
             _logger = logger;
 
         }
 
         public IActionResult Index()
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
             var userName = User.Identity.Name;
 
             var chats = _chat.Get(userName);
@@ -37,6 +43,11 @@ namespace SocialNet1.Controllers
 
         public IActionResult Chat(string userName)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
             var autorName = User.Identity.Name;
 
             var chat = _chat.Get(autorName, userName);

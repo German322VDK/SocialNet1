@@ -26,6 +26,11 @@ namespace SocialNet1.Controllers
 
         public IActionResult Index(string userName = null)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
             UserDTO userDTO;
 
             var currantUserName = User.Identity!.Name;
@@ -59,6 +64,11 @@ namespace SocialNet1.Controllers
 
         public IActionResult AddImage(IFormFile uploadedFile)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
             var currantUserName = User.Identity!.Name;
 
             _logger.LogInformation($"{currantUserName} пытается добавить фотографию");
@@ -98,8 +108,12 @@ namespace SocialNet1.Controllers
 
         public IActionResult SetAva(string userName, int ava)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
 
-            if(userName is null)
+            if (userName is null)
             {
                 _logger.LogWarning($"Не понятно кому менять аву(");
 
@@ -122,6 +136,10 @@ namespace SocialNet1.Controllers
 
         public IActionResult SetCoord(string userName, int x, int y)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
 
             if (userName is null)
             {
@@ -146,7 +164,12 @@ namespace SocialNet1.Controllers
 
         public IActionResult AddComm(ComModel model)
         {
-            if(model is null || model.UserName is null || model.AuthorName is null || model.Text is null)
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
+            if (model is null || model.UserName is null || model.AuthorName is null || model.Text is null)
             {
                 _logger.LogWarning("Данные для добавления поста не пришли");
 
