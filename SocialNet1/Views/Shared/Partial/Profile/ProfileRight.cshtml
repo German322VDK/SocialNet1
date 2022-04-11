@@ -23,6 +23,16 @@
         {
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">Сменить фотографию</button>
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenCord()">Сменить взгляды</button>
+
+            @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
+            {
+                <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
+                    <a asp-area="Admin" asp-controller="Home" , asp-action="Index">
+                        <i class="fa fa-keyboard-o"></i> Админка
+                    </a>
+                </button>
+                
+            }
         }
         else
         {

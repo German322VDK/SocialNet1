@@ -205,6 +205,15 @@ namespace SocialNet1.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
+            var userName = User.Identity.Name;
+
+            if (userName is null || _user.Get(userName) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
+            _logger.LogWarning($"Тип {userName} хотел попасть на {ReturnUrl}");
+
             return View();
         }
     }
