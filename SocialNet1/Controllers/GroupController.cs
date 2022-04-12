@@ -29,6 +29,8 @@ namespace SocialNet1.Controllers
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
 
+                return RedirectToAction("Login", "Account");
+
             }
             string username;
 

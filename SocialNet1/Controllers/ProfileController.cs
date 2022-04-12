@@ -29,6 +29,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             UserDTO userDTO;
@@ -67,6 +69,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             var currantUserName = User.Identity!.Name;
@@ -111,6 +115,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             if (userName is null)
@@ -139,6 +145,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             if (userName is null)
@@ -167,6 +175,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             if (model is null || model.UserName is null || model.AuthorName is null || model.Text is null)

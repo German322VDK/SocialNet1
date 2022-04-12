@@ -24,6 +24,8 @@ namespace SocialNet1.Controllers
             if(_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             UserDTO user;

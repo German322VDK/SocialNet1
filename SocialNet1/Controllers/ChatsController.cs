@@ -31,6 +31,8 @@ namespace SocialNet1.Controllers
             if (user is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             var chats = _chat.Get(userName);
@@ -56,6 +58,8 @@ namespace SocialNet1.Controllers
             if (_user.Get(User.Identity.Name) is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
             }
 
             var autorName = User.Identity.Name;
