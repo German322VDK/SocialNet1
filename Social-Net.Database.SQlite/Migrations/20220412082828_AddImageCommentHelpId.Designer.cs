@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNet1.Database.SQlite.Context;
 
 namespace SocialNet1.Database.SQlite.Migrations
 {
     [DbContext(typeof(SocialNetDBSQlite))]
-    partial class SocialNetDBSQliteModelSnapshot : ModelSnapshot
+    [Migration("20220412082828_AddImageCommentHelpId")]
+    partial class AddImageCommentHelpId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -399,9 +401,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("HelpId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -624,6 +623,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<int?>("GroupImageCommentsId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsPutinAdminGroupCom")
                         .HasColumnType("INTEGER");
 
@@ -648,9 +650,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("GroupImagesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
@@ -680,6 +679,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<int?>("GroupImagesId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsPutinAdminGroup")
                         .HasColumnType("INTEGER");
 
@@ -703,6 +705,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<int>("Emoji")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Likers")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -724,6 +729,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsPutinUser")
@@ -753,6 +761,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsPutinLiked")

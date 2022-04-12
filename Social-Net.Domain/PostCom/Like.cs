@@ -5,6 +5,7 @@ namespace SocialNet1.Domain.PostCom
 {
     public class Like : Entity
     {
+
         [Required]
         public string Likers { get; set; }
 
