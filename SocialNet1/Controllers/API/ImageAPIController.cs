@@ -67,7 +67,8 @@ namespace SocialNet1.Controllers.API
                 AuthorUserName = senderUser.UserName,
                 AuthorCoordinatesImage = $"photo/coordinates/{senderUser.SocNetItems.X}d{senderUser.SocNetItems.Y}.jpg",
                 AuthorImage = curImage,
-                AuthorFormat = format
+                AuthorFormat = format,
+                HelpId = com.HelpId
             };
         }
 
