@@ -54,7 +54,7 @@ namespace SocialNet1.Infrastructure.Methods
                 if (string.IsNullOrEmpty(fm))
                     return false;
                 else
-                    return false;
+                    return true;
             }
             catch (Exception)
             {

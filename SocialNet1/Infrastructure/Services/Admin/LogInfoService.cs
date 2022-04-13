@@ -7,10 +7,10 @@ namespace SocialNet1.Infrastructure.Services.Admin
     public class LogInfoService : ILogInfo
     {
         public ICollection<string> GetErrorLogs() =>
-            GetFileNames("Logs\\Error");
+            GetFileNames("Logs/Error");
 
         public ICollection<string> GetFullLogs() =>
-            GetFileNames("Logs\\Info");
+            GetFileNames("Logs/Info");
 
         public ICollection<string> GetFileNames(string dir)
         {

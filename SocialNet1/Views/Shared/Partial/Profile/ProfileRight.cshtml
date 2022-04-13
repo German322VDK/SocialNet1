@@ -26,7 +26,7 @@
 
             @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
             {
-                <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
+                <button class="profil_right__ava_btn mid_@(color)_hover">
                     <a asp-area="Admin" asp-controller="Home" asp-action="Index">
                         <i class="fa fa-keyboard-o fa-1x color_dark_dark_@(color)"></i> Админка
                     </a>

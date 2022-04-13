@@ -11,6 +11,6 @@ namespace SocialNet1.Models.Static
 
         public const string MAIN_NAME = "politspectr";
 
-        public const string MAIN_PASS = "zxc322Abuser";
+        public const string MAIN_PASS = "zxc322Abuser1";
     }
 }
