@@ -4,9 +4,9 @@
 
     var imageArr = userMainImage.Image;
 
-    var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-    var format = ImageMethods.GetFormat(imageArr);
+    var format = NewImageMethods.GetFormat(imageArr);
 
     var ava = new PhotoFormat
     {
@@ -29,8 +29,8 @@
 
     foreach (var item in user.Images)
     {
-        var photo = ImageMethods.GetStringFromByteArr(item.Image);
-        var formatPhoto = ImageMethods.GetFormat(item.Image);
+        var photo = NewImageMethods.GetStringFromByteArr(item.Image);
+        var formatPhoto = NewImageMethods.GetFormat(item.Image);
 
         var coments = new List<PhotoUserInfoComms>();
 
@@ -42,9 +42,9 @@
 
             var commentImageArr = commentMainImage.Image;
 
-            var commentStrImage = ImageMethods.GetStringFromByteArr(commentImageArr);
+            var commentStrImage = NewImageMethods.GetStringFromByteArr(commentImageArr);
 
-            var commentFormat = ImageMethods.GetFormat(commentImageArr);
+            var commentFormat = NewImageMethods.GetFormat(commentImageArr);
 
             var comId = coment.Id;
 

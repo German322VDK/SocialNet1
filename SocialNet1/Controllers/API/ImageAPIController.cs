@@ -51,9 +51,9 @@ namespace SocialNet1.Controllers.API
 
             var curImageArr = senderUser.Images.SingleOrDefault(el => el.ImageNumber == senderUser.SocNetItems.CurrentImage).Image;
 
-            var format = ImageMethods.GetFormat(curImageArr);
+            var format = NewImageMethods.GetFormat(curImageArr);
 
-            var curImage = ImageMethods.GetStringFromByteArr(curImageArr);
+            var curImage = NewImageMethods.GetStringFromByteArr(curImageArr);
 
             _logger.LogInformation($"{sender} смог добавить комментарий: {text} под фото {imageId} принадлежащее {recipient}");
 

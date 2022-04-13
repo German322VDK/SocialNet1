@@ -23,7 +23,7 @@ namespace SocialNet1.Data
         private readonly ILogger<SocialNetDbInitializer> _logger;
         private readonly UserManager<UserDTO> _userManager;
         private readonly RoleManager<RoleDTO> _roleManager;
-        private readonly IImage _imageManager;
+        private readonly IMyImage _imageManager;
 
         private const string _godGroupName = "Главная группа сайта";
         private const string _godShortGroupName = "offgroup";
@@ -31,7 +31,7 @@ namespace SocialNet1.Data
 
         public SocialNetDbInitializer(SocialNetDBSQlite db, ILogger<SocialNetDbInitializer> logger,
             UserManager<UserDTO> userManager, RoleManager<RoleDTO> roleManager,
-            IImage images)
+            IMyImage images)
         {
             _db = db;
             _logger = logger;

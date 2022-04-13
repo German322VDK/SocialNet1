@@ -85,9 +85,9 @@ namespace SocialNet1.Controllers
             }
                 
 
-            var arr = ImageMethods.GetByteArrFromFile(uploadedFile);
+            var arr = NewImageMethods.GetByteArrFromFile(uploadedFile);
 
-            var result = ImageMethods.IsValid(arr);
+            var result = NewImageMethods.IsValid(arr);
 
             if (!result)
             {

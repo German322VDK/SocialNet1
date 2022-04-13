@@ -1,51 +1,46 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Infrastructure.Methods
 {
-    public static class ImageMethods
+    public class NewImageMethods
     {
         public static string GetFormat(byte[] arr)
         {
             string format = "";
             if (arr is not null)
             {
-                var memorystream2 = new MemoryStream(arr);
-                var im2 = Image.FromStream(memorystream2).RawFormat;
+                var im = Image.DetectFormat(arr);
 
-                if (im2 == ImageFormat.Jpeg)
+                if (im.Name == "JPEG")
                     format = "jpg";
-                else if (im2 == ImageFormat.Png)
+                else if (im.Name == "PNG")
                     format = "png";
-                else if (im2 == ImageFormat.Gif)
+                else if (im.Name == "GIF")
                     format = "gif";
                 else
-                    format = "jpg";
+                    format = "";
             }
 
             return format;
         }
 
-        public static ImageFormat GetFormat(string photoName)
+        public static IImageEncoder GetFormat(string photoName)
         {
             var photoNames = photoName.Split('.');
 
             var format = photoNames[photoNames.Length - 1];
 
-            if (format == "jpeg" || format == "jpg") 
-                return ImageFormat.Jpeg;
+            if (format == "jpeg" || format == "jpg")
+                return new JpegEncoder();
 
             else if (format == "png" || format == "PNG")
-                return ImageFormat.Png;
+                return new PngEncoder();
             else
                 throw new ArgumentException("Неправильный формат файла");
         }
@@ -54,28 +49,15 @@ namespace SocialNet1.Infrastructure.Methods
         {
             try
             {
-                using (var image = Image.FromStream(new MemoryStream(arr)))
-                {
-                    if (image.RawFormat.Equals(ImageFormat.Jpeg))
-                    {
-                        return true;
-                    }
-                    if (image.RawFormat.Equals(ImageFormat.Png))
-                    {
-                        return true;
-                    }
-                    if (image.RawFormat.Equals(ImageFormat.Gif))
-                    {
-                        return true;
-                    }
+                var fm = GetFormat(arr);
 
+                if (string.IsNullOrEmpty(fm))
                     return false;
-                }
-
+                else
+                    return false;
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
@@ -93,9 +75,13 @@ namespace SocialNet1.Infrastructure.Methods
 
         public static byte[] GetByteArrFromFile(string fileName)
         {
-            var newImage = Image.FromFile(fileName);
             var memorystream = new MemoryStream();
-            newImage.Save(memorystream, ImageFormat.Jpeg);
+
+            using (var newImage = Image.Load(fileName))
+            {
+                newImage.Save(memorystream, GetFormat(fileName));
+            }
+
             var arr = memorystream.ToArray();
 
             return arr;
@@ -103,5 +89,6 @@ namespace SocialNet1.Infrastructure.Methods
 
         public static string GetStringFromByteArr(byte[] arr) =>
             Convert.ToBase64String(arr);
+
     }
 }

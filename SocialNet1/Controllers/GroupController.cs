@@ -61,8 +61,8 @@ namespace SocialNet1.Controllers
                     MainShortName = item.ShortGroupName,
                     UserCount = item.Users.Count,
                     CoordImage = $"photo/coordinates/{x}d{y}.jpg",
-                    MainImage = ImageMethods.GetStringFromByteArr(arr),
-                    MainFormat = ImageMethods.GetFormat(arr)
+                    MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                    MainFormat = NewImageMethods.GetFormat(arr)
                 };
 
                 gropsVM.Add(group);

@@ -51,7 +51,7 @@ namespace SocialNet1
 
             services.AddTransient<SocialNetDbInitializer>();
 
-            services.AddTransient<IImage, ImageService>();
+            services.AddTransient<IMyImage, ImageService>();
             services.AddTransient<IUser, UserService>();
             services.AddTransient<IChat, ChatService>(); 
             services.AddTransient<IGroup, GroupService>(); 
@@ -65,21 +65,28 @@ namespace SocialNet1
 
             services.Configure<IdentityOptions>(opt =>
             {
-#if DEBUG
                 opt.Password.RequiredLength = 3;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredUniqueChars = 3;
-#endif
 
-                opt.User.RequireUniqueEmail = false;
+//#if DEBUG
+//                opt.Password.RequiredLength = 3;
+//                opt.Password.RequireDigit = false;
+//                opt.Password.RequireLowercase = false;
+//                opt.Password.RequireUppercase = false;
+//                opt.Password.RequireNonAlphanumeric = false;
+//                opt.Password.RequiredUniqueChars = 3;
+//#endif
 
-                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
-                opt.Lockout.AllowedForNewUsers = false;
-                opt.Lockout.MaxFailedAccessAttempts = 10;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+//                opt.User.RequireUniqueEmail = false;
+
+//                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+//                opt.Lockout.AllowedForNewUsers = false;
+//                opt.Lockout.MaxFailedAccessAttempts = 10;
+//                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             });
 
             services.ConfigureApplicationCookie(opt =>

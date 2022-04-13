@@ -10,9 +10,9 @@
 
     var curUserCurImage = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage).Image;
 
-    var curUserImage = ImageMethods.GetStringFromByteArr(curUserCurImage);
+    var curUserImage = NewImageMethods.GetStringFromByteArr(curUserCurImage);
 
-    var curUserFormat = ImageMethods.GetFormat(curUserCurImage);
+    var curUserFormat = NewImageMethods.GetFormat(curUserCurImage);
 
     //var addImageAPI = $"http://{Context.Request.Host}/{APIUrls.ADD_IMAGE}";
 

@@ -63,9 +63,9 @@
 
                 var chatImageArr = chatUser.Images.SingleOrDefault(el => el.ImageNumber == chatUser.SocNetItems.CurrentImage).Image;
 
-                var chatStrImage = ImageMethods.GetStringFromByteArr(chatImageArr);
+                var chatStrImage = NewImageMethods.GetStringFromByteArr(chatImageArr);
 
-                var chatFormat = ImageMethods.GetFormat(chatImageArr);
+                var chatFormat = NewImageMethods.GetFormat(chatImageArr);
 
                 var chatCoord = $"photo/coordinates/{chatUserX}d{chatUserY}.jpg";
 
@@ -109,9 +109,9 @@
 
                 var friendImageArr = friend.Images.SingleOrDefault(el => el.ImageNumber == friend.SocNetItems.CurrentImage).Image;
 
-                var friendStrImage = ImageMethods.GetStringFromByteArr(friendImageArr);
+                var friendStrImage = NewImageMethods.GetStringFromByteArr(friendImageArr);
 
-                var friendFormat = ImageMethods.GetFormat(friendImageArr);
+                var friendFormat = NewImageMethods.GetFormat(friendImageArr);
 
                 var friendCoord = $"photo/coordinates/{friendUserX}d{friendUserY}.jpg";
 

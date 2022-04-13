@@ -12,9 +12,9 @@
 
     var imageArr = userMainImage.Image;
 
-    var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-    var format = ImageMethods.GetFormat(imageArr);
+    var format = NewImageMethods.GetFormat(imageArr);
 
     int i = 1;
 
@@ -57,8 +57,8 @@
                 .Image;
         }
 
-        var photo = ImageMethods.GetStringFromByteArr(formatThisPost);
-        var formatPhoto = ImageMethods.GetFormat(formatThisPost);
+        var photo = NewImageMethods.GetStringFromByteArr(formatThisPost);
+        var formatPhoto = NewImageMethods.GetFormat(formatThisPost);
 
         var isLiked = item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null;
         int j = 1, xp = poster.SocNetItems.X, yp = poster.SocNetItems.Y;
@@ -216,8 +216,8 @@
                                 .FirstOrDefault(im => im.ImageNumber == commenter.SocNetItems.CurrentImage)
                                 .Image;
 
-                        var photoCom = ImageMethods.GetStringFromByteArr(arrComs);
-                        var formatPhotoCom = ImageMethods.GetFormat(arrComs);
+                        var photoCom = NewImageMethods.GetStringFromByteArr(arrComs);
+                        var formatPhotoCom = NewImageMethods.GetFormat(arrComs);
 
                         int xCom = commenter.SocNetItems.X, yCom = commenter.SocNetItems.Y;
 

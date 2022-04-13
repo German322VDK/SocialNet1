@@ -114,7 +114,7 @@ namespace SocialNet1.Controllers
                     }
                     await _signInManager.SignInAsync(user, false);
 
-                    var arr = ImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
+                    var arr = NewImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
 
                     _user.AddPhoto(arr, user.UserName);
 

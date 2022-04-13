@@ -149,9 +149,9 @@ namespace SocialNet1.Controllers.API
 
             var imageArr = commenter.Images.SingleOrDefault(el => el.ImageNumber == commenter.SocNetItems.CurrentImage).Image;
 
-            var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+            var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-            var format = ImageMethods.GetFormat(imageArr);
+            var format = NewImageMethods.GetFormat(imageArr);
 
             return new CommentModel
             {
