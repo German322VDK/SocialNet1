@@ -22,15 +22,17 @@ namespace SocialNet1.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUser _user;
         private readonly IChat _chat;
+        private readonly IEmailConfirm _emailConfirm;
 
         public AccountController(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager,
-            ILogger<AccountController> logger, IUser user, IChat chat)
+            ILogger<AccountController> logger, IUser user, IChat chat, IEmailConfirm emailConfirm)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _user = user;
             _chat = chat;
+            _emailConfirm = emailConfirm;
         }
 
         #region Register
@@ -61,6 +63,13 @@ namespace SocialNet1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
+            if(Model is null || string.IsNullOrEmpty(Model.Email) || _emailConfirm.Get(Model.Email) is null)
+            {
+                _logger.LogWarning("Какой то конченный хотел меня обмануть");
+
+                return RedirectToAction("RegisterStart", "Account");
+            }
+
             var userNameIsExist = CheckUserName(Model.UserName);
 
             if (userNameIsExist)

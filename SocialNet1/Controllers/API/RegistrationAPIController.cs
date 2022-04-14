@@ -55,8 +55,15 @@ namespace SocialNet1.Controllers.API
 
             _logger.LogInformation($"Типу с почтой {email} пытаемся отправить хэшкод на почту");
 
-            await SendMailMethods.SendEmailAsync(Emails.MAIN_EMAIL, Emails.MAIN_NAME, Emails.MAIN_PASS, email, "Подтверждение почты", 
+            var resultSending = await SendMailMethods.SendEmailAsync(Emails.MAIN_EMAIL, Emails.MAIN_NAME, Emails.MAIN_PASS, email, "Подтверждение почты", 
                 $"Код для регистрации <b>{randString}</b>. Никому кроме нас его не сообщайте)");
+
+            if (!resultSending)
+            {
+                _logger.LogWarning($"Типу с почтой {email} не был отправлен хэшкод на почту, произошёл краш");
+
+                return false;
+            }
 
             _logger.LogInformation($"Типу с почтой {email} был отправлен хэшкод на почту");
 

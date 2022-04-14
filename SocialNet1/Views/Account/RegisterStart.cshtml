@@ -12,32 +12,35 @@
         <div>
 
         </div>
-        <div>
-            <form asp-action="Register" asp-antiforgery="true" class="registration-form">
+        <div class="reg_div">
+            <form asp-action="Register" asp-antiforgery="true" class="registration-form" style="display:none">
 
-                <div class="">
-                    <div id="act1" class="regs__vved">
-                        <input type="text" placeholder="Введите почту" asp-for="Email" id="Email">
-                    </div>
+                <input type="text" placeholder="Введите почту" asp-for="Email" id="Email" class="reg_data_input">
 
-                    <div id="act2" style="display:none">
-                        <div class="regs__vved">
-                            <p class="regs__vved">Мы отправили вам код подтверждения, пожалуйста введите его</p>
-                            <input type="text" placeholder="Код" asp-for="Hash" id="Hash">
-                            <div class="">
-                                <button type="submit" class="regs__btns" id="nextdoor" name="register" style="display: none">
-                                    <span class="">Войти</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="act3" class="" style="display:none"><p>Почта уже существует или что то пошло не так(</p></div>
-                </div>
+                <button type="submit" class="regs__btns" id="regIn" name="register">
+                    <span class="">Войти</span>
+                </button>
 
             </form>
 
-            <button class="regs__btns" id="but1" onclick="GetHash('act1', 'act2', 'act3', 'Email', '/@url1')">Получить код</button>
-            <button class="regs__btns" id="but2" style="display:none" onclick="Confirm('Email', 'Hash', '/@url2')">Ввести код</button>
+            <div id="act1" class="regs__vved">
+                <input type="text" placeholder="Введите почту" id="RegEmail" class="reg_data_input">
+            </div>
+            <div id="act2" style="display:none">
+                <div class="regs__vved">
+                    <p class="regs__vved">Мы отправили вам код подтверждения, пожалуйста введите его</p>
+                    <input type="text" placeholder="Код" id="Hash" class="reg_data_input">
+                    <div class="">
+                        <button type="submit" class="regs__btns" id="nextdoor" name="register" style="display: none" onclick="RegInput()">
+                            <span class="">Войти</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="act3" class="" style="display:none"><p>Почта уже существует или что то пошло не так(</p></div>
+
+            <button class="regs__btns" id="but1" onclick="GetHash('act1', 'act2', 'act3', 'RegEmail', '/@url1')">Получить код</button>
+            <button class="regs__btns" id="but2" style="display:none" onclick="Confirm('RegEmail', 'Hash', '/@url2')">Ввести код</button>
 
             <p style="display:none" id="finaler">Не верный код(</p>
 
