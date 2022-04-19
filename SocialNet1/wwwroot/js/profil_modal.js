@@ -46,7 +46,11 @@ function Validate(oForm) {
   return true;
   }
 
- document.getElementById('files').addEventListener('change', handleFileSelect, false);
+if (document.getElementById('files') != null) {
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+}
+
+ 
 
   function handleFileSelect(evt) {
     var image = document.getElementById('files');

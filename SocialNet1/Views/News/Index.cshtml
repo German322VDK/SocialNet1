@@ -1,33 +1,15 @@
-﻿
+﻿@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
 
 <div class="news">
-    <div name="top" class="news__add">
-        <button class="news__add_btn light_yellow" type="button" onclick="fun__but('postadd')">
-            <img class="news__add_post_ava" src="img/123.png" alt="">
-            <span class="btn__text">
-                Добавить пост
-            </span>
-        </button>
-        <div id="postadd" style="display: none">
-            <div class="my_pad my_item_marg light_yellow">
-                <form>
-                    <div>
-                        <textarea cols="50" rows="10" class="forinput_or_textarea light_yellow"
-                                  placeholder="Что у вас нового?"></textarea>
-                    </div>
-                    <div class="div_btn dark_yellow_border_top">
-                        <i class="fa fa-picture-o fa-2x" aria-hidden="true">
-                            <ul class="fa_news__post_l_list">
-                                <li class="fa_news__post_l_list_item">Добавить изображение</li>
-                            </ul>
-                        </i>
-                        <button type="submit" class="btn btn-default my_btn_yellow light_yellow dark_yellow_hover">Выложить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
+    <partial name="Partial/News/AddNews" />
     <div class="news__post light_yellow">
         <div class="news__post_flex">
             <div class="news__post_blok">
@@ -884,4 +866,4 @@
     </div>
 </div>
 
-<partial name="Partial/NewsRghtSiteBar" />
+<partial name="Partial/News/NewsRghtSiteBar" />
