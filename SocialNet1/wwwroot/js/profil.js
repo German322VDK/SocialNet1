@@ -333,8 +333,6 @@ async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
     }
 }
 
-
-
 async function SetAva(url, user, color) {
 
     var classActive = `dark_dark_${color}_border`;
@@ -574,6 +572,44 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
     
 
     var html = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" href="">
+                                    <img class="profil_comment_link_img" src="data:image/${fP};base64,${f}" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" href="">${fn} ${sn}</a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/${x}d${y}.jpg" alt="">
+                                </div>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">${dateTime}</div>
+                                    <div class="profil_comment__icons">
+                                        <div class="profil_comment__pencil">
+                                            <i class="fa fa-pencil color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="profil_comment__minus" onclick="DeleteCom('${i}com${j}')">
+                                            <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                         </div>
+                                        <div class="profil_comment__plus">
+                                            <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_on" onclick="LikePlus('${i}com${j}_like_on', '${i}com${j}_like_off',
+                                                    '${i}com${j}_like_num')" class="comment__heart">
+                                            <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_off" onclick="LikeMinus('${i}com${j}_like_on', '${i}com${j}_like_off',
+                                                    '${i}com${j}_like_num')" class="comment__heart_bac heart_none">
+                                            <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${j}_like_num" class="comment__quantity">${likes}</div>
+                                    </div>
+                                </div>
+                                <div class="profil_comment__content">${text}</div>
+                            </div>
+                        </div>`;
+
+    var html1 = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
                             <div class="profil_modal__foto_r_c_l">
                                 <a class="profil_comment_ava_link" href="">
                                     <img class="profil_comment_link_img" src="data:image/${fP};base64,${f}" alt="">

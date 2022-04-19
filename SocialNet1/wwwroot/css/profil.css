@@ -1142,6 +1142,12 @@ input[type="submit"] {
     padding: 0px 0 10px;
 }
 
+.profil__post_lkr1 {
+    display: flex;
+    padding: 10px;
+    justify-content: right;
+}
+
 .profil__post_lkr,
 .profil__post_l,
 .profil__post_r,
