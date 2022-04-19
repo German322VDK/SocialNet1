@@ -11,6 +11,8 @@ namespace SocialNet1.Domain.PostCom
     /// </summary>
     public class CommentDTO : Entity
     {
+        [Required]
+        public int HelpId { get; set; }
         /// <summary>
         /// Имя комментатора
         /// </summary>

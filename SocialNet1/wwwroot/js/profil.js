@@ -505,6 +505,8 @@ async function PostLikePlus(one, two, num, url, user, postId, liker) {
         document.getElementById(two).classList.remove('heart_none');
         document.getElementById(one).classList.add('heart_none');
 
+        var lp = document.getElementById(one);
+
         var number = parseInt(document.getElementById(num).innerHTML);
         number++;
         document.getElementById(num).innerHTML = number;
@@ -559,6 +561,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
         return;
     }
 
+    var pId = body.id;
     var x = body.x;
     var y = body.y;
     var dateTime = body.dateTime;
@@ -569,7 +572,13 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
     var f = body.photoCom;
     var text = body.text;
     var color = body.color;
-    
+    var helpId = body.helpId;
+    var author = body.author;
+    var comer = body.commenter;
+
+    var deleteComPost = "/api/user/deletecompost";
+    var comLikePlusURL = "/api/user/addlikecompost";
+    var comLikeMinusURL = "/api/user/deletelikecompost";
 
     var html = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
                             <div class="profil_modal__foto_r_c_l">
@@ -609,7 +618,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
                             </div>
                         </div>`;
 
-    var html1 = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
+    var html1 = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${helpId}>
                             <div class="profil_modal__foto_r_c_l">
                                 <a class="profil_comment_ava_link" href="">
                                     <img class="profil_comment_link_img" src="data:image/${fP};base64,${f}" alt="">
@@ -623,24 +632,21 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
                                 <div class="profil_comment__all_infa">
                                     <div class="profil_comment__date">${dateTime}</div>
                                     <div class="profil_comment__icons">
-                                        <div class="profil_comment__pencil">
-                                            <i class="fa fa-pencil color_dark_dark_${color}" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="profil_comment__minus" onclick="DeleteCom('${i}com${j}')">
-                                            <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
-                                         </div>
-                                        <div class="profil_comment__plus">
-                                            <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
-                                        </div>
-                                        <div id="${i}com${j}_like_on" onclick="LikePlus('${i}com${j}_like_on', '${i}com${j}_like_off',
-                                                    '${i}com${j}_like_num')" class="comment__heart">
+                                        <div class="profil_comment__minus" onclick="DeleteComPost('${i}com${helpId}', '${deleteComPost}',
+                                                   '${author}', '${pId}', '${helpId}', '${i}coms_all_count')">
+                                               <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                            </div>
+                                        <div id="${i}com${helpId}_like_on" onclick="PostComLikePlus('${i}com${helpId}_like_on', '${i}com${helpId}_like_off',
+                                                    '${i}com${helpId}_like_num', '${comLikePlusURL}', '${author}', '${comer}', '${pId}', '${helpId}')"
+                                             class="comment__heart" >
                                             <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
                                         </div>
-                                        <div id="${i}com${j}_like_off" onclick="LikeMinus('${i}com${j}_like_on', '${i}com${j}_like_off',
-                                                    '${i}com${j}_like_num')" class="comment__heart_bac heart_none">
+                                        <div id="${i}com${helpId}_like_off" onclick="PostComLikeMinus('${i}com${helpId}_like_on', '${i}com${helpId}_like_off',
+                                                    '${i}com${helpId}_like_num', '${comLikeMinusURL}', '${author}', '${comer}', '${pId}', '${helpId}')"
+                                             class="comment__heart_bac heart_none">
                                             <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
                                         </div>
-                                        <div id="${i}com${j}_like_num" class="comment__quantity">${likes}</div>
+                                        <div id="${i}com${helpId}_like_num" class="comment__quantity">${likes}</div>
                                     </div>
                                 </div>
                                 <div class="profil_comment__content">${text}</div>
@@ -655,7 +661,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
 
     s1.id = memID;
 
-    $("#" + memID).append(html);
+    $("#" + memID).append(html1);
 
     var comCount = parseInt(document.getElementById(commentCount).innerText) + 1;
     document.getElementById(commentCount).innerText = comCount;

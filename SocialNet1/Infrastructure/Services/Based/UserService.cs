@@ -562,13 +562,26 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             CommentDTO comment = null;
 
+            int helpId = 1;
+
+            var coms = _db.Users
+                    .FirstOrDefault(us => us.UserName == username)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments;
+
+            if (coms is not null && coms.Count > 0)
+                helpId = coms.Last().HelpId + 1;
+
             using (_db.Database.BeginTransaction())
             {
                 comment = new CommentDTO
                 {
                     CommentatorStatus = CommentatorStatus.User,
                     CommentatorName = commenter,
-                    Content = text
+                    Content = text,
+                    HelpId = helpId
                 };
 
                 _db.Users
@@ -597,7 +610,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             var like = _db.Users.FirstOrDefault(us => us.UserName == userName)
@@ -605,7 +618,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .FirstOrDefault(lk => lk.Likers == liker);
 
@@ -619,7 +632,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .Add(new CommentLike
                     {
@@ -645,7 +658,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             using (_db.Database.BeginTransaction())
@@ -655,7 +668,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .FirstOrDefault(lk => lk.Likers == liker);
 
@@ -683,7 +696,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             using (_db.Database.BeginTransaction())
@@ -693,7 +706,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId);
+                    .FirstOrDefault(cm => cm.HelpId == comId);
 
                 _db.RemoveRange(comment.Likes);
 

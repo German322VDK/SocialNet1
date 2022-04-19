@@ -155,6 +155,7 @@ namespace SocialNet1.Controllers.API
 
             return new CommentModel
             {
+                Id = model.PostId,
                 X = commenter.SocNetItems.X,
                 Y = commenter.SocNetItems.Y,
                 FirstName = commenter.FirstName,
@@ -164,7 +165,10 @@ namespace SocialNet1.Controllers.API
                 DateTime = result.DateTime.ToString("g"),
                 PhotoCom = strImage,
                 FormatPhotoCom = format,
-                Text = result.Content
+                Text = result.Content,
+                HelpId = result.HelpId,
+                Author = model.UserName,
+                Commenter = model.Commenter
             };
 
         }
