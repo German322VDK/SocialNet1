@@ -20,9 +20,6 @@
 
             <div class="modal__add_foto_vibrat">
                 <form asp-action="AddImage" asp-controller="Profile" method="post" enctype="multipart/form-data">
-                    @*<input accept="image/gif, image/jpeg, image/png" type="file" class="custom-file-input mid_blue_hover" id="files" name="s" /><br />
-                    <input accept="image/gif, image/jpeg, image/png" type="file" class="custom-file-input mid_blue_hover" id="fileForm" name="uploadedFile"
-                        style="visibility: hidden"/><br />*@
                     <input accept="image/gif, image/jpeg, image/png" type="file" class="custom-file-input mid_@(color)_hover" id="files" name="uploadedFile" /><br />
                     <output id="list"></output>
                     <input class="mid_@(color)_hover" type="submit" value="Отправить" />

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace SocialNet1.Models
 {
@@ -12,5 +9,7 @@ namespace SocialNet1.Models
         public string UserName { get; set; }
 
         public string Text { get; set; }
+
+        public IFormFile uploadedFile { get; set; }
     }
 }

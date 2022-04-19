@@ -9,6 +9,7 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
 using SocialNet1.ViewModels;
+using System.Collections.Generic;
 
 namespace SocialNet1.Controllers
 {
@@ -179,22 +180,75 @@ namespace SocialNet1.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            if (model is null || model.UserName is null || model.AuthorName is null || model.Text is null)
+            if (model is null || model.UserName is null || model.AuthorName is null || (model.uploadedFile is null && string.IsNullOrEmpty(model.Text)))
             {
                 _logger.LogWarning("Данные для добавления поста не пришли");
 
                 return RedirectToAction("Index", "Profile");
             }
 
-            var result = _user.AddUserPost(model.AuthorName, new PostDTO 
-            { 
-                ThisPost = new CommentDTO
+            PostDTO post;
+            string text = string.IsNullOrEmpty(model.Text) ? "" : model.Text;
+
+            if (model.uploadedFile is not null)
+            {
+
+                var arr = NewImageMethods.GetByteArrFromFile(model.uploadedFile);
+
+                var resultArr = NewImageMethods.IsValid(arr);
+
+                if (resultArr)
                 {
-                    CommentatorStatus = CommentatorStatus.User,
-                    CommentatorName = model.UserName,
-                    Content = model.Text,
+                    _logger.LogInformation($"Получилось добавить пост с картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.UserName,
+                            Content = text,
+                            Images = new List<CommentImages>() 
+                            { 
+                                new CommentImages 
+                                { 
+                                    ImageNumber = 1,
+                                    Image = arr
+                                } 
+                            }
+                        }
+                    };
                 }
-            });
+                else
+                {
+                    _logger.LogWarning($"Не получилось добавить пост с картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.UserName,
+                            Content = text
+                        }
+                    };
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить пост без картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+
+                post = new PostDTO
+                {
+                    ThisPost = new CommentDTO
+                    {
+                        CommentatorStatus = CommentatorStatus.User,
+                        CommentatorName = model.UserName,
+                        Content = text
+                    }
+                };
+            }
+
+            var result = _user.AddUserPost(model.AuthorName, post);
 
             if (!result)
             {

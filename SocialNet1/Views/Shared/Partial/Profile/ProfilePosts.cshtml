@@ -94,6 +94,17 @@
             </div>
             <div class="profil__post_p">
                 @item.ThisPost.Content
+
+                @if (item.ThisPost.Images is not null && item.ThisPost.Images.Count > 0 && item.ThisPost.Images.First() is not null)
+                {
+                    var phP = item.ThisPost.Images.First().Image;
+
+                    var photoPost = NewImageMethods.GetStringFromByteArr(phP);
+                    var formatPhotoPost = NewImageMethods.GetFormat(phP);
+
+                    <img class="thumb1 " src="data:image/@formatPhotoPost;base64,@photoPost" alt="">
+                }
+
             </div>
             <div class="profil__post_lkr">
                 <!-- Лайки -->

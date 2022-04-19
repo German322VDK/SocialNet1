@@ -46,7 +46,7 @@ function Validate(oForm) {
   return true;
   }
 
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+ document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
   function handleFileSelect(evt) {
     var image = document.getElementById('files');
@@ -90,5 +90,54 @@ function Validate(oForm) {
       //var fileF2 = document.getElementById('fileForm').files;
 
       //var file2 = document.getElementById('files').files;
+}
+
+document.getElementById('files1').addEventListener('change', handleFileSelect1, false);
+
+function handleFileSelect1(evt) {
+    var image = document.getElementById('files1');
+
+    if (image != null)
+        image.style = "display: none";
+
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+
+    var f = files[0];
+
+    //document.getElementById('fileForm').files = files;
+
+    //var fileF1 = document.getElementById('fileForm').files;
+
+
+    // Only process image files.
+    if (!f.type.match('image.*')) {
+        alert("Вы вставили не фотографию:(")
+        return;
+    }
+
+    var reader = new FileReader();
+
+    if (document.getElementById("image1") != null)
+        document.getElementById("image1").remove();
+
+    // Closure to capture the file information.
+    reader.onload = (function (theFile) {
+        return function (e) {
+            // Render thumbnail.
+            var div = document.createElement('div');
+            div.innerHTML = ['<img class="thumb1" id = "image1" src="', e.target.result,
+                '" title="', theFile.name, '"/>'].join('');
+            document.getElementById('list1').insertBefore(div, null);
+        };
+    })(f);
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+
+    //var fileF2 = document.getElementById('fileForm').files;
+
+    //var file2 = document.getElementById('files').files;
 }
 

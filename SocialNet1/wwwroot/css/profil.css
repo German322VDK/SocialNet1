@@ -931,6 +931,21 @@ input[type="submit"] {
     border-radius: 12px;
 }
 
+.thumb1 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 350px;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(106, 106, 106)
+}
+
 .kto_na_koord_2 {
     position: absolute;
     transform: translate(-85px, -35px);
