@@ -31,6 +31,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool SetCoord(string userName, int x, int y);
 
+        ICollection<string> GetFriends(string userName);
+
         bool IsFriend(string userName1, string userName2);
 
         bool AddFriend(string userName1, string userName2);

@@ -5,7 +5,9 @@ using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
+using SocialNet1.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SocialNet1.Controllers
 {
@@ -13,24 +15,54 @@ namespace SocialNet1.Controllers
     [Authorize]
     public class NewsController : Controller
     {
-        private IUser _user;
+        private readonly IUser _user;
         private readonly ILogger<NewsController> _logger;
-        public NewsController(IUser user, ILogger<NewsController> logger)
+        private readonly IFriends _friends;
+
+        public NewsController(IUser user, ILogger<NewsController> logger, IFriends friends)
         {
             _user = user;
+            _friends = friends;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            if (_user.Get(User.Identity.Name) is null)
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
 
                 return RedirectToAction("Login", "Account");
             }
 
-            return View();
+            var posts = new List<NewsPostViewModel>();
+
+            foreach (var post in user.SocNetItems.Posts)
+            {
+                posts.Add(new NewsPostViewModel 
+                { 
+                    Post = post,
+                    AuthorName = user.UserName
+                });
+            }
+
+            var friends = _friends.GetRange(_user.GetFriends(User.Identity.Name));
+
+            foreach (var friend in friends)
+            {
+                foreach (var friendPost in friend.SocNetItems.Posts)
+                {
+                    posts.Add(new NewsPostViewModel
+                    {
+                        Post = friendPost,
+                        AuthorName = friend.UserName
+                    });
+                }
+            }
+
+            return View(posts.OrderBy(el => el.Post.ThisPost.DateTime).Reverse().ToList());
         }
 
         public IActionResult AddComm(ComModel model)
