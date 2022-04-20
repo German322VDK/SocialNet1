@@ -973,13 +973,13 @@ input[type="submit"] {
 /* МОЙ ЛЮБИМЫЙ СЛАЙДЕР <3 */
 /* .mySlides {display: none}; */
 .mySlides {
-    display: none
+    display: none;
 }
+/* Ни в коем случае НЕ ТРОГАТЬ!!! */
 
-;
 
 .slideshow-container {
-    position: relative;
+    position: fixed;
 }
 
 /* Next & previous buttons */
