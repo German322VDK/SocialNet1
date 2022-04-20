@@ -35,6 +35,9 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #region Friend
 
+        public ICollection<string> GetFriends(string userName) =>
+            Get(userName).Friends.Select(fr => fr.FriendName).ToList();
+
         public bool IsFriend(string userName1, string userName2)
         {
             var user1 = Get(userName1);

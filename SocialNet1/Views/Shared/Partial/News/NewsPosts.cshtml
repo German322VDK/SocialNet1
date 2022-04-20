@@ -1,0 +1,260 @@
+﻿@model List<NewsPostViewModel>
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var userMainImage = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
+
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = NewImageMethods.GetFormat(imageArr);
+
+    int i = 1;
+
+    var deletePostURL = $"/{APIUrls.DELETE_POST}";
+
+    var likePlusURL = $"/{APIUrls.ADD_LIKE_POST}";
+
+    var likeMinusURL = $"/{APIUrls.DELETE_LIKE_POST}";
+
+    var addPostCom = $"/{APIUrls.ADD_COM_POST}";
+
+    var comLikePlusURL = $"/{APIUrls.ADD_LIKE_COM_POST}";
+
+    var comLikeMinusURL = $"/{APIUrls.DELETE_LIKE_COM_POST}";
+
+    var deleteComPost = $"/{APIUrls.DELETE_COM_POST}";
+}
+
+@foreach (var post in Model)
+{
+    byte[] formatThisPost = null;
+        var poster = userService.Get(post.Post.ThisPost.CommentatorName);
+
+        var colorPoster = UserMethods.GetColor(poster.SocNetItems.X, poster.SocNetItems.Y);
+
+        if (post.Post.ThisPost.CommentatorStatus == CommentatorStatus.User)
+        {
+            formatThisPost = poster.Images
+                .FirstOrDefault(im => im.ImageNumber == poster.SocNetItems.CurrentImage)
+                .Image;
+        }
+
+        var photo = NewImageMethods.GetStringFromByteArr(formatThisPost);
+        var formatPhoto = NewImageMethods.GetFormat(formatThisPost);
+
+        var isLiked = post.Post.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null;
+        int j = 1, xp = poster.SocNetItems.X, yp = poster.SocNetItems.Y;
+
+        <div class="profil__post light_@(colorPoster)" id="@(i)Post">
+            <div class="profil__post_flex">
+                <div class="profil__post_blok">
+                    <div>
+                        @if (post.Post.ThisPost.CommentatorStatus == CommentatorStatus.User)
+                        {
+                            <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index"
+                               asp-route-userName="@post.Post.ThisPost.CommentatorName">
+                                <img class="profil__post_ava " src="data:image/@formatPhoto;base64,@photo" alt="">
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <div class="profil_comment__name_polit">
+                        <a class="profil_post__name_link" asp-controller="Profile" asp-action="Index" 
+                           asp-route-userName="@post.Post.ThisPost.CommentatorName">
+                            @poster.FirstName @poster.SecondName
+                        </a>
+                        <img class="profil_comment__polit_img" src="photo/coordinates/@(xp)d@(yp).jpg" alt="">
+                    </div>
+                    <div class="profil__post_gryp_time">
+                        @post.Post.ThisPost.DateTime.ToString("g")
+                    </div>
+                </div>
+            </div>
+            <div class="profil__post_p">
+                @post.Post.ThisPost.Content
+
+                @if (post.Post.ThisPost.Images is not null && post.Post.ThisPost.Images.Count > 0 && 
+                    post.Post.ThisPost.Images.First() is not null)
+                {
+                    var phP = post.Post.ThisPost.Images.First().Image;
+
+                    var photoPost = NewImageMethods.GetStringFromByteArr(phP);
+                    var formatPhotoPost = NewImageMethods.GetFormat(phP);
+
+                    <img class="thumb1 " src="data:image/@formatPhotoPost;base64,@photoPost" alt="">
+                }
+
+            </div>
+            <div class="profil__post_lkr1 dark_@(colorPoster)_border_top">
+                @if (post.Post.ThisPost.CommentatorName == name || post.AuthorName == name)
+                {
+                    <div class="profil__post_r">
+                        <button class="profil__post_l_img" onclick="DeletePost('@deletePostURL', '@(i)Post', '@(post.Post.Id)',
+                            '@(post.AuthorName)')">
+                            <i class="fa fa-trash-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                }
+                <!-- Комментарии -->
+                <div class="profil__post_c">
+                    <button class="profil__post_c_img" type="button" onclick="fun__but('@(i)comentadd')">
+                        <i class="fa fa-comments-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div class="profil__col_com_all" id="@(i)coms_all_count">@post.Post.Comments.Count</div>
+                </div>
+                <!-- Лайки -->
+                <div class="profil__post_l">
+                    <button id="@(i)_newsPostLike1" class="profil__post_l_img @(isLiked ? "" : "heart_none")"
+                            onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likePlusURL', '@post.AuthorName', '@post.Post.Id', '@name')">
+                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button id="@(i)_newsPostLike2" class="profil__post_l_img @(isLiked ? "heart_none" : "")"
+                            onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likeMinusURL', '@post.AuthorName', '@post.Post.Id', '@name')">
+                        <i class="fa fa-heart color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="@(i)_likeAll" class="profil__col_like_all">@post.Post.ThisPost.Likes.Count</div>
+                </div>
+            </div>
+
+            <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
+            <div id="@(i)comentadd" style="display: none">
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll"
+                     data-simplebar id="@(i)coms">
+                    @foreach (var com in post.Post.Comments)
+                    {
+                        j = com.HelpId;
+
+                        var commenter = userService.Get(com.CommentatorName);
+
+                        var arrComs = commenter.Images
+                                .FirstOrDefault(im => im.ImageNumber == commenter.SocNetItems.CurrentImage)
+                                .Image;
+
+                        var photoCom = NewImageMethods.GetStringFromByteArr(arrComs);
+                        var formatPhotoCom = NewImageMethods.GetFormat(arrComs);
+
+                        int xCom = commenter.SocNetItems.X, yCom = commenter.SocNetItems.Y;
+
+                        var commentorColor = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
+
+                        var comIsLiked = com.Likes.FirstOrDefault(lk => lk.Likers == name) is not null;
+
+                        <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom light_@(commentorColor)
+                             @(j==1? $"dark_dark_{colorPoster}_border_top" : "")" id="@(i)com@(j)">
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.CommentatorName">
+                                    <img class="profil_comment_link_img" src="data:image/@formatPhotoCom;base64,@photoCom" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.CommentatorName">
+                                        @commenter.FirstName @commenter.SecondName
+                                    </a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(xCom)d@(yCom).jpg" alt="">
+                                </div>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">@com.DateTime.ToString("g")</div>
+                                    <div class="profil_comment__icons">
+                                        @if (name == com.CommentatorName)
+                                        {
+                                            @*<div class="profil_comment__pencil">
+                                                    <i class="fa fa-pencil color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                                </div>*@
+                                            <div class="profil_comment__minus" onclick="DeleteComPost('@(i)com@(j)', '@deleteComPost',
+                                                   '@post.AuthorName', '@post.Post.Id', '@com.HelpId', '@(i)coms_all_count')">
+                                                <i class="fa fa-trash-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>
+                                        }
+                                        @*<div class="profil_comment__plus">
+                                                <i class="fa fa-commenting-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>*@
+                                        <div id="@(i)com@(j)_like_on" onclick="PostComLikePlus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikePlusURL', '@post.AuthorName', '@name', '@post.Post.Id', '@com.HelpId')"
+                                             class="comment__heart @(comIsLiked ? "heart_none" : "")">
+                                            <i class="fa fa-heart-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_off" onclick="PostComLikeMinus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikeMinusURL', '@post.AuthorName', '@name', '@post.Post.Id', '@com.HelpId')"
+                                             class="comment__heart_bac @(comIsLiked ? "" : "heart_none")">
+                                            <i class="fa fa-heart color_dark_dark_@(commentorColor) heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_num" class="comment__quantity">@com.Likes.Count</div>
+                                    </div>
+                                </div>
+                                <div class="profil_comment__content">@com.Content</div>
+                            </div>
+                        </div>
+
+                        j++;
+                    }
+
+                </div>
+                <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
+                <div id="@(i)post_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_@(color)_border_top light_@(color)">
+                    <div class="profil_modal__foto_r_m_c_link_ava">
+                        <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index">
+                            <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div id="@(i)profil_modal__foto_right_my_comment_one" class="profil_my_comment__container color_dark_dark_@(color)"
+                         onclick="OpenComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
+                  'profil_modal__foto_right_my_comment_write_active')">
+                        Оставить комментарий
+                    </div>
+                </div>
+                <div id="@(i)post_my_comment_two" class="profil_modal__foto_right_my_comment_write dark_dark_@(color)_border_top light_@(color)">
+                    <div class="profil_modal__foto_right_my_comment_write_top mid_@(color)">
+                        <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_@(color)">
+                            <div class="profil_my_comment_write_ava">
+                                <a class="profil_my_comment_write_ava_link" asp-controller="Profile" asp-action="Index">
+                                    <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profil_modal__foto_right_my_comment_write_t_r">
+                            <div class="profil_modal__foto_right_my_comment_write_t_r_two">
+                                <div id="@(i)_text_input" contenteditable="true"
+                                     class="profil_my_comment__write_my_comment color_dark_dark_@(color)" data-simplebar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profil_my_comment_write_emoj background-color_dark_dark_@(color)">
+                            <div class="profil_my_comment_write_smile">
+                                <i class="fas fa-dizzy mid_@(color)_color"></i>
+                            </div>
+                            <div class="profil_my_comment_write_skrepka">
+                                <i class="fa fa-paperclip mid_@(color)_color" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_my_comment_write_bottom background-color_dark_dark_@(color)">
+                        <button id="my_comment_write_btn_cancel" class="profil_my_comment_write_btn_cancel mid_@(color)"
+                                onclick="CloseComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
+                    'profil_modal__foto_right_my_comment_write_active')">
+                            Отменить
+                        </button>
+                        <button class="profil_my_comment_write_btn_send mid_@(color)"
+                                onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@post.AuthorName', '@post.Post.Id', '@name',
+                                '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)post_my_comment_two',
+                                '@(i)post_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
+                            Отправить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        i++;
+}
