@@ -50,8 +50,6 @@ if (document.getElementById('files') != null) {
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }
 
- 
-
   function handleFileSelect(evt) {
     var image = document.getElementById('files');
 
@@ -83,7 +81,7 @@ if (document.getElementById('files') != null) {
             // Render thumbnail.
             var div = document.createElement('div');
             div.innerHTML = ['<img class="thumb" id = "image" src="', e.target.result,
-                '" title="', theFile.name, '"/>'].join('');
+                '" title="', theFile.name, '"/><button class="del_cross" id="b" onclick="DelPhoto()"><i class="far fa-times-circle fa-2x"></i></button>'].join('');
             document.getElementById('list').insertBefore(div, null);
         };
     })(f);
@@ -94,6 +92,12 @@ if (document.getElementById('files') != null) {
       //var fileF2 = document.getElementById('fileForm').files;
 
       //var file2 = document.getElementById('files').files;
+}
+
+function DelPhoto() {
+    document.getElementById("image").remove();
+    document.getElementById("b").remove();
+    document.getElementById('files').style = "display: inline-block";
 }
 
 document.getElementById('files1').addEventListener('change', handleFileSelect1, false);
@@ -131,8 +135,9 @@ function handleFileSelect1(evt) {
         return function (e) {
             // Render thumbnail.
             var div = document.createElement('div');
+            div.style = "display:flex; position: relative;";
             div.innerHTML = ['<img class="thumb1" id = "image1" src="', e.target.result,
-                '" title="', theFile.name, '"/>'].join('');
+                '" title="', theFile.name, '"/><button class="del_cross1" id="b1" onclick="DelPhoto1()"><i class="far fa-times-circle fa-2x"></i></button>'].join('');
             document.getElementById('list1').insertBefore(div, null);
         };
     })(f);
@@ -145,3 +150,7 @@ function handleFileSelect1(evt) {
     //var file2 = document.getElementById('files').files;
 }
 
+function DelPhoto1() {
+    document.getElementById("image1").remove();
+    document.getElementById("b1").remove();
+}

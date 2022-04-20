@@ -973,10 +973,9 @@ input[type="submit"] {
 /* МОЙ ЛЮБИМЫЙ СЛАЙДЕР <3 */
 /* .mySlides {display: none}; */
 .mySlides {
-    display: none
+    display: none;
 }
 
-;
 .slideshow-container {
     position: relative;
 }
@@ -1700,6 +1699,18 @@ input[type="submit"] {
     margin-right: 5px;
     margin-left: 10px;
     /*margin-bottom: 10px;*/
+}
+
+.del_cross {
+    margin-left: 10px;
+    position: absolute;
+}
+
+.del_cross1 {
+    /*margin-left: 450px;*/
+    /* margin-right: 75px; */
+    position: absolute;
+    right: 55px;
 }
 /* МОДАЛЬНОЕ ОКНО ДОБАВИТЬ ФОТО ВВЕРХУ*/
 @-webkit-keyframes fade {

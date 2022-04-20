@@ -113,13 +113,13 @@
 
                         <div class="profil_modal_foto_btn_quantity" id="@(i)LikeNum">@item.Auhor.Likes.Count</div>
 
-                        <button class="modal__foto_r_r_btn">
+                        @*<button class="modal__foto_r_r_btn">
                             <i class="fa fa-arrow-circle-o-right color_dark_dark_@(color) fa-2x" aria-hidden="true"></i>
-                        </button>
-                        <div id="@(i)_modal__foto_r_r_btn_circle" class="profil_modal_foto_btn_quantity modal__foto_r_r_btn_circle dark_dark_@(color)_border_bottom_hover"
+                        </button>*@
+                        @*<div id="@(i)_modal__foto_r_r_btn_circle" class="profil_modal_foto_btn_quantity modal__foto_r_r_btn_circle dark_dark_@(color)_border_bottom_hover"
                              onclick="ShowReps('@(i)_circle__tooltop')">
                             @item.RepostCount
-                        </div>
+                        </div>*@
                         <div id="@(i)_circle__tooltop" class="circle__tooltop background-color_dark_dark_@(color)">
                             <div class="circle__tooltip_title">Список репостов</div>
                             <div class="circle__tooltip_comtainer mid_@(color)_border_bottom_hover">
@@ -222,9 +222,9 @@
                                                     <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                                 </div>
                                             }
-                                            <div class="comment__plus">
+                                            @*<div class="comment__plus">
                                                 <i class="fa fa-commenting-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
-                                            </div>
+                                            </div>*@
                                             <div id="@(i)com@(j)_im_like_on" onclick="ProfileComLikePlus('@(i)com@(j)_im_like_on',
                                                     '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@addLikeCom', '@item.Auhor.AuthorUserName',
                                                     '@name', '@item.ImageId', '@com.HelpId')"

@@ -97,9 +97,6 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
                                                          '${recipient}', '${imageId}', '${j}')">
                                                     <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
                                                 </div>
-                                            <div class="comment__plus">
-                                                <i class="fa fa-commenting-o color_dark_dark_${color}" aria-hidden="true"></i>
-                                            </div>
                                             <div id="${i}com${j}_im_like_on" onclick="ProfileComLikePlus('${i}com${j}_im_like_on',
                                                     '${i}com${j}_im_like_off', '${i}com${j}_im_like_num', '${addLikeCom}', '${recipient}',
                                                     '${sender}', '${imageId}', '${j}')"
