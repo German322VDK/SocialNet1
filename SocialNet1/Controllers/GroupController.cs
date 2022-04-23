@@ -77,8 +77,40 @@ namespace SocialNet1.Controllers
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
 
+                return RedirectToAction("Login", "Account");
             }
-            return View();
+
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning($"Имя группы не пришло");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var group = _group.Get(groupName);
+
+            if(group is null)
+            {
+                _logger.LogWarning($"Группа {groupName} потерялась");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var arr = group.Images.FirstOrDefault(im => im.ImageNumber == group.SocNetItems.CurrentImage).Image;
+            int x = group.SocNetItems.X, y = group.SocNetItems.Y;
+
+
+            var groupVM = new GroupItemViewModel
+            {
+                MainName = group.GroupName,
+                MainShortName = group.ShortGroupName,
+                CoordImage = $"photo/coordinates/{x}d{y}.jpg",
+                MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                MainFormat = NewImageMethods.GetFormat(arr),
+                Images = group.Images
+            };
+
+            return View(groupVM);
         }
 
     }

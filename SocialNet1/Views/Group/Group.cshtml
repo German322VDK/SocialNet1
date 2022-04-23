@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model GroupItemViewModel
+@inject IUser userService;
 @{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var ava = new PhotoFormat
+    {
+        Format = Model.MainFormat,
+        Image = Model.MainImage,
+        //UserName = Model.User.UserName
+    };
+
 }
+
+<div class="profil_left">
+    @*<partial name="Partial/Profile/ProfileInfo" model="@Model" />
+
+    <partial name="Partial/Profile/ProfilePhotos" model="@photos" />
+
+    @if (Model.User.UserName == User.Identity!.Name)
+    {
+        <div class="profil_left__add_f light_@(color)">
+            <button class="profil_left__add_foto add_foto">Добавить фото</button>
+        </div>
+    }*@
+
+    @*<partial name="Partial/Profile/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
+
+    <partial name="Partial/Profile/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />*@
+
+</div>
+
+<partial name="Partial/Group/GroupRight" model="@ava"/>
