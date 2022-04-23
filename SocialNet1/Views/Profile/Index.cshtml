@@ -1,19 +1,6 @@
 ﻿@model ProfileViewModel
 @{
-    var userMainImage = Model.User.Images.SingleOrDefault(el => el.ImageNumber == Model.User.SocNetItems.CurrentImage);
-
-    var imageArr = userMainImage.Image;
-
-    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
-
-    var format = NewImageMethods.GetFormat(imageArr);
-
-    var ava = new PhotoFormat
-    {
-        Format = format,
-        Image = strImage,
-        UserName = Model.User.UserName
-    };
+    
 }
 @inject IUser userService;
 @{
@@ -27,8 +14,21 @@
 
     var avaIms = new List<SetAvaModel>();
 
+    int i = 1;
+
+    int avaNum = i;
+
+    var userMainImage = Model.User.Images.SingleOrDefault(el => el.ImageNumber == Model.User.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
+
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = NewImageMethods.GetFormat(imageArr);
+
     foreach (var item in user.Images)
     {
+
         var photo = NewImageMethods.GetStringFromByteArr(item.Image);
         var formatPhoto = NewImageMethods.GetFormat(item.Image);
 
@@ -85,6 +85,8 @@
             },
 
             Comments = coments,
+
+            Number = i
         });
 
         avaIms.Add(new SetAvaModel
@@ -93,9 +95,28 @@
             Format = formatPhoto,
             ImageNum = item.ImageNumber
         });
+
     }
 
     fullPhotos.Reverse();
+
+    foreach (var item in fullPhotos)
+    {
+        if (item.MainImage == strImage)
+        {
+            avaNum = i;
+        }
+
+        i++;
+    }
+
+    var ava = new PhotoFormat
+    {
+        Format = format,
+        Image = strImage,
+        UserName = Model.User.UserName,
+        Number = avaNum
+    };
 
     var photos = fullPhotos
         .Take(4)
@@ -105,6 +126,17 @@
             Format = el.Format
         })
         .ToList();
+
+    i = 1;
+
+    foreach (var item in photos)
+    {
+        item.Number = i;
+
+        i++;
+    }
+
+    
 
 }
 

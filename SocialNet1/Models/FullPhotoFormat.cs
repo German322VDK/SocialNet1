@@ -18,5 +18,7 @@ namespace SocialNet1.Models
         public PhotoUserInfoAut Auhor { get; set; }
 
         public ICollection<PhotoUserInfoComms> Comments { get; set; } = new List<PhotoUserInfoComms>();
+
+        public int Number { get; set; }
     }
 }

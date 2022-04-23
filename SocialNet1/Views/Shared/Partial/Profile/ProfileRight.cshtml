@@ -16,7 +16,7 @@
 
 <div class="profil_right">
     <div class="profil_right__conteiner_one light_@color">
-        <div class="profil_right__ava">
+        <div class="profil_right__ava" onclick="formShow('@Model.Number')">
             <img class="profil_right__ava_img" src="data:image/@Model.Format;base64,@Model.Image" alt="Фото">
         </div>
         @if (isOwner)

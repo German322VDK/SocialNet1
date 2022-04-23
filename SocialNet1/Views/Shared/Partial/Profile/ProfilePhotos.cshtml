@@ -8,7 +8,7 @@
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
-    int i = 1;
+    //int i = 1;
 }
 
 <div class="profil_left__all_foto light_@(color)">
@@ -17,11 +17,10 @@
 
         @foreach (var item in Model)
         {
-            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('@i')" id="photo-@i">
+            <span class="profil_left__all_foto_f open__foto_1" onclick="formShow('@item.Number')" id="photo-@item.Number">
                 <img class="profil_left__all_foto_img"  src="data:image/@item.Format;base64,@item.Image" alt="">
             </span>
 
-            i++;
         }
 
     </div>

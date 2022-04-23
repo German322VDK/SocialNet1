@@ -13,5 +13,7 @@ namespace SocialNet1.Models
 
         public string UserName { get; set; }
 
+        public int Number { get; set; }
+
     }
 }
