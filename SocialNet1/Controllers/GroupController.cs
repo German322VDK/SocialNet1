@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
+using SocialNet1.Models;
 using SocialNet1.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,10 +109,62 @@ namespace SocialNet1.Controllers
                 CoordImage = $"photo/coordinates/{x}d{y}.jpg",
                 MainImage = NewImageMethods.GetStringFromByteArr(arr),
                 MainFormat = NewImageMethods.GetFormat(arr),
-                Images = group.Images
+                Images = group.Images,
+                Group = group
             };
 
             return View(groupVM);
+        }
+
+        public IActionResult AddImage(AddGroupPhotoModel model)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            var currantUserName = User.Identity!.Name;
+
+            if(string.IsNullOrEmpty(model.GroupName) || _group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"{currantUserName} не понятно в какую группу добавлять фотографию");
+            }
+
+            _logger.LogInformation($"{currantUserName} пытается добавить фотографию в группу {model.GroupName}");
+
+            if (model.uploadedFile is null)
+            {
+                _logger.LogWarning($"Фото не пришло(");
+
+                return RedirectToAction("Group", "Group", new { groupName = model.GroupName });
+            }
+
+
+            var arr = NewImageMethods.GetByteArrFromFile(model.uploadedFile);
+
+            var result = NewImageMethods.IsValid(arr);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Фото плохое(");
+
+                return RedirectToAction("Index", "News");
+            }
+
+            var resultAdding = _group.AddPhoto(arr, model.GroupName);
+
+            if (!resultAdding)
+            {
+                _logger.LogWarning($"Фото почему то не добавилось(");
+
+                return RedirectToAction("Index", "News");
+            }
+
+            _logger.LogInformation($"{currantUserName} успешно добавил фотографию в группу {model.GroupName}");
+
+            return RedirectToAction("Group", "Group", new { groupName = model.GroupName});
         }
 
     }

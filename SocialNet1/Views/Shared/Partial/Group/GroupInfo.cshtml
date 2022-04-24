@@ -1,0 +1,101 @@
+﻿@model GroupItemViewModel
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="profil_left__container light_@(color)">
+    <div class="profil_left__container_top">
+        <h1 class="profil_left__name">@Model.Group.GroupName </h1>
+        @*@if (name == Model.Group.ShortGroupName)
+        {
+            <div class="profil_left__st_b">
+                <div class="profil_left__status dark_@(color)_border_bottom dark_dark_@(color)_border_bottom_focus" contenteditable="True" id="status">
+                    @status
+                </div>
+                <button class="news__post_l_img" onclick="SetStatus('@setStatusUrl', '@name', 'status')">
+                    <i class="fas fa-check-circle color_dark_dark_@(color) fa-2x"></i>
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="profil_left__st_b">
+                <div class="profil_left__status dark_@(color)_border_bottom dark_dark_@(color)_border_bottom_focus">
+                    @status
+                </div>
+            </div>
+        }*@
+
+        @*<div class="profil_left__st_b">
+            <div class="profil_left__status dark_@(color)_border_bottom dark_dark_@(color)_border_bottom_focus">
+                @Model.Group.
+            </div>
+        </div>*@
+
+        <div class="kto_na_koord">
+            <div class="kto_na_koord_polich">Поолитические координаты:</div>
+            <div class="kto_na_koord_img_2">
+                <img class="kto_na_koord_img" src="@Url.Content($"~/{Model.CoordImage}")" alt="">
+                <div class="kto_na_koord_2 background-color_dark_dark_@(color)">
+                    <img class="kto_na_koord_img_2" src="@Url.Content($"~/{Model.CoordImage}")" alt="">
+                    @*<div class="kto_na_koord_poiasnen_2">Поздравляю, ты @Model.CoordName!</div>*@
+                </div>
+            </div>
+        </div>
+        <div class="profil_left__birthday_info">
+            <div class="profil_left__birthday">Короткое имя</div>
+            <div class="profil_left__birthday_date">@Model.Group.ShortGroupName</div>
+        </div>
+        @*<div class="profil_left__birthday_info">
+            <div class="profil_left__birthday">День рождения</div>
+            <div class="profil_left__birthday_date">04.05.2000</div>
+        </div>
+        <div class="profil_left__city">
+            <div class="profil_left__city_city">Город:</div>
+            <div class="profil_left__city_name">Владивосток</div>
+        </div>*@
+        <div class="profil_left__views">
+            <div class="profil_left__views_views">Политические координаты:</div>
+            <div class="profil_left__views_name">X:@Model.Group.SocNetItems.X;Y:@Model.Group.SocNetItems.Y</div>
+        </div>
+        <div class="profil_left__container_button">
+            <button id="profil_left__btn_one" class="profil_left__btn_one profil_left__btn_active mid_@(color)_hover">Подробно</button>
+        </div>
+        <div class="profil_left__container_button">
+            <button id="profil_left__btn_two" class="profil_left__btn_two mid_@(color)_hover">Скрыть</button>
+        </div>
+        <div id="profil_left_dop_infa" class="profil_left_dop_infa">
+            <div class="profil_left__birthday_info">
+                <div class="profil_left__birthday">День рождения</div>
+                <div class="profil_left__birthday_date">04.05.2000</div>
+            </div>
+            <div class="profil_left__city">
+                <div class="profil_left__city_city">Город:</div>
+                <div class="profil_left__city_name">Владикавказ</div>
+            </div>
+            <div class="profil_left__views">
+                <div class="profil_left__views_views">Взгляды:</div>
+                <div class="profil_left__views_name">Косые</div>
+            </div>
+        </div>
+        <div class="profil_left__dop dark_@(color)_border_top">
+            <ul class="profil_left__dop_list">
+                @*<li class="profil_left__dop_list_item">
+                    <a asp-controller="Friends" asp-action="Index" asp-route-username="@Model.User.UserName">
+                        <div class="profil_left__dop_list_item_t_c">@Model.User.Friends.Count</div>
+                        <div class="profil_left__dop_list_item_t_c">друга</div>
+                    </a>
+                </li>
+                <li class="profil_left__dop_list_item">
+                    <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
+                    <div class="profil_left__dop_list_item_t_c">групп</div>
+                </li>*@
+            </ul>
+        </div>
+    </div>
+</div>

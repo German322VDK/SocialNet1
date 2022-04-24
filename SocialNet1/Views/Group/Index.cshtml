@@ -69,9 +69,13 @@
                             <div class="groups__content_links">
                                 <div class="groups__content_politcor groups__content_list_item_m">
                                     <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
-                                    <span class="groups__content_group_type">Хуитика</span>
+                                    @*<span class="groups__content_group_type">Хуитика</span>*@
                                 </div>
-                                <div class="groups__content_name_g groups__content_list_item_m">@item.MainName</div>
+                                <div class="groups__content_name_g groups__content_list_item_m">
+                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                        @item.MainName
+                                    </a>
+                                </div>
                                 <div class="groups__content_quantity">@item.UserCount учасников</div>
                             </div>
                         </div>
