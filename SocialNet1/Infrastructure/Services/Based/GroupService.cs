@@ -28,6 +28,46 @@ namespace SocialNet1.Infrastructure.Services.Based
         public GroupDTO Get(string group) =>
              GetAll().FirstOrDefault(el => el.ShortGroupName == group);
 
+
+
+        #endregion
+
+
+        #region Photo
+
+        public bool AddPhoto(byte[] arr, string groupName)
+        {
+            var group = Get(groupName);
+
+            if (group is null || arr is null)
+                return false;
+
+            int lastNum;
+            if (group.Images.Count == 0)
+                lastNum = 0;
+            else
+                lastNum = group.Images.Max(el => el.ImageNumber);
+
+            var newLast = lastNum + 1;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images.Add(new GroupImages
+                    {
+                        Image = arr,
+                        ImageNumber = newLast,
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }

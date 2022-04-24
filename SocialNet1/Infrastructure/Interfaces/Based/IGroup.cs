@@ -13,5 +13,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         ICollection<GroupDTO> Get(string[] groups);
 
         GroupDTO Get(string group);
+
+        bool AddPhoto(byte[] arr, string groupName);
     }
 }
