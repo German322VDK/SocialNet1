@@ -100,7 +100,11 @@ function DelPhoto() {
     document.getElementById('files').style = "display: inline-block";
 }
 
-document.getElementById('files1').addEventListener('change', handleFileSelect1, false);
+if (document.getElementById('files1') != null) {
+    document.getElementById('files1').addEventListener('change', handleFileSelect1, false);
+}
+
+
 
 function handleFileSelect1(evt) {
     var image = document.getElementById('files1');
