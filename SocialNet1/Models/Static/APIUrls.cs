@@ -7,6 +7,8 @@ namespace SocialNet1.Models.Static
 {
     public static class APIUrls
     {
+        #region User
+
         public const string ADD_IMAGE = "api/image/addcom";
         public const string DELETE_IMAGE = "api/image/delete";
 
@@ -36,7 +38,14 @@ namespace SocialNet1.Models.Static
         public const string SET_AVA = "Profile/SetAva";
         public const string SET_COORD = "Profile/SetCoord";
 
+        #endregion
 
+        #region Group
+
+        public const string ADD_GROUP_IMAGE_LIKE = "api/groupimage/addlike";
+        public const string DELETE_GROUP_IMAGE_LIKE = "api/groupimage/deletelike";
+
+        #endregion
 
         public const string ADD_MESSAGE = "api/message/add";
         public const string DELETE_MESSAGE = "api/message/delete";
