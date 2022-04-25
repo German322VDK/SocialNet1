@@ -1,4 +1,6 @@
-﻿using SocialNet1.Database.SQlite.Context;
+﻿using Social_Net.Domain.Group;
+using SocialNet1.Database.SQlite.Context;
+using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Group;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
@@ -35,6 +37,9 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #region Photo
 
+        public GroupImages GetPhoto(string groupName, int imageId) =>
+             Get(groupName)?.Images.FirstOrDefault(im => im.Id == imageId);
+
         public bool AddPhoto(byte[] arr, string groupName)
         {
             var group = Get(groupName);
@@ -59,6 +64,82 @@ namespace SocialNet1.Infrastructure.Services.Based
                         Image = arr,
                         ImageNumber = newLast,
                     });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddPhotoLike(string groupName, string userName, int imageId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var image = GetPhoto(groupName, imageId);
+
+            if (image is null)
+                return false;
+
+            var liker = image.GroupLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+            if (liker is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .GroupLikes
+                    .Add(new GroupLike 
+                    { 
+                        Likers = userName,
+                        Emoji = Emoji.Like
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePhotoLike(string groupName, string userName, int imageId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var image = GetPhoto(groupName, imageId);
+
+            if (image is null)
+                return false;
+
+            var liker = image.GroupLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+            if (liker is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var like = _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .GroupLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+                _db.Remove(like);
 
                 _db.SaveChanges();
 
