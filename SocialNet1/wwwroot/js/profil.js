@@ -134,73 +134,27 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 
 }
 
-//суицид
-async function DeletePhotoCom(c, url, user, imageId, comId) {
-
-    var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        var child = document.getElementById(c);
-        child.remove();
-    }
-    else {
-        alert("Не получилось удалить комментарий(");
-    }
-
-    
-}
-
-async function AddFriend(url, user1, user2, addId, deleteId) {
-
-    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        document.getElementById(addId).style = "display:none";
-        document.getElementById(deleteId).style = "display:block";
-    }
-
-}
-
-async function DeleteFriend(url, user1, user2, addId, deleteId) {
-
-    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        document.getElementById(addId).style = "display:block";
-        document.getElementById(deleteId).style = "display:none";
-    }
-}
-
-async function SetStatus(url, userName, statusId) {
-
-    var text = document.getElementById(statusId).innerText;
-
-    //var fullurl = url + "?text=" + text + "&username=" + userName;
+async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
 
     const response = await fetch(url, {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             userName: userName,
-            text: text
+            imageId: parseInt(imageid)
         })
     });
 
     var body = await response.json();
 
-    document.getElementById(statusId).innerText = body;
+    if (body) {
+        plusSlides();
+        document.getElementById(sliderId).remove();
+        document.getElementById(photoId).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
 }
 
 // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
@@ -245,6 +199,26 @@ async function ProfileLikeMinus(one, two, num, url, user1, user2, imageid) {
     else {
         alert("Лайк не Убрался(");
     }
+
+}
+
+//суицид
+async function DeletePhotoCom(c, url, user, imageId, comId) {
+
+    var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        var child = document.getElementById(c);
+        child.remove();
+    }
+    else {
+        alert("Не получилось удалить комментарий(");
+    }
+
 
 }
 
@@ -307,29 +281,6 @@ async function ProfileComLikeMinus(one, two, num, url, user1, user2, imageid, co
     }
 }
 
-async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
-
-    const response = await fetch(url, {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            userName: userName,
-            imageId: parseInt(imageid)
-        })
-    });
-
-    var body = await response.json();
-
-    if (body) {
-        plusSlides();
-        document.getElementById(sliderId).remove();
-        document.getElementById(photoId).remove();
-    }
-    else {
-        alert("При удалении фото возникла ошибка(");
-    }
-}
-
 async function SetAva(url, user, color) {
 
     var classActive = `dark_dark_${color}_border`;
@@ -353,6 +304,26 @@ async function SetAva(url, user, color) {
     location.href = promise.url;
 
 
+}
+
+async function SetStatus(url, userName, statusId) {
+
+    var text = document.getElementById(statusId).innerText;
+
+    //var fullurl = url + "?text=" + text + "&username=" + userName;
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName: userName,
+            text: text
+        })
+    });
+
+    var body = await response.json();
+
+    document.getElementById(statusId).innerText = body;
 }
 
 function OpenSetPhoto() {
@@ -667,7 +638,6 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
 
 }
 
-
 async function PostComLikePlus(one, two, num, url, user1, user2, postid, comid) {
 
 
@@ -743,5 +713,34 @@ async function DeleteComPost(c, url, user, postId, comId, comCount) {
     }
     else {
         alert("Не получилось удалить комментарий(");
+    }
+}
+
+async function AddFriend(url, user1, user2, addId, deleteId) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(addId).style = "display:none";
+        document.getElementById(deleteId).style = "display:block";
+    }
+
+}
+
+async function DeleteFriend(url, user1, user2, addId, deleteId) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(addId).style = "display:block";
+        document.getElementById(deleteId).style = "display:none";
     }
 }
