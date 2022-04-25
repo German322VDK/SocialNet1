@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
+using SocialNet1.Models.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,37 @@ namespace SocialNet1.Controllers.API
             _logger = logger;
             _group = group;
             _user = user;
+        }
+
+        [HttpPost("delete")]
+        public bool DeleteImage(DeleteGroupImageModel model)
+        {
+            if (string.IsNullOrEmpty(model.GroupName))
+            {
+                _logger.LogWarning($"Не понятно какой группе удалять фото");
+
+                return false;
+            }
+
+            if (_group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"Не существует группы {model.GroupName}");
+
+                return false;
+            }
+
+            var result = _group.DeletePhoto(model.GroupName, model.ImageId);
+
+            if (result)
+            {
+                _logger.LogInformation($"Получилось удалить фото {model.ImageId} группы {model.GroupName}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось удалить фото {model.ImageId} группы {model.GroupName}");
+            }
+
+            return result;
         }
 
         [HttpGet("addlike")]

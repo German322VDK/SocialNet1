@@ -73,6 +73,44 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool DeletePhoto(string groupName, int imageId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var image = GetPhoto(groupName, imageId);
+
+            if (image is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var im = _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId);
+
+                foreach (var item in im.Coments)
+                {
+                    _db.RemoveRange(item.GroupCommentLikes);
+                }
+
+                _db.RemoveRange(im.Coments);
+
+                _db.RemoveRange(im.GroupLikes);
+
+                _db.Remove(im);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         public bool AddPhotoLike(string groupName, string userName, int imageId)
         {
             var group = Get(groupName);

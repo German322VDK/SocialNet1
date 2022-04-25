@@ -1,4 +1,26 @@
 ﻿
+async function DeleteGroupPhoto(url, imageid, groupName, sliderId, photoId) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            groupName: groupName,
+            imageId: parseInt(imageid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        plusSlides();
+        document.getElementById(sliderId).remove();
+        document.getElementById(photoId).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
+}
 
 // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
 async function GroupLikePlus(one, two, num, url, group, user, imageid) {

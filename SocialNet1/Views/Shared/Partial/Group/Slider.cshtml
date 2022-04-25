@@ -1,7 +1,10 @@
 ﻿@model ICollection<FullPhotoGroupFormat>
 
 @inject IUser userService;
+@inject IGroup groupService;
 @{
+    var group = groupService.Get(Model.First().Group.ShortGroupName);
+
     var name = User.Identity!.Name;
 
     var user = userService.Get(name);
@@ -22,7 +25,7 @@
 
     var dellikeURL = $"/{APIUrls.DELETE_GROUP_IMAGE_LIKE}";
 
-    //var deleteImageAPI = $"/{APIUrls.DELETE_IMAGE}";
+    var deleteImageAPI = $"/{APIUrls.DELETE_GROUP_IMAGE}";
 
     //var deletecom = $"/{APIUrls.DELETE_COM}";
 
@@ -31,6 +34,7 @@
     //var deleteLikeCom = $"{APIUrls.DELETE_IMAGE_COM_LIKE}";
 
     int i = 1;
+
 
 }
 
@@ -47,18 +51,18 @@
                     </div>
                     <div class="modal__left_container_dop">
                         <div class="modal__left_dop_infa">
-                            @*@if (name == user.UserName)
+                            @if (group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(user.UserName))
                             {
-                                <div class="@(i)profil_photo_delete" onclick="DeletePhoto('@deleteImageAPI', '@item.ImageId', '@item.Auhor.AuthorUserName',
+                                <div class="@(i)profil_photo_delete" onclick="DeleteGroupPhoto('@deleteImageAPI', '@item.ImageId', '@item.Group.ShortGroupName',
                                     '@i', 'photo-@i')">
                                     Удалить
                                     <i class="fa fa-trash-o mid_@(color)_color"></i>
                                 </div>
                             }
-                            else 
-                            { 
-                                
-                            }*@
+                            else
+                            {
+
+                            }
                         </div>
                     </div>
                 </div>
@@ -92,12 +96,12 @@
                             var result = item.Group.Likes.FirstOrDefault(el => el.Likers == name) is not null;
                         }
 
-                        <button id="@(i)mainLike1" class="modal__foto_r_r_btn @(result ? "heart_none": "")" 
+                        <button id="@(i)mainLike1" class="modal__foto_r_r_btn @(result ? "heart_none": "")"
                                 onclick="GroupLikePlus('@(i)mainLike1', '@(i)mainLike2', '@(i)LikeNum',
                                 '@addlikeURL', '@item.Group.ShortGroupName', '@name', '@item.ImageId')">
                             <i class="fa fa-heart-o color_dark_dark_@(color) heart_none fa-2x" aria-hidden="true"></i>
                         </button>
-                        <button id="@(i)mainLike2" class="modal__foto_r_r_btn @(result ? "": "heart_none")" 
+                        <button id="@(i)mainLike2" class="modal__foto_r_r_btn @(result ? "": "heart_none")"
                                 onclick="GroupLikeMinus('@(i)mainLike1', '@(i)mainLike2', '@(i)LikeNum',
                                 '@dellikeURL', '@item.Group.ShortGroupName', '@name', '@item.ImageId')">
                             <i class="fa fa-heart color_dark_dark_@(color) heart_none fa-2x" aria-hidden="true"></i>
@@ -130,7 +134,7 @@
                                 </div>
                                 <div class="modal__foto_r_c_r">
                                     <div class="comment__name_polit">
-                                        <a class="comment__name_link"  asp-controller="Profile" asp-action="Index" asp-route-userName="@com.AuthorUserName">
+                                        <a class="comment__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.AuthorUserName">
                                             @com.AuthorSecondName @com.AuthorFirstName
                                         </a>
                                         <img class="comment__polit_img" src="@com.AuthorCoordinatesImage" alt="">
@@ -139,24 +143,24 @@
                                         <div class="comment__date">@com.DateTime</div>
                                         <div class="comment__icons">
                                             @*@if (com.AuthorUserName == name || item.Auhor.AuthorUserName == name)
-                                            {
-                                                <div class="comment__minus" onclick="DeletePhotoCom('@(i)image_com@(j)', '@deletecom',
-                                                         '@item.Auhor.AuthorUserName', '@item.ImageId', '@com.HelpId')">
-                                                    <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
+                                                {
+                                                    <div class="comment__minus" onclick="DeletePhotoCom('@(i)image_com@(j)', '@deletecom',
+                                                             '@item.Auhor.AuthorUserName', '@item.ImageId', '@com.HelpId')">
+                                                        <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
+                                                    </div>
+                                                }
+                                                <div id="@(i)com@(j)_im_like_on" onclick="ProfileComLikePlus('@(i)com@(j)_im_like_on',
+                                                        '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@addLikeCom', '@item.Auhor.AuthorUserName',
+                                                        '@name', '@item.ImageId', '@com.HelpId')"
+                                                     class="comment__heart @(isLiked ? "heart_none": "")">
+                                                    <i class="fa fa-heart-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                                 </div>
-                                            }
-                                            <div id="@(i)com@(j)_im_like_on" onclick="ProfileComLikePlus('@(i)com@(j)_im_like_on',
-                                                    '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@addLikeCom', '@item.Auhor.AuthorUserName',
-                                                    '@name', '@item.ImageId', '@com.HelpId')"
-                                                 class="comment__heart @(isLiked ? "heart_none": "")">
-                                                <i class="fa fa-heart-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
-                                            </div>
-                                            <div id="@(i)com@(j)_im_like_off" onclick="ProfileComLikeMinus('@(i)com@(j)_im_like_on',
-                                                        '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@deleteLikeCom',
-                                                        '@item.Auhor.AuthorUserName', '@name', '@item.ImageId', '@com.HelpId')"
-                                                 class="comment__heart_bac @(isLiked ? "": "heart_none")">
-                                                <i class="fa fa-heart color_dark_dark_@(com.Color) heart_none" aria-hidden="true"></i>
-                                            </div>*@
+                                                <div id="@(i)com@(j)_im_like_off" onclick="ProfileComLikeMinus('@(i)com@(j)_im_like_on',
+                                                            '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@deleteLikeCom',
+                                                            '@item.Auhor.AuthorUserName', '@name', '@item.ImageId', '@com.HelpId')"
+                                                     class="comment__heart_bac @(isLiked ? "": "heart_none")">
+                                                    <i class="fa fa-heart color_dark_dark_@(com.Color) heart_none" aria-hidden="true"></i>
+                                                </div>*@
                                             <div id="@(i)com@(j)_im_like_num" class="comment__quantity">@(com.Likes.Count)</div>
                                         </div>
                                     </div>
@@ -211,9 +215,9 @@
                                 Отменить
                             </button>
                             @*<button class="my_comment_write_btn_send mid_@(color)" onclick="SendProfileImageCom('@(i)com_input', '@name', '@item.Auhor.AuthorUserName',
-                                '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)', '@color', '@cmId')">
-                                Отправить
-                            </button>*@
+                                    '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)', '@color', '@cmId')">
+                                    Отправить
+                                </button>*@
                         </div>
                     </div>
 

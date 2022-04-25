@@ -42,6 +42,8 @@ namespace SocialNet1.Models.Static
 
         #region Group
 
+        public const string DELETE_GROUP_IMAGE = "api/groupimage/delete";
+
         public const string ADD_GROUP_IMAGE_LIKE = "api/groupimage/addlike";
         public const string DELETE_GROUP_IMAGE_LIKE = "api/groupimage/deletelike";
 

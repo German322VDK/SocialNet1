@@ -13,6 +13,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool AddPhoto(byte[] arr, string groupName);
 
+        bool DeletePhoto(string groupName, int imageId);
+
         bool AddPhotoLike(string groupName, string userName, int imageId);
 
         bool DeletePhotoLike(string groupName, string userName, int imageId);
