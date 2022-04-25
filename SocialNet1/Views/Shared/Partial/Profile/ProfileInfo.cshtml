@@ -99,8 +99,10 @@
                     </a>
                 </li>
                 <li class="profil_left__dop_list_item">
-                    <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
-                    <div class="profil_left__dop_list_item_t_c">групп</div>
+                    <a asp-controller="Group" asp-action="Index" asp-route-username="@Model.User.UserName">
+                        <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
+                        <div class="profil_left__dop_list_item_t_c">групп</div>
+                    </a>
                 </li>
             </ul>
         </div>
