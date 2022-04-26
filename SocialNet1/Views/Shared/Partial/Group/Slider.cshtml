@@ -19,7 +19,7 @@
 
     //var addImageAPI = $"http://{Context.Request.Host}/{APIUrls.ADD_IMAGE}";
 
-    //var addImageAPI = $"/{APIUrls.ADD_IMAGE}";
+    var addImageAPI = $"/{APIUrls.ADD_GROUP_IMAGE_COM}";
 
     var addlikeURL = $"/{APIUrls.ADD_GROUP_IMAGE_LIKE}";
 
@@ -137,7 +137,7 @@
                                         <a class="comment__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.AuthorUserName">
                                             @com.AuthorSecondName @com.AuthorFirstName
                                         </a>
-                                        <img class="comment__polit_img" src="@com.AuthorCoordinatesImage" alt="">
+                                        <img class="comment__polit_img" src="@Url.Content($"~/{com.AuthorCoordinatesImage}")" alt="">
                                     </div>
                                     <div class="comment__all_infa">
                                         <div class="comment__date">@com.DateTime</div>
@@ -214,10 +214,10 @@
               'modal__foto_right_my_comment_write_active')">
                                 Отменить
                             </button>
-                            @*<button class="my_comment_write_btn_send mid_@(color)" onclick="SendProfileImageCom('@(i)com_input', '@name', '@item.Auhor.AuthorUserName',
+                            <button class="my_comment_write_btn_send mid_@(color)" onclick="SendGroupImageCom('@(i)com_input', '@name', '@item.Group.ShortGroupName',
                                     '@item.ImageId', '@addImageAPI', '@comsID', '@i', '@j', 'photoComCount@(i)', '@color', '@cmId')">
                                     Отправить
-                                </button>*@
+                                </button>
                         </div>
                     </div>
 

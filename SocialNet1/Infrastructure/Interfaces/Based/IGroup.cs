@@ -1,4 +1,5 @@
-﻿using SocialNet1.Domain.Group;
+﻿using Social_Net.Domain.Group;
+using SocialNet1.Domain.Group;
 using System.Collections.Generic;
 
 namespace SocialNet1.Infrastructure.Interfaces.Based
@@ -18,5 +19,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddPhotoLike(string groupName, string userName, int imageId);
 
         bool DeletePhotoLike(string groupName, string userName, int imageId);
+
+        GroupImageComments AddCommentToPhoto(string groupName, string userName, string text, int imageId);
     }
 }

@@ -6,7 +6,6 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Infrastructure.Services.Based
 {
@@ -185,6 +184,49 @@ namespace SocialNet1.Infrastructure.Services.Based
             }
 
             return true;
+        }
+
+        public GroupImageComments AddCommentToPhoto(string groupName, string userName, string text, int imageId)
+        {
+            if (Get(groupName) is null || GetPhoto(groupName, imageId) is null)
+                return null;
+
+            GroupImageComments comment = null;
+
+            var coms = _db.Groups
+                    .SingleOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .SingleOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .ToList();
+
+            using (_db.Database.BeginTransaction())
+            {
+                int helpId = 1;
+
+                if (coms.Count > 0)
+                    helpId = coms[coms.Count - 1].HelpId + 1;
+
+                comment = new GroupImageComments
+                {
+                    Text = text,
+                    UserName = userName,
+                    HelpId = helpId
+                };
+
+                _db.Groups
+                    .SingleOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .SingleOrDefault(im => im.Id == imageId)
+                    .Coments.Add(comment);
+
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return comment;
         }
 
         #endregion

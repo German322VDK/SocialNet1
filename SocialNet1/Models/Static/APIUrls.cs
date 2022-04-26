@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SocialNet1.Models.Static
+﻿namespace SocialNet1.Models.Static
 {
     public static class APIUrls
     {
@@ -46,6 +41,8 @@ namespace SocialNet1.Models.Static
 
         public const string ADD_GROUP_IMAGE_LIKE = "api/groupimage/addlike";
         public const string DELETE_GROUP_IMAGE_LIKE = "api/groupimage/deletelike";
+
+        public const string ADD_GROUP_IMAGE_COM = "api/groupimage/addcom";
 
         #endregion
 
