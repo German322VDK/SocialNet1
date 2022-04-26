@@ -21,5 +21,11 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool DeletePhotoLike(string groupName, string userName, int imageId);
 
         GroupImageComments AddCommentToPhoto(string groupName, string userName, string text, int imageId);
+
+        bool DeletePhotoCom(string groupName, int imageId, int comHelpId);
+
+        bool AddLikeComPhoto(string groupName, string userName, int imageId, int comHelpId);
+
+        bool DeleteLikeComPhoto(string groupName, string userName, int imageId, int comHelpId);
     }
 }

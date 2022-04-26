@@ -102,9 +102,9 @@ async function SendGroupImageCom(divTextId, sender, group, imageId, url, comsId,
         j = hId;
         var imComId = `${i}image_com${j})`
 
-        var addLikeCom = "/api/image/addlikecom";
-        var deleteLikeCom = "/api/image/deletelikecom";
-        var deleteCOm = "/api/image/deletecom";
+        var addLikeCom = "/api/groupimage/addlikecom";
+        var deleteLikeCom = "/api/groupimage/deletelikecom";
+        var deleteCOm = "/api/groupimage/deletecom";
 
         var html1 = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${imComId}">
                                 <div class="modal__foto_r_c_l">
@@ -120,17 +120,17 @@ async function SendGroupImageCom(divTextId, sender, group, imageId, url, comsId,
                                     <div class="comment__all_infa">
                                         <div class="comment__date">${dt}</div>
                                         <div class="comment__icons">
-                                            <div class="comment__minus" onclick="DeletePhotoCom('${imComId}', '${deleteCOm}',
+                                            <div class="comment__minus" onclick="DeleteGroupPhotoCom('${imComId}', '${deleteCOm}',
                                                          '${group}', '${imageId}', '${j}')">
                                                     <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
                                                 </div>
-                                            <div id="${i}com${j}_im_like_on" onclick="ProfileComLikePlus('${i}com${j}_im_like_on',
+                                            <div id="${i}com${j}_im_like_on" onclick="GroupComLikePlus('${i}com${j}_im_like_on',
                                                     '${i}com${j}_im_like_off', '${i}com${j}_im_like_num', '${addLikeCom}', '${group}',
                                                     '${sender}', '${imageId}', '${j}')"
                                                  class="comment__heart">
                                                 <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
                                             </div>
-                                            <div id="${i}com${j}_im_like_off" onclick="ProfileComLikeMinus('${i}com${j}_im_like_on',
+                                            <div id="${i}com${j}_im_like_off" onclick="GroupComLikeMinus('${i}com${j}_im_like_on',
                                                         '${i}com${j}_im_like_off', '${i}com${j}_im_like_num', '${deleteLikeCom}',
                                                         '${group}', '${sender}', '${imageId}', '${j}')"
                                                  class="comment__heart_bac heart_none">
@@ -158,4 +158,81 @@ async function SendGroupImageCom(divTextId, sender, group, imageId, url, comsId,
         comcount++;
 
         document.getElementById(comCount).innerHTML = comcount;
+}
+
+async function DeleteGroupPhotoCom(c, url, group, imageId, comId) {
+
+    var fullurl = url + "?groupName=" + group + "&imageId=" + imageId + "&comId=" + comId;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        var child = document.getElementById(c);
+        child.remove();
+    }
+    else {
+        alert("Не получилось удалить комментарий(");
+    }
+
+
+}
+
+async function GroupComLikePlus(one, two, num, url, group, user, imageid, comid) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            groupName: group,
+            userName: user,
+            imageId: parseInt(imageid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(two).classList.remove('heart_none');
+        document.getElementById(one).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number++;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не поставился(")
+    }
+
+
+}
+
+async function GroupComLikeMinus(one, two, num, url, group, user, imageid, comid) {
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            groupName: group,
+            userName: user,
+            imageId: parseInt(imageid),
+            comId: parseInt(comid)
+        })
+    });
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(one).classList.remove('heart_none');
+        document.getElementById(two).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number--;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк под комментарий не поставился(")
+    }
 }

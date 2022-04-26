@@ -44,6 +44,12 @@
 
         public const string ADD_GROUP_IMAGE_COM = "api/groupimage/addcom";
 
+        public const string DELETE_GROUP_IMAGE_COM = "api/groupimage/deletecom";
+
+        public const string ADD_GROUP_IMAGE_COM_LIKE = "api/groupimage/addlikecom";
+
+        public const string DELETE_GROUP_IMAGE_COM_LIKE = "api/groupimage/deletelikecom";
+
         #endregion
 
         public const string ADD_MESSAGE = "api/message/add";

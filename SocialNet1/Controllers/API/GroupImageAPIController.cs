@@ -180,5 +180,78 @@ namespace SocialNet1.Controllers.API
                 HelpId = com.HelpId
             };
         }
+
+        [HttpGet("deletecom")]
+        public bool DeleteCom(string groupName, int imageId, int comId)
+        {
+            if(string.IsNullOrEmpty(groupName) || _group.Get(groupName) is null)
+            {
+                _logger.LogWarning("Не понятно кому удалять коммент под фото");
+
+                return false;
+            }
+
+            var result = _group.DeletePhotoCom(groupName, imageId, comId);
+
+            if (result)
+            {
+                _logger.LogInformation($"Получилось удалить коммент {comId} под фото {imageId} группы {groupName}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось удалить коммент {comId} под фото {imageId} группы {groupName}");
+            }
+
+            return result;
+        }
+
+        [HttpPost("addlikecom")]
+        public bool AddLikeCom(LikeGroupComModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.GroupName) || string.IsNullOrEmpty(model.UserName)
+                || _group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"{model.UserName ?? ""} не смог поставить лайк {model.GroupName ?? ""}!");
+                return false;
+            }
+
+            var result = _group.AddLikeComPhoto(model.GroupName, model.UserName, model.ImageId, model.ComId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"{model.UserName} уже до этого поставил лайк {model.GroupName} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{model.UserName} поставил лайк {model.GroupName} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+
+            return result;
+
+        }
+
+        [HttpPost("deletelikecom")]
+        public bool DeleteLikeCom(LikeGroupComModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.GroupName) || string.IsNullOrEmpty(model.UserName)
+                || _group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"{model.UserName ?? ""} не смог поставить лайк {model.GroupName ?? ""}!");
+                return false;
+            }
+
+            var result = _group.DeleteLikeComPhoto(model.GroupName, model.UserName, model.ImageId, model.ComId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"{model.UserName} ещё не поставил лайк {model.GroupName} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+            else
+            {
+                _logger.LogInformation($"{model.UserName} убрал лайк {model.GroupName} под коммент {model.ComId} фото {model.ImageId}!");
+            }
+
+            return result;
+        }
     }
 }

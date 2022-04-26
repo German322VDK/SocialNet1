@@ -229,6 +229,122 @@ namespace SocialNet1.Infrastructure.Services.Based
             return comment;
         }
 
+        public bool DeletePhotoCom(string groupName, int imageId, int comHelpId)
+        {
+            if (Get(groupName) is null || GetPhoto(groupName, imageId) is null)
+                return false;
+
+            var com = GetPhoto(groupName, imageId)
+                .Coments
+                .FirstOrDefault(cm => cm.HelpId == comHelpId);
+
+            if (com is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.RemoveRange(com.GroupCommentLikes);
+
+                _db.Remove(com);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddLikeComPhoto(string groupName, string userName, int imageId, int comHelpId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var image = GetPhoto(groupName, imageId);
+
+            if (image is null)
+                return false;
+
+            var com = image.Coments.FirstOrDefault(cm => cm.HelpId == comHelpId);
+
+            if (com is null)
+                return false;
+
+            var liker = com.GroupCommentLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+            if (liker is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .FirstOrDefault(cm => cm.HelpId == comHelpId)
+                    .GroupCommentLikes
+                    .Add(new GroupCommentLike
+                    {
+                        Likers = userName,
+                        Emoji = Emoji.Like
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeleteLikeComPhoto(string groupName, string userName, int imageId, int comHelpId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var image = GetPhoto(groupName, imageId);
+
+            if (image is null)
+                return false;
+
+            var com = image.Coments.FirstOrDefault(cm => cm.HelpId == comHelpId);
+
+            if (com is null)
+                return false;
+
+            var liker = com.GroupCommentLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+            if (liker is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var like = _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .Images
+                    .FirstOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .FirstOrDefault(cm => cm.HelpId == comHelpId)
+                    .GroupCommentLikes
+                    .FirstOrDefault(lk => lk.Likers == userName);
+
+                _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }

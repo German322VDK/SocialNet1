@@ -27,11 +27,11 @@
 
     var deleteImageAPI = $"/{APIUrls.DELETE_GROUP_IMAGE}";
 
-    //var deletecom = $"/{APIUrls.DELETE_COM}";
+    var deletecom = $"/{APIUrls.DELETE_GROUP_IMAGE_COM}";
 
-    //var addLikeCom = $"{APIUrls.ADD_IMAGE_COM_LIKE}";
+    var addLikeCom = $"/{APIUrls.ADD_GROUP_IMAGE_COM_LIKE}";
 
-    //var deleteLikeCom = $"{APIUrls.DELETE_IMAGE_COM_LIKE}";
+    var deleteLikeCom = $"/{APIUrls.DELETE_GROUP_IMAGE_COM_LIKE}";
 
     int i = 1;
 
@@ -142,25 +142,25 @@
                                     <div class="comment__all_infa">
                                         <div class="comment__date">@com.DateTime</div>
                                         <div class="comment__icons">
-                                            @*@if (com.AuthorUserName == name || item.Auhor.AuthorUserName == name)
+                                            @if (com.AuthorUserName == name || group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(user.UserName))
                                                 {
-                                                    <div class="comment__minus" onclick="DeletePhotoCom('@(i)image_com@(j)', '@deletecom',
-                                                             '@item.Auhor.AuthorUserName', '@item.ImageId', '@com.HelpId')">
+                                                    <div class="comment__minus" onclick="DeleteGroupPhotoCom('@(i)image_com@(j)', '@deletecom',
+                                                             '@item.Group.ShortGroupName', '@item.ImageId', '@com.HelpId')">
                                                         <i class="fa fa-trash-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                                     </div>
                                                 }
-                                                <div id="@(i)com@(j)_im_like_on" onclick="ProfileComLikePlus('@(i)com@(j)_im_like_on',
-                                                        '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@addLikeCom', '@item.Auhor.AuthorUserName',
+                                                <div id="@(i)com@(j)_im_like_on" onclick="GroupComLikePlus('@(i)com@(j)_im_like_on',
+                                                        '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@addLikeCom', '@item.Group.ShortGroupName',
                                                         '@name', '@item.ImageId', '@com.HelpId')"
                                                      class="comment__heart @(isLiked ? "heart_none": "")">
                                                     <i class="fa fa-heart-o color_dark_dark_@(com.Color)" aria-hidden="true"></i>
                                                 </div>
-                                                <div id="@(i)com@(j)_im_like_off" onclick="ProfileComLikeMinus('@(i)com@(j)_im_like_on',
+                                                <div id="@(i)com@(j)_im_like_off" onclick="GroupComLikeMinus('@(i)com@(j)_im_like_on',
                                                             '@(i)com@(j)_im_like_off', '@(i)com@(j)_im_like_num', '@deleteLikeCom',
-                                                            '@item.Auhor.AuthorUserName', '@name', '@item.ImageId', '@com.HelpId')"
+                                                            '@item.Group.ShortGroupName', '@name', '@item.ImageId', '@com.HelpId')"
                                                      class="comment__heart_bac @(isLiked ? "": "heart_none")">
                                                     <i class="fa fa-heart color_dark_dark_@(com.Color) heart_none" aria-hidden="true"></i>
-                                                </div>*@
+                                                </div>
                                             <div id="@(i)com@(j)_im_like_num" class="comment__quantity">@(com.Likes.Count)</div>
                                         </div>
                                     </div>
