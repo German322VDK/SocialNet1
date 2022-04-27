@@ -38,5 +38,13 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddPostLike(string groupName, string liker, int postId);
 
         bool DeletePostLike(string groupName, string liker, int postId);
+
+        CommentDTO AddPostCom(string groupName, int postId, string commenter, string text);
+
+        bool DeleteComPost(string groupName, int postId, int comHelpId);
+
+        bool AddPostComLike(string groupName, int postId, int comId, string userName);
+
+        bool DeletePostComLike(string groupName, int postId, int comId, string userName);
     }
 }

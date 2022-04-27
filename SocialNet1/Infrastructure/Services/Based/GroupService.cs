@@ -489,6 +489,167 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public CommentDTO AddPostCom(string groupName, int postId, string commenter, string text)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return null;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return null;
+
+            CommentDTO comment = null;
+
+            int helpId = 1;
+
+            var coms = post
+                    .Comments;
+
+            if (coms is not null && coms.Count > 0)
+                helpId = coms.Last().HelpId + 1;
+
+            using (_db.Database.BeginTransaction())
+            {
+                comment = new CommentDTO
+                {
+                    CommentatorStatus = CommentatorStatus.User,
+                    CommentatorName = commenter,
+                    Content = text,
+                    HelpId = helpId
+                };
+
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments
+                    .Add(comment);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return comment;
+        }
+
+        public bool DeleteComPost(string groupName, int postId, int comHelpId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            var com = post.Comments.FirstOrDefault(cm => cm.HelpId == comHelpId);
+
+            if (com is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.RemoveRange(com.Images);
+
+                _db.RemoveRange(com.Likes);
+
+                _db.Remove(com);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddPostComLike(string groupName, int postId, int comId, string userName)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            var com = post.Comments.FirstOrDefault(cm => cm.HelpId == comId);
+
+            if (com is null)
+                return false;
+
+            var like = com.Likes.FirstOrDefault(lk => lk.Likers == userName);
+
+            if (like is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(p => p.Id == postId)
+                    .Comments
+                    .FirstOrDefault(cm => cm.HelpId == comId)
+                    .Likes
+                    .Add(new CommentLike 
+                    { 
+                        Likers = userName,
+                        Emoji = Emoji.Like
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePostComLike(string groupName, int postId, int comId, string userName)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            var com = post.Comments.FirstOrDefault(cm => cm.HelpId == comId);
+
+            if (com is null)
+                return false;
+
+            var like = com.Likes.FirstOrDefault(lk => lk.Likers == userName);
+
+            if (like is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }

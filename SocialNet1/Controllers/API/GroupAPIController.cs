@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Infrastructure.Interfaces.Based;
-using System;
-using System.Collections.Generic;
+using SocialNet1.Infrastructure.Methods;
+using SocialNet1.Models.API;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.Controllers.API
 {
@@ -30,6 +28,13 @@ namespace SocialNet1.Controllers.API
             if (string.IsNullOrEmpty(groupName))
             {
                 _logger.LogWarning("Не понятно кому удалять пост");
+
+                return false;
+            }
+
+            if (_group.Get(groupName) is null)
+            {
+                _logger.LogWarning($"Не существует группы {groupName}");
 
                 return false;
             }
@@ -139,6 +144,155 @@ namespace SocialNet1.Controllers.API
             }
 
             return result;
+        }
+
+        [HttpPost("addcompost")]
+        public CommentModel AddComPost(AddCommentPostModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.Commenter) || string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.UserName))
+            {
+                _logger.LogWarning("Данные не пришли или пришли повреждёнными(");
+
+                return null;
+            }
+
+            var result = _group.AddPostCom(model.UserName, model.PostId, model.Commenter, model.Text);
+
+            if (result is null)
+            {
+                _logger.LogWarning($"Не получилось добавить коммент '{model.Text}' человека {model.Commenter} под постом № {model.PostId} " +
+                    $"группы {model.UserName} (");
+
+                return null;
+            }
+
+            _logger.LogInformation($"Получилось добавить коммент '{model.Text}' человека {model.Commenter} под постом № {model.PostId} " +
+                    $"группы {model.UserName} )");
+
+            var commenter = _user.Get(result.CommentatorName);
+
+            var color = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
+
+            var imageArr = commenter.Images.SingleOrDefault(el => el.ImageNumber == commenter.SocNetItems.CurrentImage).Image;
+
+            var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+            var format = NewImageMethods.GetFormat(imageArr);
+
+            return new CommentModel
+            {
+                Id = model.PostId,
+                X = commenter.SocNetItems.X,
+                Y = commenter.SocNetItems.Y,
+                FirstName = commenter.FirstName,
+                SecondName = commenter.SecondName,
+                LikesCount = 0,
+                Color = color,
+                DateTime = result.DateTime.ToString("g"),
+                PhotoCom = strImage,
+                FormatPhotoCom = format,
+                Text = result.Content,
+                HelpId = result.HelpId,
+                Author = model.UserName,
+                Commenter = model.Commenter
+            };
+        }
+
+        [HttpGet("deletecompost")]
+        public bool DeletePostCom(string groupName, int postId, int comId)
+        {
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning("Не понятно кому удалять коммент поста");
+
+                return false;
+            }
+
+            if (_group.Get(groupName) is null)
+            {
+                _logger.LogWarning($"Не существует группы {groupName}");
+
+                return false;
+            }
+
+            var result = _group.DeleteComPost(groupName, postId, comId);
+
+            if (!result)
+            {
+                _logger.LogInformation($"На странице группы {groupName} не получилось удалить коммент № {comId} поста № {postId}");
+            }
+            else
+            {
+                _logger.LogInformation($"На странице группы {groupName} был удалён коммент № {comId} поста № {postId}");
+            }
+
+            return result;
+        }
+
+        [HttpPost("addlikecompost")]
+        public bool AddLikeComPost(LikeComGroupPostModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.GroupName) || string.IsNullOrEmpty(model.UserName))
+            {
+                _logger.LogWarning("Не получается поставить лайк на коммент поста, данные повреждены (");
+
+                return false;
+            }
+
+            if(_user.Get(model.UserName) is null || _group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"Человека {model.UserName} или группы {model.GroupName} не существует(");
+
+                return false;
+            }
+
+            var result = _group.AddPostComLike(model.GroupName, model.PostId, model.ComId, model.UserName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Почему-то не получается человеку {model.UserName} поставить лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници группы {model.GroupName} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {model.UserName} смог поставить лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници группы {model.GroupName} )");
+
+            return true;
+        }
+
+        [HttpPost("deletelikecompost")]
+        public bool DeleteLikeComPost(LikeComGroupPostModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.GroupName) || string.IsNullOrEmpty(model.UserName))
+            {
+                _logger.LogWarning("Не получается убрать лайк на коммент поста, данные повреждены (");
+
+                return false;
+            }
+
+            if (_user.Get(model.UserName) is null || _group.Get(model.GroupName) is null)
+            {
+                _logger.LogWarning($"Человека {model.UserName} или группы {model.GroupName} не существует(");
+
+                return false;
+            }
+
+            var result = _group.DeletePostComLike(model.GroupName, model.PostId, model.ComId, model.UserName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Почему-то не получается человеку {model.UserName} убрать лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници группы {model.GroupName} (");
+
+                return false;
+            }
+
+            _logger.LogInformation($"Человек {model.UserName} смог убрать лайк на коммент № {model.ComId} поста № " +
+                    $"{model.PostId} со страници группы {model.GroupName} )");
+
+            return true;
         }
     }
 }

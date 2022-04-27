@@ -24,13 +24,13 @@
 
     var likeMinusURL = $"/{APIUrls.DELETE_LIKE_GROUP_POST}";
 
-    //var addPostCom = $"/{APIUrls.ADD_COM_POST}";
+    var addPostCom = $"/{APIUrls.ADD_COM_GROUP_POST}";
 
-    //var comLikePlusURL = $"/{APIUrls.ADD_LIKE_COM_POST}";
+    var comLikePlusURL = $"/{APIUrls.ADD_LIKE_COM_GROUP_POST}";
 
-    //var comLikeMinusURL = $"/{APIUrls.DELETE_LIKE_COM_POST}";
+    var comLikeMinusURL = $"/{APIUrls.DELETE_LIKE_COM_GROUP_POST}";
 
-    //var deleteComPost = $"/{APIUrls.DELETE_COM_POST}";
+    var deleteComPost = $"/{APIUrls.DELETE_COM_GROUP_POST}";
 }
 
 
@@ -163,31 +163,25 @@
                                     <a class="profil_comment__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.CommentatorName">
                                         @commenter.FirstName @commenter.SecondName
                                     </a>
-                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(xCom)d@(yCom).jpg" alt="">
+                                    <img class="profil_comment__polit_img" src="/photo/coordinates/@(xCom)d@(yCom).jpg" alt="">
                                 </div>
                                 <div class="profil_comment__all_infa">
                                     <div class="profil_comment__date">@com.DateTime.ToString("g")</div>
                                     <div class="profil_comment__icons">
                                         @if (name == com.CommentatorName)
                                         {
-                                            @*<div class="profil_comment__pencil">
-                                                    <i class="fa fa-pencil color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
-                                                </div>*@
-                                            <div class="profil_comment__minus" @*onclick="DeleteComPost('@(i)com@(j)', '@deleteComPost',
-                                                   '@Model.AuthorName', '@item.Id', '@com.HelpId', '@(i)coms_all_count')"*@>
+                                            <div class="profil_comment__minus" onclick="DeleteComGroupPost('@(i)com@(j)', '@deleteComPost',
+                                                   '@Model.AuthorName', '@item.Id', '@com.HelpId', '@(i)coms_all_count')">
                                                 <i class="fa fa-trash-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
                                             </div>
                                         }
-                                        @*<div class="profil_comment__plus">
-                                                <i class="fa fa-commenting-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
-                                            </div>*@
-                                        <div id="@(i)com@(j)_like_on" @*onclick="PostComLikePlus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
-                                                    '@(i)com@(j)_like_num', '@comLikePlusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"*@
+                                        <div id="@(i)com@(j)_like_on" onclick="GroupPostComLikePlus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikePlusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"
                                              class="comment__heart @(comIsLiked ? "heart_none" : "")">
                                             <i class="fa fa-heart-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
                                         </div>
-                                        <div id="@(i)com@(j)_like_off" @*onclick="PostComLikeMinus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
-                                                    '@(i)com@(j)_like_num', '@comLikeMinusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"*@
+                                        <div id="@(i)com@(j)_like_off" onclick="GroupPostComLikeMinus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikeMinusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"
                                              class="comment__heart_bac @(comIsLiked ? "" : "heart_none")">
                                             <i class="fa fa-heart color_dark_dark_@(commentorColor) heart_none" aria-hidden="true"></i>
                                         </div>
@@ -247,9 +241,9 @@
                             Отменить
                         </button>
                         <button class="profil_my_comment_write_btn_send mid_@(color)"
-                                @*onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name',
+                                onclick="AddCommentToGroupPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name',
                                 '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)post_my_comment_two',
-                                '@(i)post_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')"*@>
+                                '@(i)post_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
                             Отправить
                         </button>
                     </div>

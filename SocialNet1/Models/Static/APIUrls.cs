@@ -61,6 +61,12 @@
         public const string ADD_LIKE_GROUP_POST = "api/group/addlikepost";
         public const string DELETE_LIKE_GROUP_POST = "api/group/deletelikepost";
 
+        public const string ADD_COM_GROUP_POST = "api/group/addcompost";
+        public const string DELETE_COM_GROUP_POST = "api/group/deletecompost";
+        public const string ADD_LIKE_COM_GROUP_POST = "api/group/addlikecompost";
+        public const string DELETE_LIKE_COM_GROUP_POST = "api/group/deletelikecompost";
+
+
         #endregion
 
         #endregion

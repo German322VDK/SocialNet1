@@ -30,7 +30,7 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     var autSN = body.authorSecondName;
     var autCIm = body.authorCoordinatesImage;
     var dt = body.dateTime;
-    var com = body.comment;
+    var com = SeqHeml(body.comment);
     var hId = body.helpId;
     //var lc = body.likeCount;
     var lc = 0;
@@ -538,7 +538,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
     var sn = body.secondName;
     var fP = body.formatPhotoCom;
     var f = body.photoCom;
-    var text = body.text;
+    var text = SeqHeml(body.text);
     var color = body.color;
     var helpId = body.helpId;
     var author = body.author;
