@@ -236,3 +236,19 @@ async function GroupComLikeMinus(one, two, num, url, group, user, imageid, comid
         alert("Лайк под комментарий не поставился(")
     }
 }
+
+async function DeleteGroupPost(url, postItem, postId, group) {
+
+    var fullurl = url + "?groupName=" + group + "&postId=" + postId;
+
+    const response = await fetch(fullurl);
+
+    var body = await response.json();
+
+    if (body) {
+        document.getElementById(postItem).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
+}

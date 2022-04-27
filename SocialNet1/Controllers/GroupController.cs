@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
@@ -165,6 +166,97 @@ namespace SocialNet1.Controllers
             _logger.LogInformation($"{currantUserName} успешно добавил фотографию в группу {model.GroupName}");
 
             return RedirectToAction("Group", "Group", new { groupName = model.GroupName});
+        }
+
+        public IActionResult AddComm(ComModel model)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (model is null || model.UserName is null || model.AuthorName is null || (model.uploadedFile is null && string.IsNullOrEmpty(model.Text)))
+            {
+                _logger.LogWarning("Данные для добавления поста не пришли");
+
+                return RedirectToAction("Index", "Group");
+            }
+
+            PostDTO post;
+            string text = string.IsNullOrEmpty(model.Text) ? "" : model.Text;
+
+            if (model.uploadedFile is not null)
+            {
+
+                var arr = NewImageMethods.GetByteArrFromFile(model.uploadedFile);
+
+                var resultArr = NewImageMethods.IsValid(arr);
+
+                if (resultArr)
+                {
+                    _logger.LogInformation($"Получилось добавить пост с картинкой: {text} человека {model.UserName} для группы {model.AuthorName}");
+
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.AuthorName,
+                            Content = text,
+                            Images = new List<CommentImages>()
+                            {
+                                new CommentImages
+                                {
+                                    ImageNumber = 1,
+                                    Image = arr
+                                }
+                            }
+                        }
+                    };
+                }
+                else
+                {
+                    _logger.LogWarning($"Не получилось добавить пост с картинкой: {text} человека {model.UserName} для группы {model.AuthorName}");
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.AuthorName,
+                            Content = text
+                        }
+                    };
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить пост без картинкой: {text} человека {model.UserName} для группы {model.AuthorName}");
+
+                post = new PostDTO
+                {
+                    ThisPost = new CommentDTO
+                    {
+                        CommentatorStatus = CommentatorStatus.User,
+                        CommentatorName = model.AuthorName,
+                        Content = text
+                    }
+                };
+            }
+
+            var result = _group.AddPost(model.AuthorName, post);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось добавить пост: {model.Text} человека {model.UserName} для группы {model.AuthorName}");
+
+                return RedirectToAction("Group", "Group", new { groupName = model.AuthorName });
+            }
+
+            _logger.LogInformation($"Получилось добавить пост: {model.Text} человека {model.UserName} для группы {model.AuthorName}");
+
+            return RedirectToAction("Group", "Group", new { groupName = model.AuthorName });
         }
 
     }

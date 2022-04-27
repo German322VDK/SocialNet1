@@ -144,9 +144,9 @@
         </div>
     }
 
-    @*<partial name="Partial/Profile/ProfileAddPost" model="@new ComModel { AuthorName = Model.User.UserName}" />
+    <partial name="Partial/Group/GroupAddPost" model="@new ComModel { AuthorName = Model.Group.ShortGroupName}" />
 
-        <partial name="Partial/Profile/ProfilePosts" model="@new PostsViewModel { Posts = Model.User.SocNetItems.Posts, AuthorName = Model.User.UserName }" />*@
+    <partial name="Partial/Group/GroupPosts" model="@new PostsViewModel { Posts = Model.Group.SocNetItems.Posts, AuthorName = Model.Group.ShortGroupName }" />
 
 </div>
 

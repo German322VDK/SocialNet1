@@ -1,5 +1,6 @@
 ﻿using Social_Net.Domain.Group;
 using SocialNet1.Domain.Group;
+using SocialNet1.Domain.PostCom;
 using System.Collections.Generic;
 
 namespace SocialNet1.Infrastructure.Interfaces.Based
@@ -27,5 +28,11 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddLikeComPhoto(string groupName, string userName, int imageId, int comHelpId);
 
         bool DeleteLikeComPhoto(string groupName, string userName, int imageId, int comHelpId);
+
+        PostDTO GetPost(string groupName, int postId);
+
+        bool AddPost(string groupName, PostDTO post);
+
+        bool DeletePost(string groupName, int postId);
     }
 }

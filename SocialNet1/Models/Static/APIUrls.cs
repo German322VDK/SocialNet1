@@ -37,6 +37,8 @@
 
         #region Group
 
+        #region GroupImage
+
         public const string DELETE_GROUP_IMAGE = "api/groupimage/delete";
 
         public const string ADD_GROUP_IMAGE_LIKE = "api/groupimage/addlike";
@@ -49,6 +51,14 @@
         public const string ADD_GROUP_IMAGE_COM_LIKE = "api/groupimage/addlikecom";
 
         public const string DELETE_GROUP_IMAGE_COM_LIKE = "api/groupimage/deletelikecom";
+
+        #endregion
+
+        #region GroupPost
+
+        public const string DELETE_GROUP_POST = "api/group/deletepost";
+
+        #endregion
 
         #endregion
 

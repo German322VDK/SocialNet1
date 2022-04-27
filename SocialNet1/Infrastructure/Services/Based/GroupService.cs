@@ -2,6 +2,7 @@
 using SocialNet1.Database.SQlite.Context;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Group;
+using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,6 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         public GroupDTO Get(string group) =>
              GetAll().FirstOrDefault(el => el.ShortGroupName == group);
-
 
 
         #endregion
@@ -336,6 +336,83 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .FirstOrDefault(lk => lk.Likers == userName);
 
                 _db.Remove(like);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+
+
+        #endregion
+
+        #region Posts
+
+        public PostDTO GetPost(string groupName, int postId) =>
+            Get(groupName).SocNetItems.Posts.FirstOrDefault(p => p.Id == postId);
+
+        public bool AddPost(string groupName, PostDTO post)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            if (post is null || post.ThisPost is null || string.IsNullOrEmpty(post.ThisPost.CommentatorName))
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .SocNetItems
+                    .Posts
+                    .Add(post);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePost(string groupName, int postId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.RemoveRange(post.ThisPost.Images);
+
+                _db.RemoveRange(post.ThisPost.Likes);
+
+                _db.Remove(post.ThisPost);
+
+                if (post.Comments is not null)
+                {
+                    foreach (var item in post.Comments)
+                    {
+                        _db.RemoveRange(item.Images);
+
+                        _db.RemoveRange(item.Likes);
+
+                        _db.Remove(item);
+                    }
+                }
+
+                _db.Remove(post);
 
                 _db.SaveChanges();
 
