@@ -1,4 +1,5 @@
 ﻿using Social_Net.Domain.Group;
+using Social_Net.Domain.PostCom;
 using SocialNet1.Database.SQlite.Context;
 using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Group;
@@ -413,6 +414,72 @@ namespace SocialNet1.Infrastructure.Services.Based
                 }
 
                 _db.Remove(post);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddPostLike(string groupName, string liker, int postId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            if (post.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == liker) is not null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .SocNetItems.Posts
+                    .FirstOrDefault(p => p.Id == postId)
+                    .ThisPost
+                    .Likes
+                    .Add(new CommentLike 
+                    { 
+                        Likers = liker,
+                        Emoji = Emoji.Like
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeletePostLike(string groupName, string liker, int postId)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var post = GetPost(groupName, postId);
+
+            if (post is null)
+                return false;
+
+            var like = post.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == liker);
+
+            if (like is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Remove(like);
 
                 _db.SaveChanges();
 

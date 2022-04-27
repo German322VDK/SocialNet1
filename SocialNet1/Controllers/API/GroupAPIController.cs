@@ -79,35 +79,66 @@ namespace SocialNet1.Controllers.API
         //    return result;
         //}
 
-        //[HttpGet("addlike")]
-        //public bool AddImageLike(string groupname, string username, int imageid)
-        //{
-        //    if (string.IsNullOrEmpty(groupname) || string.IsNullOrEmpty(groupname))
-        //    {
-        //        _logger.LogWarning($"Не понятно кто кому ставит лайк");
+        [HttpGet("addlikepost")]
+        public bool AddPostLike(string groupName, string liker, int postId)
+        {
+            if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(liker))
+            {
+                _logger.LogWarning($"Не понятно кто кому ставит лайк");
 
-        //        return false;
-        //    }
+                return false;
+            }
 
-        //    if (_user.Get(username) is null || _group.Get(groupname) is null)
-        //    {
-        //        _logger.LogWarning($"Не существует группы {groupname} или человека {username}");
+            if (_user.Get(liker) is null || _group.Get(groupName) is null)
+            {
+                _logger.LogWarning($"Не существует группы {groupName} или человека {liker}");
 
-        //        return false;
-        //    }
+                return false;
+            }
 
-        //    var result = _group.AddPhotoLike(groupname, username, imageid);
+            var result = _group.AddPostLike(groupName, liker, postId);
 
-        //    if (result)
-        //    {
-        //        _logger.LogInformation($"Получилось добавить лайк под фото {imageid} группы {groupname} человеку {username}");
-        //    }
-        //    else
-        //    {
-        //        _logger.LogWarning($"Не получилось добавить лайк под фото {imageid} группы {groupname} человеку {username}");
-        //    }
+            if (result)
+            {
+                _logger.LogInformation($"Получилось добавить лайк под пост {postId} группы {groupName} человеку {liker}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось добавить лайк под пост {postId} группы {groupName} человеку {liker}");
+            }
 
-        //    return result;
-        //}
+            return result;
+        }
+
+        [HttpGet("deletelikepost")]
+        public bool DeletePostLike(string groupName, string liker, int postId)
+        {
+            if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(liker))
+            {
+                _logger.LogWarning($"Не понятно кто кому ставит лайк");
+
+                return false;
+            }
+
+            if (_user.Get(liker) is null || _group.Get(groupName) is null)
+            {
+                _logger.LogWarning($"Не существует группы {groupName} или человека {liker}");
+
+                return false;
+            }
+
+            var result = _group.DeletePostLike(groupName, liker, postId);
+
+            if (result)
+            {
+                _logger.LogInformation($"Получилось убрать лайк с поста {postId} группы {groupName} человеку {liker}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось убрать лайк с поста {postId} группы {groupName} человеку {liker}");
+            }
+
+            return result;
+        }
     }
 }

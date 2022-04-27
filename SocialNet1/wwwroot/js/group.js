@@ -252,3 +252,47 @@ async function DeleteGroupPost(url, postItem, postId, group) {
         alert("При удалении фото возникла ошибка(");
     }
 }
+
+async function PostGroupLikePlus(one, two, num, url, group, postId, liker) {
+
+    var fullurl = url + "?groupName=" + group + "&postId=" + postId + "&liker=" + liker;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(two).classList.remove('heart_none');
+        document.getElementById(one).classList.add('heart_none');
+
+        var lp = document.getElementById(one);
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number++;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк не поставился(");
+    }
+}
+
+async function PostGroupLikeMinus(one, two, num, url, group, postId, liker) {
+
+    var fullurl = url + "?groupName=" + group + "&postId=" + postId + "&liker=" + liker;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(one).classList.remove('heart_none');
+        document.getElementById(two).classList.add('heart_none');
+
+        var number = parseInt(document.getElementById(num).innerHTML);
+        number--;
+        document.getElementById(num).innerHTML = number;
+    }
+    else {
+        alert("Лайк не поставился(");
+    }
+}

@@ -58,6 +58,9 @@
 
         public const string DELETE_GROUP_POST = "api/group/deletepost";
 
+        public const string ADD_LIKE_GROUP_POST = "api/group/addlikepost";
+        public const string DELETE_LIKE_GROUP_POST = "api/group/deletelikepost";
+
         #endregion
 
         #endregion

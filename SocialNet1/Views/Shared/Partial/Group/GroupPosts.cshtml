@@ -20,9 +20,9 @@
 
     var deletePostURL = $"/{APIUrls.DELETE_GROUP_POST}";
 
-    //var likePlusURL = $"/{APIUrls.ADD_LIKE_POST}";
+    var likePlusURL = $"/{APIUrls.ADD_LIKE_GROUP_POST}";
 
-    //var likeMinusURL = $"/{APIUrls.DELETE_LIKE_POST}";
+    var likeMinusURL = $"/{APIUrls.DELETE_LIKE_GROUP_POST}";
 
     //var addPostCom = $"/{APIUrls.ADD_COM_POST}";
 
@@ -111,24 +111,20 @@
                         <i class="fa fa-comments-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
                     </button>
                     <div class="profil__col_com_all" id="@(i)coms_all_count">@item.Comments.Count</div>
-                    @*<div class="profil__col_com_ally">257</div>
-                        <div class="profil__col_com_enemy">57</div>*@
                 </div>
                 <!-- Лайки -->
                 <div class="profil__post_l">
                     <button id="@(i)_newsPostLike1" class="profil__post_l_img @(isLiked ? "" : "heart_none")"
-                            @*onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
-                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')"*@>
+                            onclick="PostGroupLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
                         <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
                     </button>
                     <button id="@(i)_newsPostLike2" class="profil__post_l_img @(isLiked ? "heart_none" : "")"
-                            @*onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
-                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')"*@>
+                            onclick="PostGroupLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
                         <i class="fa fa-heart color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
                     </button>
                     <div id="@(i)_likeAll" class="profil__col_like_all">@item.ThisPost.Likes.Count</div>
-                    @*<div class="profil__col_like_ally">36</div>
-                        <div class="profil__col_like_enemy">12</div>*@
                 </div>
             </div>
 
