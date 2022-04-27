@@ -1711,8 +1711,8 @@ input[type="submit"] {
 .del_cross1 {
     /*margin-left: 450px;*/
     /* margin-right: 75px; */
-    /*position: absolute;
-    right: 55px;*/
+    position: absolute;
+    right: 55px;
 }
 /* МОДАЛЬНОЕ ОКНО ДОБАВИТЬ ФОТО ВВЕРХУ*/
 @-webkit-keyframes fade {
