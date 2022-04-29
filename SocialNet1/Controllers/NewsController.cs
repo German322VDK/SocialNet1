@@ -18,12 +18,14 @@ namespace SocialNet1.Controllers
         private readonly IUser _user;
         private readonly ILogger<NewsController> _logger;
         private readonly IFriends _friends;
+        private readonly IGroup _group;
 
-        public NewsController(IUser user, ILogger<NewsController> logger, IFriends friends)
+        public NewsController(IUser user, ILogger<NewsController> logger, IFriends friends, IGroup group)
         {
             _user = user;
             _friends = friends;
             _logger = logger;
+            _group = group;
         }
 
         public IActionResult Index()
@@ -44,7 +46,8 @@ namespace SocialNet1.Controllers
                 posts.Add(new NewsPostViewModel 
                 { 
                     Post = post,
-                    AuthorName = user.UserName
+                    AuthorName = user.UserName,
+                    IsUser = true
                 });
             }
 
@@ -57,7 +60,25 @@ namespace SocialNet1.Controllers
                     posts.Add(new NewsPostViewModel
                     {
                         Post = friendPost,
-                        AuthorName = friend.UserName
+                        AuthorName = friend.UserName,
+                        IsUser = true
+                    });
+                }
+            }
+
+            var groupsName = user.Groups.Select(gr => gr.GroupName).ToArray();
+
+            var groups = _group.Get(groupsName);
+
+            foreach (var group in groups)
+            {
+                foreach (var post in group.SocNetItems.Posts)
+                {
+                    posts.Add(new NewsPostViewModel
+                    {
+                        Post = post,
+                        AuthorName = group.ShortGroupName,
+                        IsUser = false
                     });
                 }
             }

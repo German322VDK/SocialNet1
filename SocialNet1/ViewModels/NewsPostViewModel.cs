@@ -7,5 +7,7 @@ namespace SocialNet1.ViewModels
         public string AuthorName { get; set; }
 
         public PostDTO Post { get; set; }
+
+        public bool IsUser { get; set; }
     }
 }
