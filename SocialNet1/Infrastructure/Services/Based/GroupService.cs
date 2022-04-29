@@ -651,5 +651,57 @@ namespace SocialNet1.Infrastructure.Services.Based
         }
 
         #endregion
+
+        public bool Sub(string groupName, string userName)
+        {
+            var group = Get(groupName);
+
+            var user = _db.Users
+                .FirstOrDefault(us => us.UserName == userName);
+
+            if (group is null || user is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.UserGroupStatuses
+                    .Add(new UserGroupStatus 
+                    { 
+                        UserName = userName,
+                        GroupName = groupName,
+                        Status = Status.User,
+                        Group = group,
+                        UserDTO = user
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool UnSub(string groupName, string userName)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var sub = _db.UserGroupStatuses
+                .FirstOrDefault(st => st.GroupName == groupName && st.UserName == userName);
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Remove(sub);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
     }
 }

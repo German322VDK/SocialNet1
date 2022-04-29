@@ -72,6 +72,8 @@ namespace SocialNet1.Data
                 InitialGropsAsync().Wait();
 
                 InitialChatsAsync().Wait();
+
+                InitialUserGroupFix();
             }
             catch (Exception error)
             {
@@ -108,15 +110,6 @@ namespace SocialNet1.Data
                     Image = _imageManager.GetSpecialImage("GodName")
                 });
 
-                var usersGodGroup = new List<UserGroupStatus>();
-
-                usersGodGroup.Add(new UserGroupStatus
-                {
-                    UserName = _godName,
-                    Status = Status.Admin,
-                    GroupName = _godShortGroupName
-                });
-
                 var god = new UserDTO
                 {
                     FirstName = "Создатель",
@@ -133,7 +126,7 @@ namespace SocialNet1.Data
                     },
                     Friends = new List<FriendStatus>(),
                     Email = "germean322@gmail.com",
-                    Groups = usersGodGroup
+                    //Groups = usersGodGroup
                 };
 
                 var creation_result = await _userManager.CreateAsync(god, Passwords.God);
@@ -181,13 +174,10 @@ namespace SocialNet1.Data
                     Image = _imageManager.GetSpecialImage("GodGroup")
                 });
 
-                var usersGodGroup = _db.Users.FirstOrDefault(el => el.UserName == "God").Groups;
-
                 var godGroup = new GroupDTO
                 {
                     GroupName = godGroupName,
                     ShortGroupName = _godShortGroupName,
-                    Users = usersGodGroup,
                     SocNetItems = new SocNetEntityGroup
                     {
                         CurrentImage = 1,
@@ -247,6 +237,28 @@ namespace SocialNet1.Data
             }
 
             _logger.LogInformation("Инициализация чатов выполнена успешно");
+        }
+
+        private void InitialUserGroupFix()
+        {
+            var group = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == _godShortGroupName);
+            var user = _db.Users.FirstOrDefault(us => us.UserName == _godName);
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.UserGroupStatuses
+                    .Add(new UserGroupStatus 
+                    { 
+                        Group = group,
+                        UserDTO = user,
+                        Status = Status.Admin,
+                        GroupName = _godShortGroupName,
+                        UserName = _godName
+                    });
+
+                _db.SaveChanges();
+                _db.Database.CommitTransaction();
+            }
         }
 
         private async Task CheckRole(string RoleName)

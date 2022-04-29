@@ -69,6 +69,9 @@
 
         #endregion
 
+        public const string SUB_GROUP = "api/group/sub";
+        public const string UNSUB_GROUP = "api/group/unsub";
+
         #endregion
 
         public const string ADD_MESSAGE = "api/message/add";

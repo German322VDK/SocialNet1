@@ -469,3 +469,37 @@ async function GroupPostComLikeMinus(one, two, num, url, group, user, postid, co
         alert("Лайк под комментарий не убрался(")
     }
 }
+
+async function Sub(groupName, userName, url) {
+
+    var fullurl = url + "?groupName=" + groupName + "&userName=" + userName;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById('Sub').style = "display:none;"; 
+        document.getElementById('UnSub').style = "display: inline-block;";
+    }
+    else {
+        alert("Не получилось подписаться(");
+    }
+}
+
+async function UnSub(groupName, userName, url) {
+
+    var fullurl = url + "?groupName=" + groupName + "&userName=" + userName;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById('UnSub').style = "display:none;";
+        document.getElementById('Sub').style = "display: inline-block;";
+    }
+    else {
+        alert("Не получилось отписаться(");
+    }
+}

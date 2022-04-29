@@ -9,6 +9,11 @@
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
     var group = groupService.Get(Model.GroupName);
+
+    bool isSub = group.Users.Select(gs => gs.UserName).Contains(name);
+
+    var subUrl = $"/{APIUrls.SUB_GROUP}";
+    var unSubUrl = $"/{APIUrls.UNSUB_GROUP}";
 }
 
 <div class="profil_right">
@@ -20,6 +25,16 @@
         {
             <button class="profil_right__ava_btn mid_@(color)_hover">Сменить взгляды</button>
         }
+        
+        <button id="Sub" class="profil_right__ava_btn mid_@(color)_hover" @(isSub ? "style=display:none" : "")
+                onclick="Sub('@Model.GroupName', '@name', '@subUrl')">
+            Подписаться
+        </button>
+        <button id="UnSub" class="profil_right__ava_btn mid_@(color)_hover" @(isSub ? "" : "style=display:none")
+                onclick="UnSub('@Model.GroupName', '@name', '@unSubUrl')">
+            Отписаться
+        </button>
+
     </div>
     <div class="rightsitebar__link_top_cont">
         <a class="rightsitebar__link_top" href="#top">

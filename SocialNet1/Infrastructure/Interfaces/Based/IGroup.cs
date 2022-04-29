@@ -46,5 +46,9 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool AddPostComLike(string groupName, int postId, int comId, string userName);
 
         bool DeletePostComLike(string groupName, int postId, int comId, string userName);
+
+        bool Sub(string groupName, string userName);
+
+        bool UnSub(string groupName, string userName);
     }
 }

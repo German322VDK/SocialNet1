@@ -137,14 +137,17 @@
 
     <partial name="Partial/Group/GroupPhotos" model="@photos" />
 
-    @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(user.UserName))
+    @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
     {
         <div class="profil_left__add_f light_@(color)">
             <button class="profil_left__add_foto add_foto">Добавить фото</button>
         </div>
     }
 
-    <partial name="Partial/Group/GroupAddPost" model="@new ComModel { AuthorName = Model.Group.ShortGroupName}" />
+    @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
+    {
+        <partial name="Partial/Group/GroupAddPost" model="@new ComModel { AuthorName = Model.Group.ShortGroupName}" />
+    }
 
     <partial name="Partial/Group/GroupPosts" model="@new PostsViewModel { Posts = Model.Group.SocNetItems.Posts, AuthorName = Model.Group.ShortGroupName }" />
 
@@ -154,7 +157,7 @@
 
 <partial name="Partial/Group/Slider" model="@fullPhotos" />
 
-@if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(user.UserName))
+@if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
 {
     <partial name="Partial/Group/PhotoAdd" model="@new AddGroupPhotoModel { GroupName = Model.Group.ShortGroupName}"/>
 }

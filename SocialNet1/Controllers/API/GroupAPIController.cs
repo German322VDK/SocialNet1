@@ -294,5 +294,67 @@ namespace SocialNet1.Controllers.API
 
             return true;
         }
+
+        [HttpGet("sub")]
+        public bool Sub(string groupName, string userName)
+        {
+            if(string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("Не понятно кто на кого подписывается(");
+
+                return false;
+            }
+
+            if (_group.Get(groupName) is null || _user.Get(userName) is null)
+            {
+                _logger.LogWarning($"Группы {groupName} или пользователя {userName} не существует(");
+
+                return false;
+            }
+
+            var result = _group.Sub(groupName, userName);
+
+            if (result)
+            {
+                _logger.LogInformation($"Получилось подписать человека {userName} в группу {groupName}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось подписать человека {userName} в группу {groupName}(");
+            }
+
+            return result;
+        }
+
+        [HttpGet("unsub")]
+        public bool UnSub(string groupName, string userName)
+        {
+            if (string.IsNullOrEmpty(groupName) || string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("Не понятно кто на кого подписывается(");
+
+                return false;
+            }
+
+            if (_group.Get(groupName) is null || _user.Get(userName) is null)
+            {
+                _logger.LogWarning($"Группы {groupName} или пользователя {userName} не существует(");
+
+                return false;
+            }
+
+            var result = _group.UnSub(groupName, userName);
+
+            if (result)
+            {
+                _logger.LogInformation($"Получилось отписать человека {userName} в группу {groupName}");
+            }
+            else
+            {
+                _logger.LogWarning($"Не получилось отписать человека {userName} в группу {groupName}(");
+            }
+
+            return result;
+        }
     }
 }
