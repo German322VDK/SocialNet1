@@ -71,6 +71,8 @@ namespace SocialNet1.Controllers
                 gropsVM.Add(group);
             }
 
+            _logger.LogInformation($"Тип заходит {User.Identity.Name} в группы типа {username}");
+
             return View(gropsVM);
         }
 
@@ -113,6 +115,8 @@ namespace SocialNet1.Controllers
                 Images = group.Images,
                 Group = group
             };
+
+            _logger.LogInformation($"Тип заходит {User.Identity.Name} в группу {groupName}");
 
             return View(groupVM);
         }

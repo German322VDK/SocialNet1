@@ -1,4 +1,5 @@
-﻿@model PhotoFormat
+﻿@model GroupRightModel
+@inject IGroup groupService;
 @inject IUser userService;
 @{
     var name = User.Identity!.Name;
@@ -6,14 +7,19 @@
     var user = userService.Get(name);
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var group = groupService.Get(Model.GroupName);
 }
 
 <div class="profil_right">
     <div class="profil_right__conteiner_one light_@color">
-        <div class="profil_right__ava" onclick="formShow('@Model.Number')">
-            <img class="profil_right__ava_img" src="data:image/@Model.Format;base64,@Model.Image" alt="Фото">
+        <div class="profil_right__ava" onclick="formShow('@Model.PhotoFormat.Number')">
+            <img class="profil_right__ava_img" src="data:image/@Model.PhotoFormat.Format;base64,@Model.PhotoFormat.Image" alt="Фото">
         </div>
-        <button class="profil_right__ava_btn mid_@(color)_hover">Сменить взгляды</button>
+        @if (group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
+        {
+            <button class="profil_right__ava_btn mid_@(color)_hover">Сменить взгляды</button>
+        }
     </div>
     <div class="rightsitebar__link_top_cont">
         <a class="rightsitebar__link_top" href="#top">

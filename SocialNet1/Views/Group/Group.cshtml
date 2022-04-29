@@ -150,7 +150,7 @@
 
 </div>
 
-<partial name="Partial/Group/GroupRight" model="@ava" />
+<partial name="Partial/Group/GroupRight" model="@(new GroupRightModel{ PhotoFormat = ava, GroupName = Model.Group.ShortGroupName})" />
 
 <partial name="Partial/Group/Slider" model="@fullPhotos" />
 
