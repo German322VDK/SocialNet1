@@ -225,6 +225,37 @@
   border: 2px solid black;
 }
 
+.group_flex {
+    display: flex;
+}
+
+.group_center{
+    justify-content:center;
+}
+
+.add_input {
+    border-radius: 8px;
+    align-items: center;
+    height: 25px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.add_input_xy{
+    width: 50px;
+}
+
+.group_btn {
+    box-shadow: rgb(113 113 113 / 15%) -5px -5px 11px, rgb(0 0 0 / 15%) 5px 5px 11px;
+    display: inline-block;
+    margin-bottom: 50px;
+}
+
+.group_p {
+    text-align: center;
+    margin: 10px 0;
+}
+
 /* @media (max-width:1920px){
   .groups__block_img_in{
     height: 100%;

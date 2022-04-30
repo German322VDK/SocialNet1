@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
+using SocialNet1.Domain.Group;
 using SocialNet1.Domain.PostCom;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
 using SocialNet1.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -177,6 +180,39 @@ namespace SocialNet1.Controllers
             usersData = usersData.OrderBy(el => el.AuthorSecondName).ToList();
 
             return View(usersData);
+        }
+
+        public IActionResult AddGroup() =>
+            View(new AddGroupViewModel { UserName = User.Identity.Name});
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult AddGroup(AddGroupViewModel model)
+        {
+            GroupDTO group = null;
+
+            if (model is not null && !string.IsNullOrEmpty(model.ShortGroupName) )
+            {
+                group = _group.Get(model.ShortGroupName);
+
+                if (group is not null)
+                {
+                    _logger.LogWarning($"Группа {model.ShortGroupName} занята(");
+
+                    ModelState["ShortGroupName"].Errors.Add(new Exception("Короткое имя группы обязательно и не должено использоваться другими"));
+                    ModelState["ShortGroupName"].ValidationState = ModelValidationState.Invalid;
+                }
+
+                
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Какой то конченный хотел меня обмануть");
+
+                return View(model);
+            }
+
+            return RedirectToAction("Group", "Group", new { groupName = "" });
         }
 
         public IActionResult AddImage(AddGroupPhotoModel model)
