@@ -85,13 +85,13 @@
         </div>
         <div class="profil_left__dop dark_@(color)_border_top">
             <ul class="profil_left__dop_list">
-                @*<li class="profil_left__dop_list_item">
-                    <a asp-controller="Friends" asp-action="Index" asp-route-username="@Model.User.UserName">
-                        <div class="profil_left__dop_list_item_t_c">@Model.User.Friends.Count</div>
-                        <div class="profil_left__dop_list_item_t_c">друга</div>
+                <li class="profil_left__dop_list_item">
+                    <a asp-controller="Group" asp-action="GroupSubs" asp-route-groupName="@Model.Group.ShortGroupName">
+                        <div class="profil_left__dop_list_item_t_c">@Model.Group.Users.Count</div>
+                        <div class="profil_left__dop_list_item_t_c">подписчика</div>
                     </a>
                 </li>
-                <li class="profil_left__dop_list_item">
+                @*<li class="profil_left__dop_list_item">
                     <div class="profil_left__dop_list_item_t_c">@Model.User.Groups.Count</div>
                     <div class="profil_left__dop_list_item_t_c">групп</div>
                 </li>*@

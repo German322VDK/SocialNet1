@@ -121,6 +121,64 @@ namespace SocialNet1.Controllers
             return View(groupVM);
         }
 
+        public IActionResult GroupSubs(string groupName)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning($"Имя группы не пришло");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var group = _group.Get(groupName);
+
+            if (group is null)
+            {
+                _logger.LogWarning($"Группа {groupName} потерялась");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var users = group.Users.Select(us => us.UserDTO);
+
+            var usersData = new List<GroupUserModel>();
+
+            foreach (var user in users)
+            {
+                var arr = user.Images.FirstOrDefault(im => im.ImageNumber == user.SocNetItems.CurrentImage).Image;
+
+                var str = NewImageMethods.GetStringFromByteArr(arr);
+
+                var format = NewImageMethods.GetFormat(arr);
+
+                var x = user.SocNetItems.X;
+                var y = user.SocNetItems.Y;
+
+                usersData.Add(new GroupUserModel
+                {
+                    AuthorFormat = format,
+                    AuthorImage = str,
+                    AuthorCoordinatesImage = $"/photo/coordinates/{x}d{y}.jpg",
+                    Color = UserMethods.GetColor(x, y),
+                    AuthorUserName = user.UserName,
+                    AuthorFirstName = user.FirstName,
+                    AuthorSecondName = user.SecondName,
+                    FriendsCount = user.Friends.Count
+                });
+            }
+
+            usersData = usersData.OrderBy(el => el.AuthorSecondName).ToList();
+
+            return View(usersData);
+        }
+
         public IActionResult AddImage(AddGroupPhotoModel model)
         {
             if (_user.Get(User.Identity.Name) is null)

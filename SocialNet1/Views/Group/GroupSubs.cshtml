@@ -1,0 +1,74 @@
+﻿@model List<GroupUserModel>
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+<div class="groups">
+    <div class="groups__dark_background mid_@(color)"></div>
+    <div class="groups__content light_@(color)">
+        <div class="groups__content_top dark_@(color)_border_bottom" style="justify-content: center;">
+            <h2 class="groups__content_management">Подписчики</h2>
+        </div>
+        <div class="groups__content_gg">
+            <ul class="groups__content_list">
+
+                @foreach (var item in Model)
+                {
+                    <li class="groups__content_list_item mid_@(item.Color)_hover">
+                        <div class="groups__content_list_item_c">
+                            <div class="groups__content_ava">
+                                <a class="groups__content_ava_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.AuthorUserName">
+                                    <img class="groups__content_ava_img" src="data:image/@item.AuthorFormat;base64,@item.AuthorImage" alt="">
+                                </a>
+                            </div>
+                            <div class="groups__content_links">
+                                <div class="groups__content_politcor groups__content_list_item_m">
+                                    <img class="groups__content_politcor_img" src="@item.AuthorCoordinatesImage" alt="">
+                                </div>
+                                <div class="groups__content_name_g groups__content_list_item_m">
+                                    <a class="groups__content_ava_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.AuthorUserName">
+                                        @item.AuthorSecondName @item.AuthorFirstName
+                                    </a>
+                                </div>
+                                <div class="groups__content_quantity">@item.FriendsCount друзей</div>
+                            </div>
+                        </div>
+                        <div class="groups__content_tk">...</div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="settings__groups">
+    <div class="filter__groups light_@(color)">
+        <h2 class="filter__groups_title">Фильтры групп</h2>
+        <ul class="filter__groups_list">
+            <li class="filter__groups_list_item">Тут</li>
+            <li class="filter__groups_list_item">Наверное</li>
+            <li class="filter__groups_list_item">Список</li>
+        </ul>
+    </div>
+    <div class="recommendations light_@(color)">
+        <h2 class="recommendations__title">
+            <a href="">
+                Рекомендации
+            </a>
+        </h2>
+        <span class="possible__get_all mid_@(color)_hover">Посмотреть всех</span>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

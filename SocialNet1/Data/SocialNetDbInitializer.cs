@@ -241,8 +241,16 @@ namespace SocialNet1.Data
 
         private void InitialUserGroupFix()
         {
+            if (_db.UserGroupStatuses.Any())
+            {
+                _logger.LogInformation("Инициализация БД юзера-группами не требуется");
+                return;
+            }
+
             var group = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == _godShortGroupName);
             var user = _db.Users.FirstOrDefault(us => us.UserName == _godName);
+
+            _logger.LogInformation($"Пытаемся добавить типа {_godName} в группу {_godShortGroupName}");
 
             using (_db.Database.BeginTransaction())
             {
@@ -259,6 +267,8 @@ namespace SocialNet1.Data
                 _db.SaveChanges();
                 _db.Database.CommitTransaction();
             }
+
+            _logger.LogInformation($"Тип {_godName} успешно добавлен в группу {_godShortGroupName}");
         }
 
         private async Task CheckRole(string RoleName)
