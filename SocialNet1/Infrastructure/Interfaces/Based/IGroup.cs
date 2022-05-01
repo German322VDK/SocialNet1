@@ -33,6 +33,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool DeleteLikeComPhoto(string groupName, string userName, int imageId, int comHelpId);
 
+        bool SetAva(int ava, string groupName);
+
         PostDTO GetPost(string groupName, int postId);
 
         bool AddPost(string groupName, PostDTO post);

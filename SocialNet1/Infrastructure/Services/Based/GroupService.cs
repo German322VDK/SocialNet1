@@ -476,7 +476,31 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool SetAva(int ava, string groupName)
+        {
+            var group = Get(groupName);
 
+            if(group is null)
+            {
+                return false;
+            }
+
+            var image = group.Images.FirstOrDefault(im => im.ImageNumber == ava);
+
+            if (image is null)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups.FirstOrDefault(us => us.ShortGroupName == groupName).SocNetItems.CurrentImage = ava;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
 
         #endregion
 

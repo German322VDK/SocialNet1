@@ -503,3 +503,27 @@ async function UnSub(groupName, userName, url) {
         alert("Не получилось отписаться(");
     }
 }
+
+async function GroupSetAva(url, user, color) {
+
+    var classActive = `dark_dark_${color}_border`;
+
+    var photo = document.getElementsByClassName(classActive)[0];
+
+    if (photo == null) {
+        alert("Не выбрано фото(");
+
+        return;
+    }
+
+    var avaId = photo.id;
+
+    var ava = avaId.split("-")[1];
+
+    var fullurl = url + "?groupName=" + user + "&ava=" + ava;
+
+    var promise = await fetch(fullurl);
+
+    location.href = promise.url;
+
+}

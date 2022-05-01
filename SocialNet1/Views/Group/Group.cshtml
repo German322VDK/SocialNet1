@@ -21,6 +21,8 @@
 
     int avaNum = i;
 
+    var avaIms = new List<SetAvaModel>();
+
     foreach (var item in Model.Group.Images)
     {
 
@@ -83,12 +85,12 @@
             Number = i
         });
 
-        //avaIms.Add(new SetAvaModel
-        //{
-        //    Image = photo,
-        //    Format = formatPhoto,
-        //    ImageNum = item.ImageNumber
-        //});
+        avaIms.Add(new SetAvaModel
+        {
+            Image = photo,
+            Format = formatPhoto,
+            ImageNum = item.ImageNumber
+        });
 
     }
 
@@ -159,5 +161,6 @@
 
 @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
 {
-    <partial name="Partial/Group/PhotoAdd" model="@new AddGroupPhotoModel { GroupName = Model.Group.ShortGroupName}"/>
+    <partial name="Partial/Group/PhotoAdd" model="@new AddGroupPhotoModel { GroupName = Model.Group.ShortGroupName}" />
+    <partial name="Partial/Group/SetAva" model="@new SetAvaViewModel { SetAva = avaIms, GroupName = Model.Group.ShortGroupName}" />
 }

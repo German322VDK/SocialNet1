@@ -419,5 +419,35 @@ namespace SocialNet1.Controllers
             return RedirectToAction("Group", "Group", new { groupName = model.AuthorName });
         }
 
+        public IActionResult SetAva(string groupName, int ava)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning($"Не понятно кому менять аву(");
+
+                return RedirectToAction("Group", "Group", new { GroupName = groupName });
+            }
+
+            var result = _group.SetAva(ava, groupName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Группа {groupName} не смог выбрать авой фото № {ava}");
+
+                return RedirectToAction("Group", "Group", new { GroupName = groupName });
+            }
+
+            _logger.LogInformation($"Группа {groupName} смог выбрать авой фото № {ava}");
+
+            return RedirectToAction("Group", "Group", new { GroupName = groupName });
+        }
+
     }
 }

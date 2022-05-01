@@ -72,6 +72,9 @@
         public const string SUB_GROUP = "api/group/sub";
         public const string UNSUB_GROUP = "api/group/unsub";
 
+        public const string GROUP_SET_AVA = "Group/SetAva";
+        public const string GROUP_SET_COORD = "Group/SetCoord";
+
         #endregion
 
         public const string ADD_MESSAGE = "api/message/add";
