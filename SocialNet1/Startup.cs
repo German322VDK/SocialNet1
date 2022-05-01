@@ -134,6 +134,8 @@ namespace SocialNet1
             {
                 endpoints.MapHub<MessageHub>("/chat");
 
+                endpoints.MapHub<SecretMessageHub>("/secretchat");
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

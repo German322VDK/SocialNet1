@@ -1,4 +1,5 @@
-﻿@inject IUser userService;
+﻿@model string
+@inject IUser userService;
 @{
     var name = User.Identity!.Name;
 
@@ -13,7 +14,11 @@
 <div class="rightsitebar ">
     <div class="rightsitebar__container light_@(color)">
         <div class="rightsitebar__title_and_list">
-            <h2 class="rightsitebar__title">Фильтры новостей</h2>
+            <h2 class="rightsitebar__title">
+                <a class="chats__post_link" asp-controller="Chats" asp-action="SecretChat" asp-route-userName="@Model">
+                    Секретный чат
+                </a>
+            </h2>
             <ul class="rightsitebar__list">
                 <li class="rightsitebar__list_item">Все свои</li>
                 <li class="rightsitebar__list_item">Тематика: забивы</li>

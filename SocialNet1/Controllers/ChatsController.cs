@@ -94,5 +94,47 @@ namespace SocialNet1.Controllers
                 AutorName = autorName
             });
         }
+
+        public IActionResult SecretChat(string userName)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            var autorName = User.Identity.Name;
+
+            var chat = _chat.Get(autorName, userName);
+
+            if (chat is null)
+            {
+                _logger.LogInformation($"Чата между {autorName} и {userName} не существует, щас создам )");
+
+                var result = _chat.CreateChat(autorName, userName);
+
+                if (result)
+                {
+                    _logger.LogInformation($"Чат между {autorName} и {userName} успешно создан )");
+
+                    chat = _chat.Get(autorName, userName);
+                }
+                else
+                {
+                    _logger.LogWarning($"Чат между {autorName} и {userName} не получилось создать, хз что делать (");
+
+                    return RedirectToAction("Index", "News");
+                }
+
+            }
+
+            return View(new ChatViewModel
+            {
+                Chat = chat,
+                UserName = userName,
+                AutorName = autorName
+            });
+        }
     }
 }

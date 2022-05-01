@@ -120,6 +120,78 @@
     hubConnection.start();
 }
 
+function StartSecretChat(id, sender, recipient, colorAut, colorUser) {
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/secretchat")
+        .build();
+
+    let userName = '';
+
+    // получение сообщения от сервера
+    hubConnection.on('Receive', function (message) {
+        let jsid = message.id;
+        if (jsid == id) {
+            let senderName = message.senderName;
+            let content = SeqHeml(message.content);
+            let date = message.date;
+            let messageHelpId = message.messageHelpId;
+
+
+            if (sender == senderName) {
+
+                var html = `<div class="message__box_holder" id="${messageHelpId}_message">
+                <div class="message__box mid_${colorAut} mid_${colorAut}_border
+                     mid_${colorAut}_border_triangle">
+                    <div>
+                        ${content}
+                    </div>
+                    <div class="messages__block_m_l_t">
+                        ${date}
+                    </div>
+                </div>
+            </div>`;
+            }
+            else {
+                var html = `<div class="message__box_holder message__partner" id="${messageHelpId}_message">
+                <div class="message__box mid_${colorUser} mid_${colorUser}_border message__partner_box
+                     mid_${colorUser}_border_triangle_partner">
+                    <div>
+                        ${content}
+                    </div>
+                    <div class="messages__block_m_l_t">
+                        ${date}
+                    </div>
+                </div>
+            </div>`;
+            }
+
+
+            $("#chatroom").append(html);
+
+            document.getElementById("lastTime").innerText = date;
+
+            window.scrollTo(0, window.innerWidth);
+
+            //document.getElementById("chatroom").appendChild(elem);
+        }
+    });
+
+    // отправка сообщения на сервер
+    document.getElementById("sendBtn").addEventListener("click", function (e) {
+        let message = document.getElementById("message").value;
+
+        let sendmess = new Message(sender, recipient, message, '', parseInt(id));
+
+        hubConnection.invoke("Send", sendmess);
+        /*hubConnection.invoke("Send", '2');*/
+
+        document.getElementById("message").value = "";
+    });
+
+
+    hubConnection.start();
+}
+
 class Message {
     constructor(senderName, recipientName, text, when, id) {
         this.SenderName = senderName;
