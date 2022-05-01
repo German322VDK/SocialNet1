@@ -207,12 +207,74 @@ namespace SocialNet1.Controllers
 
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Какой то конченный хотел меня обмануть");
+                _logger.LogWarning("Данные повреждены, не получилось добавить группу(");
 
                 return View(model);
             }
 
-            return RedirectToAction("Group", "Group", new { groupName = "" });
+            var arr = NewImageMethods.GetByteArrFromFile(model.UploadedFile);
+
+            if (!NewImageMethods.IsValid(arr))
+            {
+                _logger.LogWarning($"Фото для группы {model.ShortGroupName} чела {model.UserName} повреждено, не получилось добавить группу(");
+
+                return View(model);
+            }
+
+            var result = _group.Add(model.ShortGroupName, model.GroupName, model.UserName, model.X, model.Y, arr);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось добавить группу {model.ShortGroupName} чела {model.UserName}(");
+
+                return RedirectToAction("Index", "Group");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить группу {model.ShortGroupName} чела {model.UserName}");
+
+                return RedirectToAction("Group", "Group", new { groupName = model.ShortGroupName });
+            }
+
+        }
+
+        public IActionResult Delete(string groupName)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning($"Имя группы не пришло");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var group = _group.Get(groupName);
+
+            if (group is null)
+            {
+                _logger.LogWarning($"Группа {groupName} потерялась");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var result = _group.Delete(groupName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить группу {groupName} чела {User.Identity.Name} (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось удалить группу {groupName} чела {User.Identity.Name}");
+            }
+
+            return RedirectToAction("Index", "Group");
         }
 
         public IActionResult AddImage(AddGroupPhotoModel model)

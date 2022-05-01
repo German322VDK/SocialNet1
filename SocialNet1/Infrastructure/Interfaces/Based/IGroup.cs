@@ -13,6 +13,10 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         GroupDTO Get(string group);
 
+        bool Add(string shortGroupName, string groupName, string userName, int x, int y, byte[] image);
+
+        bool Delete(string groupname);
+
         bool AddPhoto(byte[] arr, string groupName);
 
         bool DeletePhoto(string groupName, int imageId);

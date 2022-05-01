@@ -31,6 +31,136 @@ namespace SocialNet1.Infrastructure.Services.Based
         public GroupDTO Get(string group) =>
              GetAll().FirstOrDefault(el => el.ShortGroupName == group);
 
+        public bool Add(string shortGroupName, string groupName, string userName, int x, int y, byte[] image)
+        {
+            var user = _db.Users.FirstOrDefault(us => us.UserName == userName);
+
+            if(user is null)
+            {
+                return false;
+            }
+
+            var falseGroup = Get(shortGroupName);
+
+            if (falseGroup is not null)
+            {
+                return false;
+            }
+
+            GroupDTO group = null;
+
+            using (_db.Database.BeginTransaction())
+            {
+                var groupResult = _db.Groups
+                    .Add(new GroupDTO 
+                    { 
+                        ShortGroupName = shortGroupName,
+                        GroupName = groupName,
+                        SocNetItems = new SocNetEntityGroup 
+                        { 
+                            X = x, 
+                            Y = y,
+                        }
+                    });
+
+                group = groupResult.Entity;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == shortGroupName)
+                    .Images
+                    .Add(new GroupImages 
+                    { 
+                        ImageNumber = 0,
+                        Image = image
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.UserGroupStatuses
+                    .Add(new UserGroupStatus 
+                    { 
+                        Status = Status.Admin,
+                        Group = group,
+                        UserDTO = user,
+                        GroupName = shortGroupName,
+                        UserName = userName
+                    });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool Delete(string groupname)
+        {
+            var group = Get(groupname);
+
+            if(group is null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                foreach (var post in group.SocNetItems.Posts)
+                {
+                    foreach (var com in post.Comments)
+                    {
+                        _db.RemoveRange(com.Likes);
+
+                        _db.RemoveRange(com.Images);
+
+                        _db.Remove(com);
+                    }
+
+                    _db.RemoveRange(post.ThisPost.Likes);
+
+                    _db.RemoveRange(post.ThisPost.Images);
+
+                    _db.Remove(post.ThisPost);
+                    
+                    _db.Remove(post);
+                }
+
+                _db.Remove(group.SocNetItems);
+
+                foreach (var image in group.Images)
+                {
+                    _db.RemoveRange(image.Coments);
+
+                    _db.RemoveRange(image.GroupLikes);
+
+                    _db.Remove(image);
+                }
+
+                _db.Remove(group);
+
+                var groupStatuses = _db.UserGroupStatuses.Where(st => st.GroupName == groupname);
+
+                _db.RemoveRange(groupStatuses);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
 
         #endregion
 
@@ -703,5 +833,6 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return true;
         }
+
     }
 }
