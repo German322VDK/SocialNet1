@@ -13,10 +13,12 @@ namespace SocialNet1.Controllers
         private readonly IChat _chat;
         private readonly IUser _user;
         private readonly ILogger<ChatsController> _logger;
+        private readonly IGroupChat _groupChat;
 
-        public ChatsController(IChat chat, IUser user, ILogger<ChatsController> logger)
+        public ChatsController(IChat chat, IGroupChat groupChat, IUser user, ILogger<ChatsController> logger)
         {
             _chat = chat;
+            _groupChat = groupChat;
             _user = user;
             _logger = logger;
 
@@ -43,13 +45,19 @@ namespace SocialNet1.Controllers
                 .Where(el => _user.IsFriend(el.UserName, user.UserName))
                 .ToList();
 
+            var userGroups = user.Groups.Select(gn => gn.Group.ShortGroupName).ToArray();
+
+            var groupChats = _groupChat.Get(userGroups);
+
+            
             _logger.LogInformation($"Тип {userName} смотрит свои переписки");
 
             return View(new ChatsViewModel 
             { 
                 UserName = userName,
                 Chats = chats,
-                Friends = friends
+                Friends = friends,
+                GroupChatDTOs = groupChats
             });
         }
 
@@ -135,6 +143,30 @@ namespace SocialNet1.Controllers
                 UserName = userName,
                 AutorName = autorName
             });
+        }
+
+        public IActionResult GroupChat(string groupName)
+        {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            var autorName = User.Identity.Name;
+
+            var chat = _groupChat.Get(groupName);
+
+            if (chat is null)
+            {
+                _logger.LogWarning($"Чата между группой {groupName}(");
+
+                return RedirectToAction("Index", "Chats");
+
+            }
+
+            return View(chat);
         }
     }
 }

@@ -22,20 +22,17 @@
         <div class="chats__nav dark_@(color)_border_bottom">
             <div class="chats__list">
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one" id="but1"
-                    onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
+                     onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
                     Открытые диалоги:@*@Model.Friends.Count*@
                 </div>
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="two" id="but2"
-                    onclick="TabMaster3('but2', 'but1', 'but3', 'dark_@(color)_border_bottom')">
+                     onclick="TabMaster3('but2', 'but1', 'but3', 'dark_@(color)_border_bottom')">
                     Создать диалог с другом@*@Model.Subscribers.Count*@
                 </div>
-                <!--<div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="three" id="but3"
-                    onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
-                    Подписки:-->@*@Model.Subscriptions.Count*@
-                <!--</div>-->
-                @*<div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="four">
-                    Онлайн
-                </div>*@
+                <div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="three" id="but3"
+                     onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
+                    Диалоги групп:@*@Model.Subscriptions.Count*@
+                </div>
             </div>
         </div>
         <div data-target="one" class="chats__info_container chats__info_container_active">
@@ -44,11 +41,11 @@
                 UserDTO chatUser = null;
                 string chatUserName = "";
 
-                if(chat.UserName1 == chat.UserName2)
+                if (chat.UserName1 == chat.UserName2)
                 {
                     chatUser = userService.Get(chatUserName = chat.UserName1);
                 }
-                else if(chat.UserName1 == name)
+                else if (chat.UserName1 == name)
                 {
                     chatUser = userService.Get(chatUserName = chat.UserName2);
                 }
@@ -71,7 +68,7 @@
 
                 var lastMessage = "";
 
-                if(chat.Messages.Count > 0)
+                if (chat.Messages.Count > 0)
                 {
                     if (chat.Messages.Last().Content.Length > 31)
                         lastMessage = chat.Messages.Last().Content.Substring(0, 30);
@@ -128,6 +125,42 @@
                             <div class="chats__post_ava2_text">
                                 <div class="chats__post_ava2">
                                     <img class="chats__post_ava2_img" src="@friendCoord" alt="">
+                                </div>
+                                <div class="chats__post_text">Написать? </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <div data-target="three" class="chats__info_container">
+            @foreach (var groupChat in Model.GroupChatDTOs)
+            {
+                int gX = groupChat.Group.SocNetItems.X, gY = groupChat.Group.SocNetItems.Y;
+
+                var groupCoordUserColor = UserMethods.GetColor(gX, gY);
+
+                var groupCoordImageArr = groupChat.Group.Images.SingleOrDefault(el => el.ImageNumber == groupChat.Group.SocNetItems.CurrentImage).Image;
+
+                var groupCoordStrImage = NewImageMethods.GetStringFromByteArr(groupCoordImageArr);
+
+                var groupCoordFormat = NewImageMethods.GetFormat(groupCoordImageArr);
+
+                var groupCoord = $"photo/coordinates/{gX}d{gY}.jpg";
+
+                <div class="chats__post dark_@(color)_border_bottom mid_@(groupCoordUserColor)_hover">
+                    <a class="chats__post_link" asp-controller="Chats" asp-action="GroupChat" asp-route-groupName="@groupChat.Group.ShortGroupName">
+                        <div class="chats__post_ava">
+                            <img class="chats__post_ava_img" src="data:image/@groupCoordFormat;base64,@groupCoordStrImage" alt="Фото">
+                        </div>
+                        <div class="chats__post_block">
+                            <div class="chats__post_block_name_time">
+                                <span class="chats__post_name">@groupChat.Group.GroupName</span>
+                                <span class="chats__post_time">@DateTime.Now.ToString("g")</span>
+                            </div>
+                            <div class="chats__post_ava2_text">
+                                <div class="chats__post_ava2">
+                                    <img class="chats__post_ava2_img" src="@groupCoord" alt="">
                                 </div>
                                 <div class="chats__post_text">Написать? </div>
                             </div>

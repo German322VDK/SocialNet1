@@ -1,4 +1,5 @@
 ﻿using Social_Net.Domain.Group;
+using Social_Net.Domain.Message;
 using Social_Net.Domain.PostCom;
 using SocialNet1.Database.SQlite.Context;
 using SocialNet1.Domain.Base;
@@ -97,6 +98,11 @@ namespace SocialNet1.Infrastructure.Services.Based
                         GroupName = shortGroupName,
                         UserName = userName
                     });
+
+                _db.GroupChats.Add(new GroupChatDTO 
+                { 
+                    Group = group,
+                });
 
                 _db.SaveChanges();
 

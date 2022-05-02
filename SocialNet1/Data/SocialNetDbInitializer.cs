@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Social_Net.Domain.Message;
 
 namespace SocialNet1.Data
 {
@@ -262,6 +263,12 @@ namespace SocialNet1.Data
                         Status = Status.Admin,
                         GroupName = _godShortGroupName,
                         UserName = _godName
+                    });
+
+                _db.GroupChats
+                    .Add(new GroupChatDTO 
+                    { 
+                        Group = group
                     });
 
                 _db.SaveChanges();

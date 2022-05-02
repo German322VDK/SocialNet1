@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SocialNet1.Models.Hub;
-using SocialNet1.Models.Static;
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SocialNet1.Hubs

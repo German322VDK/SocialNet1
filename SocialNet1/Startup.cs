@@ -52,6 +52,7 @@ namespace SocialNet1
             services.AddTransient<IUser, UserService>();
             services.AddTransient<IFriends, FriendsService>(); 
             services.AddTransient<IChat, ChatService>(); 
+            services.AddTransient<IGroupChat, GroupChatService>();
             services.AddTransient<IGroup, GroupService>(); 
             services.AddTransient<IEmailConfirm, EmailConfirmService>();
 
@@ -135,6 +136,8 @@ namespace SocialNet1
                 endpoints.MapHub<MessageHub>("/chat");
 
                 endpoints.MapHub<SecretMessageHub>("/secretchat");
+
+                endpoints.MapHub<GroupMessageHub>("/groupchat");
 
                 endpoints.MapControllerRoute(
                     name: "areas",

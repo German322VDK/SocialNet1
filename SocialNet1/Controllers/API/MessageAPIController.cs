@@ -15,11 +15,13 @@ namespace SocialNet1.Controllers.API
     public class MessageAPIController : ControllerBase
     {
         private readonly IChat _chat;
+        private readonly IGroupChat _groupChat;
         private readonly ILogger<MessageAPIController> _logger;
 
-        public MessageAPIController(IChat chat, ILogger<MessageAPIController> logger)
+        public MessageAPIController(IChat chat, IGroupChat groupChat, ILogger<MessageAPIController> logger)
         {
             _chat = chat;
+            _groupChat = groupChat;
             _logger = logger;
         }
 
@@ -102,6 +104,33 @@ namespace SocialNet1.Controllers.API
                     $"человеку {model.RecipientName} в бд (");
 
             return true;
+        }
+
+        [HttpPost("addgroup")]
+        public bool AddGroup(GroupMessageModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.Content) || string.IsNullOrEmpty(model.SenderName)
+                || string.IsNullOrEmpty(model.GroupName))
+            {
+                _logger.LogWarning($"Не получилось добавить сообщение в бд (");
+
+                return false;
+            }
+
+            var result = _groupChat.AddMessage(model.SenderName, model.GroupName, model.Content);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось добавить сообщение '{model.Content}' человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить сообщение '{model.Content}' человека {model.SenderName} " +
+                    $"человеку {model.RecipientName} в бд )");
+            }
+
+            return result;
         }
     }
 }

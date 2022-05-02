@@ -1,0 +1,117 @@
+﻿@model GroupChatDTO
+@inject IUser userService;
+@{
+    var group = Model.Group;
+
+    var name = User.Identity.Name;
+
+    var autor = userService.Get(name);
+
+    string autorColor = UserMethods.GetColor(autor.SocNetItems.X, autor.SocNetItems.Y);
+
+    string groupColor = UserMethods.GetColor(group.SocNetItems.X, group.SocNetItems.Y);
+
+    var groupImageArr = group.Images.SingleOrDefault(el => el.ImageNumber == group.SocNetItems.CurrentImage).Image;
+
+    var groupStrImage = NewImageMethods.GetStringFromByteArr(groupImageArr);
+
+    var groupFormat = NewImageMethods.GetFormat(groupImageArr);
+
+    var authorImageArr = autor.Images.SingleOrDefault(el => el.ImageNumber == autor.SocNetItems.CurrentImage).Image;
+
+    var authorStrImage = NewImageMethods.GetStringFromByteArr(authorImageArr);
+
+    var authorFormat = NewImageMethods.GetFormat(authorImageArr);
+}
+
+    <div class="messages light_@(groupColor)">
+        <div class="messages__background_top mid_@(autorColor)"></div>
+
+        <div class="messages__top dark_@(groupColor)_border_bottom light_@(groupColor)">
+            <div class="messages__top_back">
+                <a asp-controller="Chats" asp-action="Index">
+                    Назад
+                </a>
+            </div>
+            <div>
+                <div class="messages__top_talker">
+                    <div>
+                        <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group.ShortGroupName">
+                            <img class="messages__top_img" src="data:image/@groupFormat;base64,@groupStrImage" alt="Фото">
+                        </a>
+                    </div>
+                    <div class="messages__top_name">
+                        <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group.ShortGroupName">
+                            @group.GroupName
+                        </a>
+                    </div>
+                </div>
+                <div class="messages__top_time" id="lastTime">@Model.LastTimeMess.ToString("g")</div>
+            </div>
+            <div class="messages__top_options">...</div>
+        </div>
+
+
+        <!-- chat-messages -->
+        <div class="messages__block">
+            <div class="messages__empty light_@(groupColor)"></div>
+            <!-- message-box-holder -->
+
+            @foreach (var message in Model.Messages)
+            {
+                bool isAut = message.SenderName == name;
+
+                var user = userService.Get(message.SenderName);
+
+                <div class="message__box_holder @( isAut ? "" : "message__partner")" id="@(message.HelpId)_message">
+                    <div class="message__box mid_@(groupColor) mid_@(groupColor)_border @(isAut ? "" : "message__partner_box") mid_@(isAut ? groupColor : groupColor)_border_triangle@(isAut ? "" : "_partner")">
+
+                        <div class="message_text dark_dark_@(groupColor)_border_bottom_focus" @( isAut ? "contenteditable=True" : "")
+                             id="@(message.HelpId)_message_text">
+                            @message.Content
+                        </div>
+
+                        <div class="messages__block_m_l_t">
+                            @($"{user.FirstName}-{user.SecondName}")
+                        </div>
+                        <div class="messages__block_m_l_t">
+                            @if (isAut)
+                            {
+                                <button id="@(message.HelpId)_message_delete" class="message_delete">
+                                    <i class="fa fa-trash-o color_dark_dark_@(groupColor) fa-1x" aria-hidden="true"></i>
+                                </button>
+                            }
+                            @message.TimeMess.ToString("g")
+                        </div>
+                    </div>
+                    </div>
+            }
+
+            <div id="chatroom"></div>
+
+        </div>
+
+        <div class="messages__empty light_@(groupColor)"></div>
+
+        <div class="messages__down dark_@(groupColor)_border_top light_@(groupColor)">
+            <button class="messages__down_options">
+                <i class="fas fa-paperclip color_dark_dark_@(groupColor)"></i>
+            </button>
+            <div class="messages__down_input">
+                <textarea class="messages__down_textarea" name="" id="message" cols="30" rows="1"
+                          placeholder="введити текст сообщения"></textarea>
+            </div>
+            <button class="messages__down_sent" id="sendBtn">
+                <i class="fas fa-paper-plane color_dark_dark_@(groupColor)"></i>
+            </button>
+        </div>
+        <div class="messages__down_down mid_@(groupColor)"></div>
+    </div>
+
+    <script>
+
+        StartGroupChat('@group.ShortGroupName', '@name', '@groupColor',);
+
+    </script>
+
+<partial name="Partial/MessagesRightSiteBar" model="@name" />
