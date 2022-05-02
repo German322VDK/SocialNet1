@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNet1.Database.SQlite.Context;
 
 namespace SocialNet1.Database.SQlite.Migrations
 {
     [DbContext(typeof(SocialNetDBSQlite))]
-    partial class SocialNetDBSQliteModelSnapshot : ModelSnapshot
+    [Migration("20220502073235_GroupChat1")]
+    partial class GroupChat1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -456,6 +458,10 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("LastTimeMess")
                         .HasColumnType("TEXT");
 
@@ -470,6 +476,8 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chats");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ChatDTO");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Message.MessageDTO", b =>
@@ -484,9 +492,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("GroupChatDTOId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
@@ -504,8 +509,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatDTOId");
-
-                    b.HasIndex("GroupChatDTOId");
 
                     b.ToTable("MessageDTO");
                 });
@@ -752,25 +755,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("UserLike");
                 });
 
-            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("LastTimeMess")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("GroupChats");
-                });
-
             modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
                 {
                     b.Property<int>("Id")
@@ -814,6 +798,18 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmailConfirms");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
+                {
+                    b.HasBaseType("SocialNet1.Domain.Message.ChatDTO");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasDiscriminator().HasValue("GroupChatDTO");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -937,10 +933,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasOne("SocialNet1.Domain.Message.ChatDTO", null)
                         .WithMany("Messages")
                         .HasForeignKey("ChatDTOId");
-
-                    b.HasOne("Social_Net.Domain.Message.GroupChatDTO", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("GroupChatDTOId");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Message.MessageImages", b =>
@@ -1016,6 +1008,13 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasForeignKey("UserImagesId");
                 });
 
+            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.PostCom.CommentDTO", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentDTOId");
+                });
+
             modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
                 {
                     b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group")
@@ -1023,13 +1022,6 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasForeignKey("GroupId");
 
                     b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
-                {
-                    b.HasOne("SocialNet1.Domain.PostCom.CommentDTO", null)
-                        .WithMany("Likes")
-                        .HasForeignKey("CommentDTOId");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Group.GroupDTO", b =>
@@ -1102,11 +1094,6 @@ namespace SocialNet1.Database.SQlite.Migrations
             modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
                 {
                     b.Navigation("GroupCommentLikes");
-                });
-
-            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
-                {
-                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }
