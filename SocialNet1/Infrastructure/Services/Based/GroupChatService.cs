@@ -76,5 +76,43 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             return true;
         }
+
+        public bool DeleteMessage(string groupName, int messageHelpId)
+        {
+            var group = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == groupName);
+
+            if (group is null)
+            {
+                return false;
+            }
+
+            var groupChat = Get(groupName);
+
+            if (groupChat is null)
+            {
+                return false;
+            }
+
+            var message = groupChat.Messages
+                .FirstOrDefault(ms => ms.HelpId == messageHelpId);
+
+            if (message is null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.RemoveRange(message.Images);
+
+                _db.Remove(message);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
     }
 }

@@ -78,7 +78,6 @@ namespace SocialNet1.Controllers.API
             return true;
         }
 
-
         [HttpPost("update")]
         public bool Update(SimpMessageUpdateModel model)
         {
@@ -106,6 +105,7 @@ namespace SocialNet1.Controllers.API
             return true;
         }
 
+
         [HttpPost("addgroup")]
         public bool AddGroup(GroupMessageModel model)
         {
@@ -128,6 +128,30 @@ namespace SocialNet1.Controllers.API
             {
                 _logger.LogInformation($"Получилось добавить сообщение '{model.Content}' человека {model.SenderName} " +
                     $"человеку {model.RecipientName} в бд )");
+            }
+
+            return result;
+        }
+
+        [HttpPost("deletegroup")]
+        public bool DeleteGroup(GroupMessageDeleteModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.GroupName))
+            {
+                _logger.LogWarning($"Не получилось удалить групповое сообщение в бд (");
+
+                return false;
+            }
+
+            var result = _groupChat.DeleteMessage(model.GroupName, model.MessageHelpId);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить сообщение №{model.MessageHelpId} группы '{model.GroupName}' в бд (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось удалить сообщение №{model.MessageHelpId} группы '{model.GroupName}' в бд ");
             }
 
             return result;

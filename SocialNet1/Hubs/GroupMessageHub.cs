@@ -64,5 +64,33 @@ namespace SocialNet1.Hubs
             await Clients.Users(groupSubs).SendAsync("Receive", message);
         }
 
+        public async Task ToDelete(GroupMessageDeleteModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.GroupName) )
+            {
+                _logger.LogWarning("Не знаю какое сообщение удалять (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.DELETE_GROUP_MESSAGE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            bool responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+                _logger.LogInformation($"Сообщение № {message.MessageHelpId} группы '{message.GroupName}' успешно удалено из БД:)");
+            else
+                _logger.LogWarning($"Сообщение № {message.MessageHelpId} группы '{message.GroupName}' обломаломь с удалением в БД:(");
+
+            var groupSubs = _group.Get(message.GroupName).Users.Select(us => us.UserName);
+
+            message.IsSuccess = responseresult;
+
+            await Clients.Users(groupSubs).SendAsync("FromDelete", message);
+        }
+
     }
 }

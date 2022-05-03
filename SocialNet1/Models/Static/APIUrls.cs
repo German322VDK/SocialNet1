@@ -82,5 +82,6 @@
         public const string UPDATE_MESSAGE = "api/message/update";
 
         public const string ADD_GROUP_MESSAGE = "api/message/addgroup";
+        public const string DELETE_GROUP_MESSAGE = "api/message/deletegroup";
     }
 }

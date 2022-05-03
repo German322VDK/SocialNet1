@@ -12,5 +12,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         GroupChatDTO Get(string groupName);
 
         bool AddMessage(string sender, string groupName, string text);
+
+        bool DeleteMessage(string groupName, int messageHelpId);
     }
 }

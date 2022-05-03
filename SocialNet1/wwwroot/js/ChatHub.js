@@ -190,6 +190,33 @@ function StartGroupChat(groupName, sender, colorUser) {
         document.getElementById("message").value = "";
     });
 
+    //удаление сообщения от сервера
+    hubConnection.on('FromDelete', function (message) {
+        let result = message.isSuccess;
+        if (result) {
+
+            var messageElement = document.getElementById(`${message.messageHelpId}_message`);
+            messageElement.remove();
+        }
+        else {
+            alert("Сообщение не удалилось(")
+        }
+    });
+
+    //отправка удаление сообщение у всех
+    document.querySelectorAll('.message_delete').forEach(function (el) {
+
+        el.addEventListener("click", function (e) {
+            var messageId = e.currentTarget.id.split("_")[0];
+
+            let sendmess = new DeleteGroupMessage(groupName, parseInt(messageId), false);
+
+            hubConnection.invoke("ToDelete", sendmess);
+
+        });
+
+    });
+
     hubConnection.start();
 }
 
@@ -276,16 +303,6 @@ class Message {
     }
 }
 
-class GroupMessage {
-    constructor(groupName, senderName, recipientName, text, when) {
-        this.SenderName = senderName;
-        this.RecipientName = recipientName;
-        this.Content = text;
-        this.Date = when;
-        this.GroupName = groupName;
-    }
-}
-
 class DeleteMessage {
     constructor(senderName, recipientName, chatId, messageHelpId, isSuccess) {
         this.SenderName = senderName;
@@ -303,5 +320,23 @@ class UpdateMessage {
         this.ChatId = chatId;
         this.MessageHelpId = messageHelpId;
         this.Text = text;
+    }
+}
+
+class GroupMessage {
+    constructor(groupName, senderName, recipientName, text, when) {
+        this.SenderName = senderName;
+        this.RecipientName = recipientName;
+        this.Content = text;
+        this.Date = when;
+        this.GroupName = groupName;
+    }
+}
+
+class DeleteGroupMessage {
+    constructor(groupName, messageHelpId, isSuccess) {
+        this.GroupName = groupName;
+        this.MessageHelpId = messageHelpId;
+        this.IsSuccess = isSuccess;
     }
 }
