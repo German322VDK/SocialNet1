@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNet1.Database.SQlite.Context;
 
 namespace SocialNet1.Database.SQlite.Migrations
 {
     [DbContext(typeof(SocialNetDBSQlite))]
-    partial class SocialNetDBSQliteModelSnapshot : ModelSnapshot
+    [Migration("20220503105502_ClashInitial1")]
+    partial class ClashInitial1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -632,20 +634,20 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Group1Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Group2Id")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("LastTimeMess")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Side1Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Side2Id")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Side1Id");
+                    b.HasIndex("Group1Id");
 
-                    b.HasIndex("Side2Id");
+                    b.HasIndex("Group2Id");
 
                     b.ToTable("Clashs");
                 });
@@ -656,6 +658,12 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ClashDTOId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ClashDTOId1")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Emoji")
                         .HasColumnType("INTEGER");
 
@@ -663,30 +671,13 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("SideId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SideId");
+                    b.HasIndex("ClashDTOId");
+
+                    b.HasIndex("ClashDTOId1");
 
                     b.ToTable("ClashLike");
-                });
-
-            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Side");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
@@ -1055,33 +1046,28 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Social_Net.Domain.Clash.ClashDTO", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Clash.Side", "Side1")
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group1")
                         .WithMany()
-                        .HasForeignKey("Side1Id");
+                        .HasForeignKey("Group1Id");
 
-                    b.HasOne("Social_Net.Domain.Clash.Side", "Side2")
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group2")
                         .WithMany()
-                        .HasForeignKey("Side2Id");
+                        .HasForeignKey("Group2Id");
 
-                    b.Navigation("Side1");
+                    b.Navigation("Group1");
 
-                    b.Navigation("Side2");
+                    b.Navigation("Group2");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Clash.ClashLike", b =>
                 {
-                    b.HasOne("Social_Net.Domain.Clash.Side", null)
-                        .WithMany("GroupLikes")
-                        .HasForeignKey("SideId");
-                });
+                    b.HasOne("Social_Net.Domain.Clash.ClashDTO", null)
+                        .WithMany("Group1Likes")
+                        .HasForeignKey("ClashDTOId");
 
-            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
-                {
-                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId");
-
-                    b.Navigation("Group");
+                    b.HasOne("Social_Net.Domain.Clash.ClashDTO", null)
+                        .WithMany("Group2Likes")
+                        .HasForeignKey("ClashDTOId1");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
@@ -1204,12 +1190,11 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("Social_Net.Domain.Clash.ClashDTO", b =>
                 {
-                    b.Navigation("Messages");
-                });
+                    b.Navigation("Group1Likes");
 
-            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
-                {
-                    b.Navigation("GroupLikes");
+                    b.Navigation("Group2Likes");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
