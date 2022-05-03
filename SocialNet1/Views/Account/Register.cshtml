@@ -10,17 +10,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 
 
-        <p class="reg__p">@Model.Email</p>
+        <p class="reg__p">Ваш email: @Model.Email</p>
 
         <p class="reg__p">
             <input asp-for="Email" placeholder="Секретный код админа (если есть)" class="" value="@Model.Email"/>
             <span asp-validation-for="Email" class="text-danger"></span>
         </p>
 
-        <p class="reg__p">
+        @*<p class="reg__p">
             <input asp-for="AdminRolePassword" placeholder="Секретный код админа (если есть)" class="" />
             <span asp-validation-for="AdminRolePassword" class="text-danger"></span>
-        </p>
+        </p>*@
 
         <p class="reg__p">
             <input asp-for="UserName" placeholder="Логин" class="" />

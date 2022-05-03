@@ -8,6 +8,8 @@
 
     var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
 
+    var colorAuthor = UserMethods.GetColor(Model.User.SocNetItems.X, Model.User.SocNetItems.Y);
+
 
     string status;
 
@@ -20,11 +22,21 @@
 
     var setStatusUrl = $"/{APIUrls.SET_STATUS}";
 
+    var isAdmin = userService.IsUserInRole(Model.User.UserName, UserStatus.God.ToString());
+
 }
 
 <div class="profil_left__container light_@(color)">
     <div class="profil_left__container_top">
-        <h1 class="profil_left__name">@Model.User.FirstName @Model.User.SecondName</h1>
+        <h1 class="profil_left__name">
+            @Model.User.FirstName @Model.User.SecondName
+            @if (isAdmin)
+            {
+                <button>
+                    <i class="fas fa-user-cog fa-2x color_dark_dark_@(colorAuthor)"></i>
+                </button>
+            }
+        </h1>
         @if (name == Model.User.UserName)
         {
             <div class="profil_left__st_b">
@@ -58,19 +70,19 @@
             <div class="profil_left__birthday">Короткое имя</div>
             <div class="profil_left__birthday_date">@Model.User.UserName</div>
         </div>
-        <div class="profil_left__birthday_info">
+        @*<div class="profil_left__birthday_info">
             <div class="profil_left__birthday">День рождения</div>
             <div class="profil_left__birthday_date">04.05.2000</div>
         </div>
         <div class="profil_left__city">
             <div class="profil_left__city_city">Город:</div>
             <div class="profil_left__city_name">Владивосток</div>
-        </div>
+        </div>*@
         <div class="profil_left__views">
             <div class="profil_left__views_views">Политические координаты:</div>
             <div class="profil_left__views_name">X:@Model.User.SocNetItems.X;Y:@Model.User.SocNetItems.Y</div>
         </div>
-        <div class="profil_left__container_button">
+        @*<div class="profil_left__container_button">
             <button id="profil_left__btn_one" class="profil_left__btn_one profil_left__btn_active mid_@(color)_hover">Подробно</button>
         </div>
         <div class="profil_left__container_button">
@@ -89,7 +101,7 @@
                 <div class="profil_left__views_views">Взгляды:</div>
                 <div class="profil_left__views_name">Косые</div>
             </div>
-        </div>
+        </div>*@
         <div class="profil_left__dop dark_@(color)_border_top">
             <ul class="profil_left__dop_list">
                 <li class="profil_left__dop_list_item">

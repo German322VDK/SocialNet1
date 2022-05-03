@@ -109,17 +109,17 @@ namespace SocialNet1.Controllers
                 {
                     _logger.LogInformation("Пользователь {0} успешно зарегестрирован", Model.UserName);
 
-                    if (Model.AdminRolePassword == Passwords.Admin)
-                    {
-                        await _userManager.AddToRoleAsync(user, UserStatus.Admin.ToString());
-
-                        _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.Admin);
-                    }
-                    else
+                    if (string.IsNullOrEmpty(Model.AdminRolePassword) || Model.AdminRolePassword != Passwords.Admin)
                     {
                         await _userManager.AddToRoleAsync(user, UserStatus.User.ToString());
 
                         _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.User);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, UserStatus.Admin.ToString());
+
+                        _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.Admin);
                     }
                     await _signInManager.SignInAsync(user, false);
 

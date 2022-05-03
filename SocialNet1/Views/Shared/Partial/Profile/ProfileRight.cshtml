@@ -24,7 +24,7 @@
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">Сменить фотографию</button>
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenCord()">Сменить взгляды</button>
 
-            @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
+            @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.Admin.ToString()))
             {
                 <button class="profil_right__ava_btn mid_@(color)_hover">
                     <a asp-area="Admin" asp-controller="Home" asp-action="Index">
@@ -92,12 +92,15 @@
                 }
             }
 
-            <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
-                <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@Model.UserName">
-                    <i class="far fa-envelope fa-1x color_dark_dark_@(color)"></i> Написать
-                </a>
-            </button>
+
         }
+
+        <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">
+            <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@Model.UserName">
+                <i class="far fa-envelope fa-1x color_dark_dark_@(color)"></i> Написать
+            </a>
+        </button>
+
     </div>
     <div class="rightsitebar__link_top_cont">
         <a class="rightsitebar__link_top" href="#top">
