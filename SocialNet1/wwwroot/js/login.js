@@ -80,3 +80,13 @@ function RegInput() {
     document.getElementById('regIn').click();
     
 }
+
+function CheckInputChange(checkbox) {
+    if (checkbox.checked == true)
+    {
+        document.getElementById("RegButtn").removeAttribute("disabled");
+    }
+    else {
+        document.getElementById("RegButtn").setAttribute("disabled", "disabled");
+    }
+}

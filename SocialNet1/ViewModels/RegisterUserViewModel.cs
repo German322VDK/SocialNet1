@@ -36,5 +36,9 @@ namespace SocialNet1.ViewModels
         [Display(Name = "Подтверждение пароля")]
         [Compare(nameof(Password), ErrorMessage = "Пароли не совпали")]
         public string PasswordConfirm { get; set; }
+
+        [Required]
+        [Range(typeof(bool), "true", "true")]
+        public bool IsConfirmed { get; set; } = false;
     }
 }
