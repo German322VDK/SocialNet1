@@ -53,7 +53,8 @@ namespace SocialNet1
             services.AddTransient<IFriends, FriendsService>(); 
             services.AddTransient<IChat, ChatService>(); 
             services.AddTransient<IGroupChat, GroupChatService>();
-            services.AddTransient<IGroup, GroupService>(); 
+            services.AddTransient<IGroup, GroupService>();
+            services.AddTransient<IClash, ClashService>(); 
             services.AddTransient<IEmailConfirm, EmailConfirmService>();
 
             services.AddTransient<IUserIdProvider, CustomUserIdProvider>();

@@ -10,6 +10,10 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         UserDTO Get(string userName);
 
+        ICollection<RoleDTO> GetRolesByUser(string userName);
+
+        bool IsUserInRole(string userName, string roleName);
+
         bool AddPhoto(byte[] arr, string userName);
 
         bool DeletePhoto(int imageId, string userName);

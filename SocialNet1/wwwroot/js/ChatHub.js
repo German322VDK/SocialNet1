@@ -220,7 +220,6 @@ function StartGroupChat(groupName, sender, colorUser) {
     hubConnection.start();
 }
 
-
 function StartSecretChat(id, sender, recipient, colorAut, colorUser) {
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/secretchat")

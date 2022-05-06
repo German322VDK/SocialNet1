@@ -37,6 +37,10 @@ namespace SocialNet1.Hubs
                 return;
             }
 
+            //var con = Context.ConnectionId;
+
+            //_logger.LogInformation($"Подключение: {con}");
+
             message.Date = DateTime.Now.ToString("t");
 
             var client = new HttpClient();

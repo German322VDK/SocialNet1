@@ -31,6 +31,31 @@ namespace SocialNet1.Infrastructure.Services.Based
         public ICollection<UserDTO> GetAll() =>
             _db.Users.ToList();
 
+        public bool IsUserInRole(string userName, string roleName)
+        {
+            var rolesNames = GetRolesByUser(userName).Select(r => r.Name);
+
+            return rolesNames.Contains(roleName);
+        }
+
+        public ICollection<RoleDTO> GetRolesByUser(string userName)
+        {
+            var user = Get(userName);
+
+            var roleIds = _db.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId);
+
+            var roles = new List<RoleDTO>();
+
+            foreach (var roleId in roleIds)
+            {
+                var role = _db.Roles.FirstOrDefault(r => r.Id == roleId);
+
+                roles.Add(role);
+            }
+
+            return roles;
+        }
+
         #endregion
 
         #region Friend
