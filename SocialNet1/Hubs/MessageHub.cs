@@ -30,6 +30,8 @@ namespace SocialNet1.Hubs
                 return;
             }
 
+            _logger.LogInformation($"Соединение: {Context.ConnectionId}");
+
             message.Date = DateTime.Now.ToString("t");
 
             var client = new HttpClient();
