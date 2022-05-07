@@ -176,6 +176,9 @@
 .groups__content_ava{
   margin-right: 15px;
 }
+.groups__content_ava_r {
+    margin-left: 15px;
+}
 .groups__content_ava_img{
   border: 1px black solid;
   width: 60px;
@@ -254,6 +257,25 @@
 .group_p {
     text-align: center;
     margin: 10px 0;
+}
+
+.groups__content_links_right {
+    text-align: right;
+}
+
+.groups__content_list_item_c_l {
+    width: 100%;
+}
+
+.groups__content_list_item_c_r {
+    width: 100%;
+}
+.groups__content_list_item_c_r_r {
+    justify-content: right
+}
+
+.clash_padding{
+    padding:5px;
 }
 
 /* @media (max-width:1920px){

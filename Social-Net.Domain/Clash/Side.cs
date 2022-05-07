@@ -12,5 +12,8 @@ namespace Social_Net.Domain.Clash
 
         [Required]
         public virtual ICollection<ClashLike> GroupLikes { get; set; } = new List<ClashLike>();
+
+        [Required]
+        public bool IsReady { get; set; } = false;
     }
 }

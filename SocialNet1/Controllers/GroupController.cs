@@ -20,12 +20,14 @@ namespace SocialNet1.Controllers
     {
         private IUser _user;
         private IGroup _group;
+        private IClash _clash;
         private readonly ILogger<GroupController> _logger;
 
-        public GroupController(IUser user, IGroup group, ILogger<GroupController> logger)
+        public GroupController(IUser user, IGroup group, IClash clash, ILogger<GroupController> logger)
         {
             _user = user;
             _group = group;
+            _clash = clash;
             _logger = logger;
         }
 
@@ -266,6 +268,181 @@ namespace SocialNet1.Controllers
                 return RedirectToAction("Group", "Group", new { groupName = model.ShortGroupName });
             }
 
+        }
+
+        public IActionResult GroupManagement(string groupName)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+
+            }
+
+            var IsUserGroupAdmin = _group.IsUserAdmin(groupName, user.UserName);
+
+            if (!IsUserGroupAdmin)
+            {
+                _logger.LogWarning($"Чел {user.UserName} не админ группы {groupName} (");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var thisGroup = _group.Get(groupName);
+
+            var readyGroups = _clash.GetReadyGroups(groupName).Select(gr => _group.Get(gr));
+
+            var groups = _group.GetAll();
+
+            groups.Remove(thisGroup);
+
+            foreach (var item in readyGroups)
+            {
+                groups.Remove(item);
+            }
+
+            var reqGropsVM = new List<GroupViewModel>();
+            var allGropsVM = new List<GroupViewModel>();
+
+            foreach (var item in readyGroups)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var arr = item.Images.FirstOrDefault(im => im.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var group = new GroupViewModel
+                {
+                    MainName = item.GroupName,
+                    MainShortName = item.ShortGroupName,
+                    UserCount = item.Users.Count,
+                    CoordImage = $"/photo/coordinates/{x}d{y}.jpg",
+                    MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                    MainFormat = NewImageMethods.GetFormat(arr)
+                };
+
+                reqGropsVM.Add(group);
+            }
+
+            foreach (var item in groups)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var arr = item.Images.FirstOrDefault(im => im.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var group = new GroupViewModel
+                {
+                    MainName = item.GroupName,
+                    MainShortName = item.ShortGroupName,
+                    UserCount = item.Users.Count,
+                    CoordImage = $"/photo/coordinates/{x}d{y}.jpg",
+                    MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                    MainFormat = NewImageMethods.GetFormat(arr)
+                };
+
+                allGropsVM.Add(group);
+            }
+
+            _logger.LogInformation($"Чел {user.UserName} заходит в управление группой {groupName}");
+
+            return View(new GroupManagementViewModel 
+            {
+                Requests = reqGropsVM,
+                All = allGropsVM,
+                ThisGroupName = groupName
+            });
+        }
+
+        public IActionResult AddClash(string thisGroupName, string groupName)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+
+            }
+
+            var thisGroup = _group.Get(thisGroupName);
+            var group = _group.Get(groupName);
+
+            if(thisGroup is null || group is null)
+            {
+                _logger.LogWarning($"Группы {thisGroupName} или группы {groupName} не существует(");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var IsUserGroupAdmin = _group.IsUserAdmin(thisGroupName, user.UserName);
+
+            if (!IsUserGroupAdmin)
+            {
+                _logger.LogWarning($"Чел {user.UserName} не админ группы {thisGroupName} (");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var result = _clash.Add(thisGroupName, groupName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось создать противостояние групп {thisGroupName} и {groupName} (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось создать противостояние групп {thisGroupName} и {groupName}");
+            }
+
+            return RedirectToAction("GroupManagement", "Group", new { groupName = thisGroupName });
+        }
+
+        public IActionResult ConfirmClash(string thisGroupName, string groupName)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+
+            }
+
+            var thisGroup = _group.Get(thisGroupName);
+            var group = _group.Get(groupName);
+
+            if (thisGroup is null || group is null)
+            {
+                _logger.LogWarning($"Группы {thisGroupName} или группы {groupName} не существует(");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var IsUserGroupAdmin = _group.IsUserAdmin(thisGroupName, user.UserName);
+
+            if (!IsUserGroupAdmin)
+            {
+                _logger.LogWarning($"Чел {user.UserName} не админ группы {thisGroupName} (");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var result = _clash.Confirm(thisGroupName, groupName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось подтвердить противостояние групп {thisGroupName} и {groupName} (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось подтвердить противостояние групп {thisGroupName} и {groupName}");
+            }
+
+            return RedirectToAction("GroupManagement", "Group", new { groupName = thisGroupName });
         }
 
         public IActionResult Delete(string groupName)

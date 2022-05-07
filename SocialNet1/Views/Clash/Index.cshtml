@@ -16,15 +16,20 @@
         <div class="chats__search dark_@(color)_border_bottom light_@(color)">
             <input type="text" name="search" placeholder="Поиск когда-нибудь появится)" class="chats__search_input">
         </div>
+        <div class="dark_@(color)_border_bottom clash_h2">
+            <h2>
+                Противостояния
+            </h2>
+        </div>
         <div class="chats__nav dark_@(color)_border_bottom">
             <div class="chats__list">
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one" id="but1"
-                     onclick="TabMaster2('but1', 'but2', 'dark_@(color)_border_bottom')">
-                    Все Противостояния:@Model.AllClashes.Count
+                     onclick="TabMaster2('but1', 'but2','dark_@(color)_border_bottom')">
+                    Все:@Model.AllClashes.Count
                 </div>
                 <div class="chats__list_item_item dark_@(color)_border_bottom_hover" data-path="two" id="but2"
                      onclick="TabMaster2('but2', 'but1', 'dark_@(color)_border_bottom')">
-                    Противостояние моих групп: @Model.UserClashes.Count
+                    Мои группы: @Model.UserClashes.Count
                 </div>
             </div>
         </div>
@@ -33,7 +38,7 @@
                 <ul class="groups__content_list">
                     @foreach (var clash in Model.AllClashes)
                     {
-                        var group1 = groupService.Get(clash.Side1.Group.GroupName);
+                        var group1 = groupService.Get(clash.Side1.Group.ShortGroupName);
 
                         int gX1 = group1.SocNetItems.X, gY1 = group1.SocNetItems.Y;
 
@@ -48,9 +53,9 @@
                         var groupCoord1 = $"photo/coordinates/{gX1}d{gY1}.jpg";
 
 
-                        var group2 = groupService.Get(clash.Side2.Group.GroupName);
+                        var group2 = groupService.Get(clash.Side2.Group.ShortGroupName);
 
-                        int gX2 = group1.SocNetItems.X, gY2 = group1.SocNetItems.Y;
+                        int gX2 = group2.SocNetItems.X, gY2 = group2.SocNetItems.Y;
 
                         var groupCoordUserColor2 = UserMethods.GetColor(gX2, gY2);
 
@@ -63,40 +68,44 @@
                         var groupCoord2 = $"photo/coordinates/{gX2}d{gY2}.jpg";
 
                         <li class="groups__content_list_item mid_@(color)_hover">
-                            <div class="groups__content_list_item_c">
-                                <div class="groups__content_ava">
-                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
-                                        <img class="groups__content_ava_img" src="data:image/@groupCoordFormat1;base64,@groupCoordStrImage1" alt="">
-                                    </a>
-                                </div>
-                                <div class="groups__content_links">
-                                    <div class="groups__content_politcor groups__content_list_item_m">
-                                        <img class="groups__content_politcor_img" src="@groupCoord1" alt="">
-                                    </div>
-                                    <div class="groups__content_name_g groups__content_list_item_m">
+                            <div class="groups__content_list_item_c_l">
+                                <div class="groups__content_list_item_c clash_padding mid_@(groupCoordUserColor1)">
+                                    <div class="groups__content_ava">
                                         <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
-                                            @group1.GroupName
+                                            <img class="groups__content_ava_img" src="data:image/@groupCoordFormat1;base64,@groupCoordStrImage1" alt="">
                                         </a>
                                     </div>
-                                    <div class="groups__content_quantity">@group1.Users.Count учасников</div>
+                                    <div class="groups__content_links">
+                                        <div class="groups__content_politcor groups__content_list_item_m">
+                                            <img class="groups__content_politcor_img" src="@groupCoord1" alt="">
+                                        </div>
+                                        <div class="groups__content_name_g groups__content_list_item_m">
+                                            <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
+                                                @(group1.GroupName.Length > 15 ? group1.GroupName.Substring(0, 14) : group1.GroupName)
+                                            </a>
+                                        </div>
+                                        <div class="groups__content_quantity">@group1.Users.Count учасников</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="groups__content_list_item_c">
-                                <div class="groups__content_ava">
-                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
-                                        <img class="groups__content_ava_img" src="data:image/@groupCoordFormat2;base64,@groupCoordStrImage2" alt="">
-                                    </a>
-                                </div>
-                                <div class="groups__content_links">
-                                    <div class="groups__content_politcor groups__content_list_item_m">
-                                        <img class="groups__content_politcor_img" src="@groupCoord2" alt="">
+                            <div class="groups__content_list_item_c_r">
+                                <div class="groups__content_list_item_c groups__content_list_item_c_r_r clash_padding mid_@(groupCoordUserColor2)">
+                                    <div class="groups__content_links groups__content_links_right">
+                                        <div class="groups__content_politcor groups__content_list_item_m">
+                                            <img class="groups__content_politcor_img" src="@groupCoord2" alt="">
+                                        </div>
+                                        <div class="groups__content_name_g groups__content_list_item_m">
+                                            <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
+                                                @(group2.GroupName.Length > 15 ? group2.GroupName.Substring(0, 14) : group2.GroupName)
+                                            </a>
+                                        </div>
+                                        <div class="groups__content_quantity">@group2.Users.Count учасников</div>
                                     </div>
-                                    <div class="groups__content_name_g groups__content_list_item_m">
+                                    <div class="groups__content_ava_r">
                                         <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
-                                            @group2.GroupName
+                                            <img class="groups__content_ava_img" src="data:image/@groupCoordFormat2;base64,@groupCoordStrImage2" alt="">
                                         </a>
                                     </div>
-                                    <div class="groups__content_quantity">@group2.Users.Count учасников</div>
                                 </div>
                             </div>
                         </li>

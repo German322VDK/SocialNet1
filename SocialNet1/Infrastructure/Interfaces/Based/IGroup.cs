@@ -17,6 +17,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool Delete(string groupname);
 
+        bool IsUserAdmin(string groupName, string userName);
+
         bool AddPhoto(byte[] arr, string groupName);
 
         bool DeletePhoto(string groupName, int imageId);

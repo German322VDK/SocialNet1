@@ -34,9 +34,9 @@ namespace SocialNet1.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var allClashs = _clash.GetAll();
+            var allClashs = _clash.GetAll().Where(cl => cl.Side1.IsReady || cl.Side2.IsReady).ToList();
 
-            var userClashs = _clash.GetByUser(userName);
+            var userClashs = _clash.GetByUser(userName).Where(cl => cl.Side1.IsReady || cl.Side2.IsReady).ToList(); 
 
             return View(new ClashesViewModel 
             { 

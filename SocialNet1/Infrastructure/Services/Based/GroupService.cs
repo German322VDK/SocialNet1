@@ -170,6 +170,24 @@ namespace SocialNet1.Infrastructure.Services.Based
 
         #endregion
 
+        public bool IsUserAdmin(string groupName, string userName)
+        {
+            var group = Get(groupName);
+
+            if (group is null)
+                return false;
+
+            var user = _db.Users.FirstOrDefault(us => us.UserName == userName);
+
+            if (user is null)
+                return false;
+
+           return group.Users
+                .Where(us => us.Status == Status.Admin)
+                .Select(us => us.UserName)
+                .Contains(userName); 
+        }
+
 
         #region Photo
 

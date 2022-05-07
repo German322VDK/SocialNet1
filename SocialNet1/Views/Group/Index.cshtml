@@ -98,7 +98,11 @@
                                     <div class="groups__content_quantity">@item.UserCount учасников</div>
                                 </div>
                             </div>
-                            <div class="groups__content_tk">...</div>
+                            <div class="groups__content_tk">
+                                <a asp-controller="Group" asp-action="GroupManagement" asp-route-groupName="@item.MainShortName">
+                                    Управление
+                                </a>
+                            </div>
                         </li>
                     }
                 </ul>
