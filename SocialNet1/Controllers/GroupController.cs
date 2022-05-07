@@ -53,7 +53,13 @@ namespace SocialNet1.Controllers
 
             var userGroups = _group.Get(groups);
 
+            var userAdminGroups = userGroups
+                .Where(gr => gr.Users.Where(gu => gu.Status == Status.Admin).Select(u => u.UserName).Contains(User.Identity.Name))
+                .ToList();
+
             var gropsVM = new List<GroupViewModel>();
+
+            var groupsAdmins = new List<GroupViewModel>();
 
             foreach (var item in userGroups)
             {
@@ -74,9 +80,33 @@ namespace SocialNet1.Controllers
                 gropsVM.Add(group);
             }
 
+            foreach (var item in userAdminGroups)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var arr = item.Images.FirstOrDefault(im => im.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var group = new GroupViewModel
+                {
+                    MainName = item.GroupName,
+                    MainShortName = item.ShortGroupName,
+                    UserCount = item.Users.Count,
+                    CoordImage = $"photo/coordinates/{x}d{y}.jpg",
+                    MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                    MainFormat = NewImageMethods.GetFormat(arr)
+                };
+
+                groupsAdmins.Add(group);
+            }
+
             _logger.LogInformation($"Тип заходит {User.Identity.Name} в группы типа {username}");
 
-            return View(gropsVM);
+            return View(new GroupsFullViewModel 
+            { 
+                AllGroups = gropsVM,
+                Admins = groupsAdmins,
+                IsAuthor = username == User.Identity.Name
+            });
         }
 
         public IActionResult Group(string groupName)

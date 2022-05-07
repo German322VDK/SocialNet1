@@ -143,3 +143,8 @@
 .chats__info_container_active {
     display: block;
 }
+
+.clash_h2{
+    display:flex;
+    justify-content:center;
+}

@@ -1,4 +1,4 @@
-﻿@model ICollection<GroupViewModel>
+﻿@model GroupsFullViewModel
 
 @inject IUser userService;
 @{
@@ -16,19 +16,34 @@
     <div class="groups__dark_background mid_@(color)"></div>
     <div class="groups__content light_@(color)">
         <div class="groups__content_top">
-            <div class="groups__content_all">Все группы</div>
-            <div class="groups__content_management">Управление</div>
-            <a class="groups__content_create" asp-controller="Group" asp-action="AddGroup">Создать группу</a>
+            @if (Model.IsAuthor)
+            {
+                <div class="groups__list_item groups__content_all dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one"
+                     onclick="TabMaster2('but1', 'but2', 'dark_@(color)_border_bottom')" id="but1">
+                    Все группы
+                </div>
+                <div class="groups__list_item groups__content_management dark_@(color)_border_bottom_hover" data-path="two"
+                     onclick="TabMaster2('but2', 'but1', 'dark_@(color)_border_bottom')" id="but2">
+                    Управление
+                </div>
+                <a class="groups__content_create" asp-controller="Group" asp-action="AddGroup">Создать группу</a>
+            }
+            else
+            {
+                <div class="groups__list_item groups__content_all dark_@(color)_border_bottom_hover dark_@(color)_border_bottom">
+                    Все группы
+                </div>
+            }
         </div>
 
         <div class="groups__content_search dark_@(color)_border_bottom dark_@(color)_border_top light_@(color)">
             <input type="text" name="search" placeholder="Поиск когда-нибудь появится)" class="groups__content_search_input">
         </div>
 
-        <div class="groups__content_gg">
+        <div class="groups__content_gg chats__info_container chats__info_container_active" data-target="one">
             <ul class="groups__content_list">
 
-                @foreach (var item in Model)
+                @foreach (var item in Model.AllGroups)
                 {
                     <li class="groups__content_list_item mid_@(color)_hover">
                         <div class="groups__content_list_item_c">
@@ -56,6 +71,40 @@
 
             </ul>
         </div>
+        @if (Model.IsAuthor)
+        {
+            <div class="groups__content_gg chats__info_container" data-target="two">
+                <ul class="groups__content_list">
+
+                    @foreach (var item in Model.Admins)
+                    {
+                        <li class="groups__content_list_item mid_@(color)_hover">
+                            <div class="groups__content_list_item_c">
+                                <div class="groups__content_ava">
+                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                        <img class="groups__content_ava_img" src="data:image/@item.MainFormat;base64,@item.MainImage" alt="">
+                                    </a>
+                                </div>
+                                <div class="groups__content_links">
+                                    <div class="groups__content_politcor groups__content_list_item_m">
+                                        <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
+                                        @*<span class="groups__content_group_type">Хуитика</span>*@
+                                    </div>
+                                    <div class="groups__content_name_g groups__content_list_item_m">
+                                        <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                            @item.MainName
+                                        </a>
+                                    </div>
+                                    <div class="groups__content_quantity">@item.UserCount учасников</div>
+                                </div>
+                            </div>
+                            <div class="groups__content_tk">...</div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
     </div>
 </div>
 
