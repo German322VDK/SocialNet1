@@ -11,12 +11,14 @@ namespace SocialNet1.Controllers.API
     {
         private readonly IChat _chat;
         private readonly IGroupChat _groupChat;
+        private readonly IClash _clash;
         private readonly ILogger<MessageAPIController> _logger;
 
-        public MessageAPIController(IChat chat, IGroupChat groupChat, ILogger<MessageAPIController> logger)
+        public MessageAPIController(IChat chat, IGroupChat groupChat, IClash clash, ILogger<MessageAPIController> logger)
         {
             _chat = chat;
             _groupChat = groupChat;
+            _clash = clash;
             _logger = logger;
         }
 
@@ -147,6 +149,33 @@ namespace SocialNet1.Controllers.API
             else
             {
                 _logger.LogInformation($"Получилось удалить сообщение №{model.MessageHelpId} группы '{model.GroupName}' в бд ");
+            }
+
+            return result;
+        }
+
+        [HttpPost("addclash")]
+        public bool AddClashMessage(ClashMessageModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.Sender)
+                || string.IsNullOrEmpty(model.GroupName))
+            {
+                _logger.LogWarning($"Не получилось добавить сообщение в бд (");
+
+                return false;
+            }
+
+            var result = _clash.AddMessage(model.ClashId, model.Sender, model.GroupName, model.Text);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось добавить сообщение '{model.Text}' человека {model.Sender} " +
+                    $"в противостоянии № {model.ClashId} в бд (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить сообщение '{model.Text}' человека {model.Sender} " +
+                    $"в противостоянии № {model.ClashId} в бд )");
             }
 
             return result;

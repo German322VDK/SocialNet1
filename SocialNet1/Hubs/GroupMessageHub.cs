@@ -4,7 +4,6 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Models.Hub;
 using SocialNet1.Models.Static;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;

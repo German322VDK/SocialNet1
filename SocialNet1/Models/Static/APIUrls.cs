@@ -83,5 +83,7 @@
 
         public const string ADD_GROUP_MESSAGE = "api/message/addgroup";
         public const string DELETE_GROUP_MESSAGE = "api/message/deletegroup";
+
+        public const string ADD_CLASH_MESSAGE = "api/message/addclash";
     }
 }

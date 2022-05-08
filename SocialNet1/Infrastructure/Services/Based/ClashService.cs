@@ -1,5 +1,6 @@
 ﻿using Social_Net.Domain.Clash;
 using SocialNet1.Database.SQlite.Context;
+using SocialNet1.Domain.Message;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
 using System.Collections.Generic;
@@ -130,6 +131,35 @@ namespace SocialNet1.Infrastructure.Services.Based
                 {
                     return false;
                 }
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddMessage(int clashId, string sender, string groupName, string text)
+        {
+            var clash = Get(clashId);
+
+            var user = _db.Users.FirstOrDefault(us => us.UserName == sender);
+
+            var group = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == groupName);
+
+            if(clash is null || user is null || group is null || string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                clash.Messages.Add(new MessageDTO 
+                { 
+                    SenderName = sender,
+                    Content = text
+                });
 
                 _db.SaveChanges();
 
