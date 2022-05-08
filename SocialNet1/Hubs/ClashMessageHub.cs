@@ -60,5 +60,35 @@ namespace SocialNet1.Hubs
             await Clients.All.SendAsync("Receive", message);
         }
 
+        public async Task SetLike(ClashLikeModel message)
+        {
+            if (message is null || string.IsNullOrEmpty(message.Sender) )
+            {
+                _logger.LogWarning("Сообщение не пришло (");
+
+                return;
+            }
+
+            var client = new HttpClient();
+            CancellationToken Cancel = default;
+
+            var response = client.PostAsJsonAsync($"{url}{APIUrls.SET_CLASH_LIKE}", message, Cancel).Result.Content.ReadAsStringAsync().Result;
+
+            var responseresult = Convert.ToBoolean(response);
+
+            if (responseresult)
+            {
+                _logger.LogInformation($"Лайк человека '{message.Sender}' в протвостоянии № " +
+                    $"({message.ClashId}) успешно сохранен в БД:)");
+
+                await Clients.All.SendAsync("ReceiveLike", new { is1 = message.Is1, isAddLike = message.IsAddLike});
+            }
+            else
+            {
+                _logger.LogWarning($"Лайк человека '{message.Sender}' в протвостоянии № " +
+                    $"({message.ClashId}) обломаломь с БД:(");
+            }
+                
+        }
     }
 }

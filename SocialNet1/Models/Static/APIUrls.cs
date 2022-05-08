@@ -85,5 +85,6 @@
         public const string DELETE_GROUP_MESSAGE = "api/message/deletegroup";
 
         public const string ADD_CLASH_MESSAGE = "api/message/addclash";
+        public const string SET_CLASH_LIKE = "api/message/setlike";
     }
 }

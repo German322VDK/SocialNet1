@@ -365,6 +365,72 @@ function StartClashChat(id, sender, group, color, is1) {
         });
     }
 
+    hubConnection.on('ReceiveLike', function (message) {
+
+        if (message.isAddLike) {
+            if (message.is1) {
+                var num = parseInt(document.getElementById("1likeAll").innerText) + 1;
+                document.getElementById("1likeAll").innerText = num;
+            }
+            else {
+
+                var num = parseInt(document.getElementById("2likeAll").innerText) + 1;
+                document.getElementById("2likeAll").innerText = num;
+            }
+        }
+        else {
+            if (message.is1) {
+                var num = parseInt(document.getElementById("1likeAll").innerText) - 1;
+                document.getElementById("1likeAll").innerText = num;
+            }
+            else {
+
+                var num = parseInt(document.getElementById("2likeAll").innerText) - 1;
+                document.getElementById("2likeAll").innerText = num;
+            }
+        }
+    });
+
+    document.getElementById("1Like1").addEventListener("click", function (e) {
+
+        var likeMess = new ClashLike(true, parseInt(id), sender, true);
+
+        hubConnection.invoke("SetLike", likeMess);
+
+        document.getElementById("1Like1").classList.add('heart_none');
+        document.getElementById("1Like2").classList.remove('heart_none');
+    });
+
+    document.getElementById("1Like2").addEventListener("click", function (e) {
+
+        var likeMess = new ClashLike(true, parseInt(id), sender, false);
+
+        hubConnection.invoke("SetLike", likeMess);
+
+        document.getElementById("1Like2").classList.add('heart_none');
+        document.getElementById("1Like1").classList.remove('heart_none');
+    });
+
+    document.getElementById("2Like1").addEventListener("click", function (e) {
+
+        var likeMess = new ClashLike(false, parseInt(id), sender, true);
+
+        hubConnection.invoke("SetLike", likeMess);
+
+        document.getElementById("2Like1").classList.add('heart_none');
+        document.getElementById("2Like2").classList.remove('heart_none');
+    });
+
+    document.getElementById("2Like2").addEventListener("click", function (e) {
+
+        var likeMess = new ClashLike(false, parseInt(id), sender, false);
+
+        hubConnection.invoke("SetLike", likeMess);
+
+        document.getElementById("2Like2").classList.add('heart_none');
+        document.getElementById("2Like1").classList.remove('heart_none');
+    });
+
     hubConnection.start();
 }
 
@@ -426,5 +492,14 @@ class ClashMessage {
         this.Text = text;
         this.Is1 = is1;
         this.Color = color;
+    }
+}
+
+class ClashLike {
+    constructor(is1, clashId, sender, isAddLike) {
+        this.ClashId = clashId;
+        this.Sender = sender;
+        this.Is1 = is1;
+        this.IsAddLike = isAddLike;
     }
 }

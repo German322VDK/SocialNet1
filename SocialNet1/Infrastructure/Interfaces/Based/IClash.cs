@@ -22,5 +22,9 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool Confirm(string thisGroupName, string groupName);
 
         bool AddMessage(int clashId, string sender, string groupName, string text);
+
+        bool AddLike(int clashId, bool is1, string sender);
+
+        bool DeleteLike(int clashId, bool is1, string sender);
     }
 }

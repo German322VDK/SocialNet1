@@ -180,5 +180,59 @@ namespace SocialNet1.Controllers.API
 
             return result;
         }
+
+        
+        [HttpPost("setlike")]
+        public bool SetLike(ClashLikeModel model)
+        {
+            if (model is null || string.IsNullOrEmpty(model.Sender))
+            {
+                _logger.LogWarning($"Не получилось задать лайк в бд (");
+
+                return false;
+            }
+
+            if (model.IsAddLike)
+            {
+                _logger.LogInformation($"Чел {model.Sender} пытается поставить лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+
+                var result = _clash.AddLike(model.ClashId, model.Is1, model.Sender);
+
+                if (result)
+                {
+                    _logger.LogInformation($"Получилось челу {model.Sender} поставить лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+                }
+                else
+                {
+                    _logger.LogWarning($"Не получилось челу {model.Sender} поставить лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+                }
+
+                return result;
+            }
+            else
+            {
+                _logger.LogInformation($"Чел {model.Sender} пытается убрать лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+
+                var result = _clash.DeleteLike(model.ClashId, model.Is1, model.Sender);
+
+                if (result)
+                {
+                    _logger.LogInformation($"Получилось челу {model.Sender} убрать лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+                }
+                else
+                {
+                    _logger.LogWarning($"Не получилось челу {model.Sender} убрать лайк под пост № {model.ClashId} " +
+                    $"группы {(model.Is1 ? "1" : "2")}");
+                }
+
+                return result;
+            }
+
+        }
     }
 }

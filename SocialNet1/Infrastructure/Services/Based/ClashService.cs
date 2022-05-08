@@ -1,5 +1,6 @@
 ﻿using Social_Net.Domain.Clash;
 using SocialNet1.Database.SQlite.Context;
+using SocialNet1.Domain.Base;
 using SocialNet1.Domain.Message;
 using SocialNet1.Infrastructure.Interfaces.Based;
 using System;
@@ -160,6 +161,99 @@ namespace SocialNet1.Infrastructure.Services.Based
                     SenderName = sender,
                     Content = text
                 });
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool AddLike(int clashId, bool is1, string sender)
+        {
+            var clash = Get(clashId);
+
+            var user = _db.Users.FirstOrDefault(us => us.UserName == sender);
+
+            if (clash is null || user is null)
+            {
+                return false;
+            }
+
+            ClashLike like;
+
+            if (is1)
+            {
+                like = clash.Side1.GroupLikes.FirstOrDefault(lk => lk.Likers == sender);
+            }
+            else
+            {
+                like = clash.Side2.GroupLikes.FirstOrDefault(lk => lk.Likers == sender);
+            }
+
+            if(like is not null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                if (is1)
+                {
+                    clash.Side1.GroupLikes.Add(new ClashLike
+                    {
+                        Emoji = Emoji.Like,
+                        Likers = sender
+                    });
+                }
+                else
+                {
+                    clash.Side2.GroupLikes.Add(new ClashLike
+                    {
+                        Emoji = Emoji.Like,
+                        Likers = sender
+                    });
+                }
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
+        public bool DeleteLike(int clashId, bool is1, string sender)
+        {
+            var clash = Get(clashId);
+
+            var user = _db.Users.FirstOrDefault(us => us.UserName == sender);
+
+            if (clash is null || user is null)
+            {
+                return false;
+            }
+
+            ClashLike like;
+
+            if (is1)
+            {
+                like = clash.Side1.GroupLikes.FirstOrDefault(lk => lk.Likers == sender);
+            }
+            else
+            {
+                like = clash.Side2.GroupLikes.FirstOrDefault(lk => lk.Likers == sender);
+            }
+
+            if (like is null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Remove(like);
 
                 _db.SaveChanges();
 
