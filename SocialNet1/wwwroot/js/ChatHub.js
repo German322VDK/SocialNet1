@@ -306,9 +306,12 @@ function StartClashChat(id, sender, group, color, is1) {
         let is1 = message.is1;
         let color = message.color;
 
-        if (is1 == "true") {
+         //Да простит меня Бог за этот костыль
+        if (id == message.clashId) {
 
-            var html = `<div class="message__box_holder" >
+            if (is1 == "true") {
+
+                var html = `<div class="message__box_holder" >
                 <div class="message__box mid_${color} mid_${color}_border
                      mid_${color}_border_triangle">
                     <div>
@@ -322,9 +325,9 @@ function StartClashChat(id, sender, group, color, is1) {
                     </div>
                 </div>
             </div>`;
-        }
-        else {
-            var html = `<div class="message__box_holder message__partner" ">
+            }
+            else {
+                var html = `<div class="message__box_holder message__partner" ">
                 <div class="message__box mid_${color} mid_${color}_border message__partner_box
                      mid_${color}_border_triangle_partner">
                     <div>
@@ -338,14 +341,15 @@ function StartClashChat(id, sender, group, color, is1) {
                     </div>
                 </div>
             </div>`;
+            }
+
+
+            $("#chatroom").append(html);
+
+            document.getElementById("lastTime").innerText = date;
+
+            window.scrollTo(0, window.innerWidth);
         }
-
-
-        $("#chatroom").append(html);
-
-        document.getElementById("lastTime").innerText = date;
-
-        window.scrollTo(0, window.innerWidth);
 
         //document.getElementById("chatroom").appendChild(elem);
     });
@@ -367,26 +371,29 @@ function StartClashChat(id, sender, group, color, is1) {
 
     hubConnection.on('ReceiveLike', function (message) {
 
-        if (message.isAddLike) {
-            if (message.is1) {
-                var num = parseInt(document.getElementById("1likeAll").innerText) + 1;
-                document.getElementById("1likeAll").innerText = num;
+        //Да простит меня Бог за этот костыль
+        if (id == message.clashId) {
+            if (message.isAddLike) {
+                if (message.is1) {
+                    var num = parseInt(document.getElementById("1likeAll").innerText) + 1;
+                    document.getElementById("1likeAll").innerText = num;
+                }
+                else {
+
+                    var num = parseInt(document.getElementById("2likeAll").innerText) + 1;
+                    document.getElementById("2likeAll").innerText = num;
+                }
             }
             else {
+                if (message.is1) {
+                    var num = parseInt(document.getElementById("1likeAll").innerText) - 1;
+                    document.getElementById("1likeAll").innerText = num;
+                }
+                else {
 
-                var num = parseInt(document.getElementById("2likeAll").innerText) + 1;
-                document.getElementById("2likeAll").innerText = num;
-            }
-        }
-        else {
-            if (message.is1) {
-                var num = parseInt(document.getElementById("1likeAll").innerText) - 1;
-                document.getElementById("1likeAll").innerText = num;
-            }
-            else {
-
-                var num = parseInt(document.getElementById("2likeAll").innerText) - 1;
-                document.getElementById("2likeAll").innerText = num;
+                    var num = parseInt(document.getElementById("2likeAll").innerText) - 1;
+                    document.getElementById("2likeAll").innerText = num;
+                }
             }
         }
     });

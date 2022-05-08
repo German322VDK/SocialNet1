@@ -32,14 +32,14 @@ namespace SocialNet1.Infrastructure.Services.Based
             GetAll().FirstOrDefault(cl => cl.Id == clashId);
 
         public ICollection<ClashDTO> GetByGroup(string groupName) =>
-            GetAll().Where(cl => cl.Side1.Group.GroupName == groupName || cl.Side2.Group.GroupName == groupName).ToList();
+            GetAll().Where(cl => cl.Side1.Group.ShortGroupName == groupName || cl.Side2.Group.ShortGroupName == groupName).ToList();
 
         public ICollection<ClashDTO> GetByUser(string userName)
         {
             var groupNames = _db.UserGroupStatuses.Where(ugs => ugs.UserName == userName).Select(ugs => ugs.GroupName);
 
             return GetAll()
-                .Where(cl => groupNames.Contains(cl.Side1.Group.GroupName) || groupNames.Contains(cl.Side2.Group.GroupName))
+                .Where(cl => groupNames.Contains(cl.Side1.Group.ShortGroupName) || groupNames.Contains(cl.Side2.Group.ShortGroupName))
                 .ToList();
         }
 

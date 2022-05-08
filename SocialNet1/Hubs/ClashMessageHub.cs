@@ -81,7 +81,7 @@ namespace SocialNet1.Hubs
                 _logger.LogInformation($"Лайк человека '{message.Sender}' в протвостоянии № " +
                     $"({message.ClashId}) успешно сохранен в БД:)");
 
-                await Clients.All.SendAsync("ReceiveLike", new { is1 = message.Is1, isAddLike = message.IsAddLike});
+                await Clients.All.SendAsync("ReceiveLike", new { is1 = message.Is1, isAddLike = message.IsAddLike, clashId = message.ClashId});
             }
             else
             {

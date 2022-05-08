@@ -41,6 +41,9 @@
 
     var isUser1 = groupService.IsUserInGroup(Model.Clash.Side1.Group.ShortGroupName, name);
 
+    var isUserLike1 = Model.Clash.Side1.GroupLikes.FirstOrDefault(lk => lk.Likers == name) is null;
+    var isUserLike2 = Model.Clash.Side2.GroupLikes.FirstOrDefault(lk => lk.Likers == name) is null;
+
 }
 
 <div class="messages light_@(color)">
@@ -64,10 +67,10 @@
                         @group1.GroupName
                     </a>
                 </div>
-                <button id="1Like1" class="profil__post_l_img ">
+                <button id="1Like1" class="profil__post_l_img @(isUserLike1 ? "" : "heart_none")">
                     <i class="fa fa-heart-o color_dark_dark_@(group1Color) fa-2x" aria-hidden="true"></i>
                 </button>
-                <button id="1Like2" class="profil__post_l_img heart_none">
+                <button id="1Like2" class="profil__post_l_img @(isUserLike1 ? "heart_none" : "")">
                     <i class="fa fa-heart color_dark_dark_@(group1Color) fa-2x" aria-hidden="true"></i>
                 </button>
                 <div id="1likeAll" class="profil__col_like_all">@Model.Clash.Side1.GroupLikes.Count</div>
@@ -83,10 +86,10 @@
                         @group2.GroupName
                     </a>
                 </div>
-                <button id="2Like1" class="profil__post_l_img ">
+                <button id="2Like1" class="profil__post_l_img @(isUserLike2 ? "" : "heart_none")">
                     <i class="fa fa-heart-o color_dark_dark_@(group2Color) fa-2x" aria-hidden="true"></i>
                 </button>
-                <button id="2Like2" class="profil__post_l_img heart_none">
+                <button id="2Like2" class="profil__post_l_img @(isUserLike2 ? "heart_none" : "")">
                     <i class="fa fa-heart color_dark_dark_@(group2Color) fa-2x" aria-hidden="true"></i>
                 </button>
                 <div id="2likeAll" class="profil__col_like_all">@Model.Clash.Side2.GroupLikes.Count</div>

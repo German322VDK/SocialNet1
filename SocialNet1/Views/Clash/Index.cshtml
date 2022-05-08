@@ -108,40 +108,76 @@
             </div>
         </div>
         <div data-target="two" class="chats__info_container">
-            @*@foreach (var friend in Model.Friends)
+            <ul class="groups__content_list">
+                @foreach (var clash in Model.UserClashes)
                 {
-                    int friendUserX = friend.SocNetItems.X, friendUserY = friend.SocNetItems.Y;
+                    var group1 = groupService.Get(clash.Side1.Group.ShortGroupName);
 
-                    var friendUserColor = UserMethods.GetColor(friendUserX, friendUserY);
+                    int gX1 = group1.SocNetItems.X, gY1 = group1.SocNetItems.Y;
 
-                    var friendImageArr = friend.Images.SingleOrDefault(el => el.ImageNumber == friend.SocNetItems.CurrentImage).Image;
+                    var groupCoordUserColor1 = UserMethods.GetColor(gX1, gY1);
 
-                    var friendStrImage = NewImageMethods.GetStringFromByteArr(friendImageArr);
+                    var groupCoordImageArr1 = group1.Images.SingleOrDefault(el => el.ImageNumber == group1.SocNetItems.CurrentImage).Image;
 
-                    var friendFormat = NewImageMethods.GetFormat(friendImageArr);
+                    var groupCoordStrImage1 = NewImageMethods.GetStringFromByteArr(groupCoordImageArr1);
 
-                    var friendCoord = $"photo/coordinates/{friendUserX}d{friendUserY}.jpg";
+                    var groupCoordFormat1 = NewImageMethods.GetFormat(groupCoordImageArr1);
 
-                    <div class="chats__post dark_@(color)_border_bottom mid_@(friendUserColor)_hover">
-                        <a class="chats__post_link" asp-controller="Chats" asp-action="Chat" asp-route-userName="@friend.UserName">
-                            <div class="chats__post_ava">
-                                <img class="chats__post_ava_img" src="data:image/@friendFormat;base64,@friendStrImage" alt="Фото">
-                            </div>
-                            <div class="chats__post_block">
-                                <div class="chats__post_block_name_time">
-                                    <span class="chats__post_name">@friend.FirstName @friend.SecondName</span>
-                                    <span class="chats__post_time">@DateTime.Now.ToString("g")</span>
+                    var groupCoord1 = $"photo/coordinates/{gX1}d{gY1}.jpg";
+
+
+                    var group2 = groupService.Get(clash.Side2.Group.ShortGroupName);
+
+                    int gX2 = group2.SocNetItems.X, gY2 = group2.SocNetItems.Y;
+
+                    var groupCoordUserColor2 = UserMethods.GetColor(gX2, gY2);
+
+                    var groupCoordImageArr2 = group2.Images.SingleOrDefault(el => el.ImageNumber == group2.SocNetItems.CurrentImage).Image;
+
+                    var groupCoordStrImage2 = NewImageMethods.GetStringFromByteArr(groupCoordImageArr2);
+
+                    var groupCoordFormat2 = NewImageMethods.GetFormat(groupCoordImageArr2);
+
+                    var groupCoord2 = $"photo/coordinates/{gX2}d{gY2}.jpg";
+
+                    <a asp-controller="Clash" asp-action="Clash" asp-route-id="@clash.Id">
+                    <li class="groups__content_list_item mid_@(color)_hover">
+                        <div class="groups__content_list_item_c_l">
+                            <div class="groups__content_list_item_c clash_padding mid_@(groupCoordUserColor1)">
+                                <div class="groups__content_ava">
+                                    <img class="groups__content_ava_img" src="data:image/@groupCoordFormat1;base64,@groupCoordStrImage1" alt="">
                                 </div>
-                                <div class="chats__post_ava2_text">
-                                    <div class="chats__post_ava2">
-                                        <img class="chats__post_ava2_img" src="@friendCoord" alt="">
+                                <div class="groups__content_links">
+                                    <div class="groups__content_politcor groups__content_list_item_m">
+                                        <img class="groups__content_politcor_img" src="@groupCoord1" alt="">
                                     </div>
-                                    <div class="chats__post_text">Написать? </div>
+                                    <div class="groups__content_name_g groups__content_list_item_m">
+                                        @(group1.GroupName.Length > 15 ? group1.GroupName.Substring(0, 14) : group1.GroupName)
+                                    </div>
+                                    <div class="groups__content_quantity">@group1.Users.Count учасников</div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                }*@
+                        </div>
+                        <div class="groups__content_list_item_c_r">
+                            <div class="groups__content_list_item_c groups__content_list_item_c_r_r clash_padding mid_@(groupCoordUserColor2)">
+                                <div class="groups__content_links groups__content_links_right">
+                                    <div class="groups__content_politcor groups__content_list_item_m">
+                                        <img class="groups__content_politcor_img" src="@groupCoord2" alt="">
+                                    </div>
+                                    <div class="groups__content_name_g groups__content_list_item_m">
+                                        @(group2.GroupName.Length > 15 ? group2.GroupName.Substring(0, 14) : group2.GroupName)
+                                    </div>
+                                    <div class="groups__content_quantity">@group2.Users.Count учасников</div>
+                                </div>
+                                <div class="groups__content_ava_r">
+                                    <img class="groups__content_ava_img" src="data:image/@groupCoordFormat2;base64,@groupCoordStrImage2" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    </a>
+                }
+            </ul>
         </div>
     </div>
 </div>
