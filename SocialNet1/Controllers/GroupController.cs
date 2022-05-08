@@ -656,5 +656,39 @@ namespace SocialNet1.Controllers
             return RedirectToAction("Group", "Group", new { GroupName = groupName });
         }
 
+        public IActionResult SetCoord(string groupName, int x, int y)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            
+
+            if (string.IsNullOrEmpty(groupName))
+            {
+                _logger.LogWarning($"Не понятно кому менять взгляды(");
+
+                return RedirectToAction("Index", "Profile");
+            }
+
+            var result = _group.SetCoord(groupName, x, y);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Человек {user.UserName} не смог выбрать взгляды группы {groupName} x:{x};y:{y}");
+
+                return RedirectToAction("Group", "Group", new { groupName  = groupName });
+            }
+
+            _logger.LogInformation($"Человек {user.UserName} смог выбрать взгляды группы {groupName} x:{x};y:{y}");
+
+            return RedirectToAction("Group", "Group", new { groupName = groupName });
+        }
+
     }
 }

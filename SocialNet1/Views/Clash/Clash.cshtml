@@ -64,7 +64,7 @@
                 </div>
                 <div class="messages__top_name">
                     <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
-                        @group1.GroupName
+                        @(group1.GroupName.Length > 25 ? group1.GroupName.Substring(0, 24) : group1.GroupName)
                     </a>
                 </div>
                 <button id="1Like1" class="profil__post_l_img @(isUserLike1 ? "" : "heart_none")">
@@ -83,7 +83,7 @@
                 </div>
                 <div class="messages__top_name">
                     <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
-                        @group2.GroupName
+                        @(group2.GroupName.Length > 25 ? group2.GroupName.Substring(0, 24) : group2.GroupName)
                     </a>
                 </div>
                 <button id="2Like1" class="profil__post_l_img @(isUserLike2 ? "" : "heart_none")">

@@ -896,5 +896,30 @@ namespace SocialNet1.Infrastructure.Services.Based
             return group.Users.Select(gu => gu.UserName).Contains(userName); 
         }
 
+        public bool SetCoord(string groupName, int x, int y)
+        {
+            var group = Get(groupName);
+
+            if (group is null || x > 2 || x < -2 || y > 2 || y < -2)
+                return false;
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Groups
+                    .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                    .SocNetItems.X = x;
+
+                _db.Groups
+                   .FirstOrDefault(gr => gr.ShortGroupName == groupName)
+                   .SocNetItems.Y = y;
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
     }
 }

@@ -528,6 +528,36 @@ async function GroupSetAva(url, user, color) {
 
 }
 
+async function SetGroupCord(url, group) {
+
+    var choscord = "chosen_coord";
+
+    var coord = document.getElementsByClassName(choscord)[0];
+
+    if (coord == null) {
+        alert("Не выбрано фото(");
+
+        return;
+    }
+
+    var coordId = coord.id;
+
+    var cord = coordId.split("/")[1];
+
+    var xy = cord.split("d");
+
+    var x = xy[0];
+
+    var y = xy[1];
+
+    var fullurl = url + "?groupName=" + group + "&x=" + x + "&y=" + y;
+
+    var promise = await fetch(fullurl);
+
+    location.href = promise.url;
+
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     //Пользуемся методом объекта document.

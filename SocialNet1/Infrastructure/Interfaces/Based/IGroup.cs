@@ -37,6 +37,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool SetAva(int ava, string groupName);
 
+        bool SetCoord(string groupName, int x, int y);
+
         PostDTO GetPost(string groupName, int postId);
 
         bool AddPost(string groupName, PostDTO post);
