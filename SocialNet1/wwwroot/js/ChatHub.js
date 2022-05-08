@@ -292,6 +292,82 @@ function StartSecretChat(id, sender, recipient, colorAut, colorUser) {
     hubConnection.start();
 }
 
+function StartClashChat(id, sender, group, color, is1) {
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/clashchat")
+        .build();
+
+    // получение сообщения от сервера
+    hubConnection.on('Receive', function (message) {
+        let senderName = message.senderName;
+        let content = SeqHeml(message.text);
+        let date = message.date;
+        let nams = message.recipientName;
+        let is1 = message.is1;
+        let color = message.color;
+
+        if (is1 == "true") {
+
+            var html = `<div class="message__box_holder" >
+                <div class="message__box mid_${color} mid_${color}_border
+                     mid_${color}_border_triangle">
+                    <div>
+                        ${content}
+                    </div>
+                    <div class="messages__block_m_l_t">
+                            ${nams}
+                        </div>
+                    <div class="messages__block_m_l_t">
+                        ${date}
+                    </div>
+                </div>
+            </div>`;
+        }
+        else {
+            var html = `<div class="message__box_holder message__partner" ">
+                <div class="message__box mid_${color} mid_${color}_border message__partner_box
+                     mid_${color}_border_triangle_partner">
+                    <div>
+                        ${content}
+                    </div>
+                    <div class="messages__block_m_l_t">
+                        ${nams}
+                    </div>
+                    <div class="messages__block_m_l_t">
+                        ${date}
+                    </div>
+                </div>
+            </div>`;
+        }
+
+
+        $("#chatroom").append(html);
+
+        document.getElementById("lastTime").innerText = date;
+
+        window.scrollTo(0, window.innerWidth);
+
+        //document.getElementById("chatroom").appendChild(elem);
+    });
+
+    if (document.getElementById("sendBtn") != null) {
+        document.getElementById("sendBtn").addEventListener("click", function (e) {
+            let message = document.getElementById("message").value;
+
+            let sendmess = new ClashMessage(group, parseInt(id), sender, '', '', message, is1, color);
+
+            //let sendmess = "sss";
+
+            hubConnection.invoke("Send", sendmess);
+            /*hubConnection.invoke("Send", '2');*/
+
+            document.getElementById("message").value = "";
+        });
+    }
+
+    hubConnection.start();
+}
+
 class Message {
     constructor(senderName, recipientName, text, when, id) {
         this.SenderName = senderName;
@@ -337,5 +413,18 @@ class DeleteGroupMessage {
         this.GroupName = groupName;
         this.MessageHelpId = messageHelpId;
         this.IsSuccess = isSuccess;
+    }
+}
+
+class ClashMessage {
+    constructor(groupName, clashId, sender, recipientName, date, text, is1, color) {
+        this.GroupName = groupName;
+        this.ClashId = clashId;
+        this.Sender = sender;
+        this.RecipientName = recipientName;
+        this.Date = date;
+        this.Text = text;
+        this.Is1 = is1;
+        this.Color = color;
     }
 }

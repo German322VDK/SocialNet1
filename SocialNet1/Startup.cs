@@ -140,6 +140,8 @@ namespace SocialNet1
 
                 endpoints.MapHub<GroupMessageHub>("/groupchat");
 
+                endpoints.MapHub<ClashMessageHub>("/clashchat");
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

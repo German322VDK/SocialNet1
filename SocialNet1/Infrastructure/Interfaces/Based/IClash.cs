@@ -15,6 +15,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         ClashDTO Get(string groupName1, string groupName2);
 
+        ClashDTO Get(int clashId);
+
         bool Add(string thisGroupName, string groupName);
 
         bool Confirm(string thisGroupName, string groupName); 

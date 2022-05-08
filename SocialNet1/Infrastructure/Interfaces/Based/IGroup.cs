@@ -58,5 +58,7 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool Sub(string groupName, string userName);
 
         bool UnSub(string groupName, string userName);
+
+        bool IsUserInGroup(string groupName, string userName);
     }
 }

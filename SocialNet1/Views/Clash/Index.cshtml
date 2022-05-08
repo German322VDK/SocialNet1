@@ -67,22 +67,19 @@
 
                         var groupCoord2 = $"photo/coordinates/{gX2}d{gY2}.jpg";
 
+                        <a asp-controller="Clash" asp-action="Clash" asp-route-id="@clash.Id">
                         <li class="groups__content_list_item mid_@(color)_hover">
                             <div class="groups__content_list_item_c_l">
                                 <div class="groups__content_list_item_c clash_padding mid_@(groupCoordUserColor1)">
                                     <div class="groups__content_ava">
-                                        <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
-                                            <img class="groups__content_ava_img" src="data:image/@groupCoordFormat1;base64,@groupCoordStrImage1" alt="">
-                                        </a>
+                                        <img class="groups__content_ava_img" src="data:image/@groupCoordFormat1;base64,@groupCoordStrImage1" alt="">
                                     </div>
                                     <div class="groups__content_links">
                                         <div class="groups__content_politcor groups__content_list_item_m">
                                             <img class="groups__content_politcor_img" src="@groupCoord1" alt="">
                                         </div>
                                         <div class="groups__content_name_g groups__content_list_item_m">
-                                            <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
-                                                @(group1.GroupName.Length > 15 ? group1.GroupName.Substring(0, 14) : group1.GroupName)
-                                            </a>
+                                            @(group1.GroupName.Length > 15 ? group1.GroupName.Substring(0, 14) : group1.GroupName)
                                         </div>
                                         <div class="groups__content_quantity">@group1.Users.Count учасников</div>
                                     </div>
@@ -95,20 +92,17 @@
                                             <img class="groups__content_politcor_img" src="@groupCoord2" alt="">
                                         </div>
                                         <div class="groups__content_name_g groups__content_list_item_m">
-                                            <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
-                                                @(group2.GroupName.Length > 15 ? group2.GroupName.Substring(0, 14) : group2.GroupName)
-                                            </a>
+                                            @(group2.GroupName.Length > 15 ? group2.GroupName.Substring(0, 14) : group2.GroupName)
                                         </div>
                                         <div class="groups__content_quantity">@group2.Users.Count учасников</div>
                                     </div>
                                     <div class="groups__content_ava_r">
-                                        <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
-                                            <img class="groups__content_ava_img" src="data:image/@groupCoordFormat2;base64,@groupCoordStrImage2" alt="">
-                                        </a>
+                                        <img class="groups__content_ava_img" src="data:image/@groupCoordFormat2;base64,@groupCoordStrImage2" alt="">
                                     </div>
                                 </div>
                             </div>
                         </li>
+                        </a>
                     }
                 </ul>
             </div>

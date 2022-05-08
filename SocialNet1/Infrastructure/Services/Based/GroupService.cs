@@ -882,5 +882,19 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool IsUserInGroup(string groupName, string userName)
+        {
+            var group = Get(groupName);
+
+            var user = _db.Users.FirstOrDefault(us => us.UserName == userName);
+
+            if(group is null || user is null)
+            {
+                return false;
+            }
+
+            return group.Users.Select(gu => gu.UserName).Contains(userName); 
+        }
+
     }
 }

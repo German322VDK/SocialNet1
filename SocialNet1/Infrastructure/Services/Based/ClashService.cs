@@ -26,6 +26,9 @@ namespace SocialNet1.Infrastructure.Services.Based
                 (cl.Side2.Group.ShortGroupName == groupName1 && cl.Side1.Group.ShortGroupName == groupName2)
             );
 
+        public ClashDTO Get(int clashId) =>
+            GetAll().FirstOrDefault(cl => cl.Id == clashId);
+
         public ICollection<ClashDTO> GetByGroup(string groupName) =>
             GetAll().Where(cl => cl.Side1.Group.GroupName == groupName || cl.Side2.Group.GroupName == groupName).ToList();
 
