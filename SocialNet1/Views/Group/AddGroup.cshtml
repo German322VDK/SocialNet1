@@ -1,0 +1,107 @@
+﻿@model AddGroupViewModel
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var userName = Model.UserName;
+}
+
+
+<div class="groups">
+    <div class="groups__dark_background mid_@(color)"></div>
+    <div class="groups__content light_@(color)">
+        <div class="groups__content_top dark_@(color)_border_bottom" style="justify-content: center;">
+            <h2 class="groups__content_management">Добавление группы</h2>
+        </div>
+        <div class="groups__content_gg">
+            <form asp-action="AddGroup" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+
+                <p class="reg__p">
+                    <input asp-for="UserName" value="@userName" />
+                </p>
+
+                <p class="group_p">Короткое имя группы</p>
+                <div class="reg__p group_flex group_center">
+                    <input asp-for="ShortGroupName" class="add_input" />
+                </div>
+                <div class="reg__p group_flex group_center">
+                    <span asp-validation-for="ShortGroupName" class="text-danger"></span>
+                </div>
+
+                <p class="group_p">Имя группы</p>
+                <div class="reg__p group_flex group_center">
+                    <input asp-for="GroupName" class="add_input" />
+                </div>
+                <div class="reg__p group_flex group_center">
+                    <span asp-validation-for="GroupName" class="text-danger"></span>
+                </div>
+
+                <p class="group_p">х координата</p>
+                <div class="reg__p group_flex group_center">
+                    <input asp-for="X" class="add_input add_input_xy" />
+                </div>
+
+                <div class="reg__p group_flex group_center">
+                    <span asp-validation-for="X" class="text-danger"></span>
+                </div>
+
+                <p class="group_p">у координата</p>
+                <div class="reg__p group_flex group_center">
+                    <input asp-for="Y" class="add_input add_input_xy" />
+                </div>
+                <div class="reg__p group_flex group_center">
+                    <span asp-validation-for="Y" class="text-danger"></span>
+                </div>
+
+                <p class="group_p">Фотография</p>
+                <div class="reg__p group_flex group_center">
+                    <input accept="image/gif, image/jpeg, image/png" type="file" class="custom-file-input mid_@(color)_hover"
+                           id="files" name="UploadedFile" /><br />
+                </div>
+                <div class="reg__p group_flex group_center">
+                    <span asp-validation-for="UploadedFile" class="text-danger reg__text-center"></span>
+                </div>
+
+                <div class="group_flex group_center">
+                    <output id="list"></output>
+                </div>
+
+                <div class="reg__text-center group_flex group_center">
+                    <button type="submit" class="btn-default group_btn">Создать</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="settings__groups">
+    <div class="filter__groups light_@(color)">
+        <h2 class="filter__groups_title">Фильтры групп</h2>
+        <ul class="filter__groups_list">
+            <li class="filter__groups_list_item">Тут</li>
+            <li class="filter__groups_list_item">Наверное</li>
+            <li class="filter__groups_list_item">Список</li>
+        </ul>
+    </div>
+    <div class="recommendations light_@(color)">
+        <h2 class="recommendations__title">
+            <a href="">
+                Рекомендации
+            </a>
+        </h2>
+        <span class="possible__get_all mid_@(color)_hover">Посмотреть всех</span>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

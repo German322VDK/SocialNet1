@@ -12,9 +12,9 @@
 
 <div class="leftsiterbar">
     <ul class="leftsitebar__list">
-        <li class="leftsitebar__list_item hover_dark_@color">
+        @*<li class="leftsitebar__list_item hover_dark_@color">
             Настройки
-        </li>
+        </li>*@
         <li class="leftsitebar__list_item hover_dark_@color">
             <a asp-controller="News" asp-action="Index">Новости</a>
         </li>
@@ -31,7 +31,7 @@
             <a asp-controller="Group" asp-action="Index">Мои группы</a>
         </li>
         <li class="leftsitebar__list_item hover_dark_@color">
-            Противостояния
+            <a asp-controller="Clash" asp-action="Index">Противостояния</a>
         </li>
     </ul>
 </div>

@@ -30,13 +30,16 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
     var autSN = body.authorSecondName;
     var autCIm = body.authorCoordinatesImage;
     var dt = body.dateTime;
-    var com = body.comment;
+    var com = SeqHeml(body.comment);
+    var hId = body.helpId;
     //var lc = body.likeCount;
     var lc = 0;
-
+    j = hId;
     var imComId = `${i}image_com${j})`
-    /*var deleteCOm = "/api/image/deletecom";*/
-    var deleteCOm = "";
+
+    var addLikeCom = "/api/image/addlikecom";
+    var deleteLikeCom = "/api/image/deletelikecom";
+    var deleteCOm = "/api/image/deletecom";
 
     var html = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${imComId}">
                                 <div class="modal__foto_r_c_l">
@@ -76,6 +79,43 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
                                 </div>
                             </div>`;
 
+    var html1 = `<div class="modal__foto_right_comment dark_${color}_border_bottom mid_${color}" id="${imComId}">
+                                <div class="modal__foto_r_c_l">
+                                    <a class="comment_ava_link" href="">
+                                        <img class="comment_link_img" src="data:image/${autF};base64,${autIm}" alt="">
+                                    </a>
+                                </div>
+                                <div class="modal__foto_r_c_r">
+                                    <div class="comment__name_polit">
+                                       <a class="comment__name_link" href="">${autSN} ${autFN}</a>
+                                        <img class="comment__polit_img" src="${autCIm}" alt="">
+                                    </div>
+                                    <div class="comment__all_infa">
+                                        <div class="comment__date">${dt}</div>
+                                        <div class="comment__icons">
+                                            <div class="comment__minus" onclick="DeletePhotoCom('${imComId}', '${deleteCOm}',
+                                                         '${recipient}', '${imageId}', '${j}')">
+                                                    <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                                </div>
+                                            <div id="${i}com${j}_im_like_on" onclick="ProfileComLikePlus('${i}com${j}_im_like_on',
+                                                    '${i}com${j}_im_like_off', '${i}com${j}_im_like_num', '${addLikeCom}', '${recipient}',
+                                                    '${sender}', '${imageId}', '${j}')"
+                                                 class="comment__heart">
+                                                <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                            </div>
+                                            <div id="${i}com${j}_im_like_off" onclick="ProfileComLikeMinus('${i}com${j}_im_like_on',
+                                                        '${i}com${j}_im_like_off', '${i}com${j}_im_like_num', '${deleteLikeCom}',
+                                                        '${recipient}', '${sender}', '${imageId}', '${j}')"
+                                                 class="comment__heart_bac heart_none">
+                                                <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
+                                            </div>
+                                            <div id="${i}com${j}_im_like_num" class="comment__quantity">0</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment__content">${com}</div>
+                                </div>
+                            </div>`;
+
     var s0 = $("#" + comsId).children()[0];
 
     var s1 = s0.children[1].children[0].children[0].children[0];
@@ -84,7 +124,7 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 
     s1.id = memID;
 
-    $("#" + memID).append(html);
+    $("#" + memID).append(html1);
 
     var comcount = parseInt(document.getElementById(comCount).innerHTML);
 
@@ -94,73 +134,27 @@ async function SendProfileImageCom(divTextId, sender, recipient, imageId, url, c
 
 }
 
-//суицид
-async function DeletePhotoCom(c, url, user, imageId, comId) {
-
-    var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        var child = document.getElementById(c);
-        child.remove();
-    }
-    else {
-        alert("Не получилось удалить комментарий(");
-    }
-
-    
-}
-
-async function AddFriend(url, user1, user2, addId, deleteId) {
-
-    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        document.getElementById(addId).style = "display:none";
-        document.getElementById(deleteId).style = "display:block";
-    }
-
-}
-
-async function DeleteFriend(url, user1, user2, addId, deleteId) {
-
-    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
-
-    var promise = await fetch(fullurl);
-
-    var body = await promise.json();
-
-    if (body) {
-        document.getElementById(addId).style = "display:block";
-        document.getElementById(deleteId).style = "display:none";
-    }
-}
-
-async function SetStatus(url, userName, statusId) {
-
-    var text = document.getElementById(statusId).innerText;
-
-    //var fullurl = url + "?text=" + text + "&username=" + userName;
+async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
 
     const response = await fetch(url, {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             userName: userName,
-            text: text
+            imageId: parseInt(imageid)
         })
     });
 
     var body = await response.json();
 
-    document.getElementById(statusId).innerText = body;
+    if (body) {
+        plusSlides();
+        document.getElementById(sliderId).remove();
+        document.getElementById(photoId).remove();
+    }
+    else {
+        alert("При удалении фото возникла ошибка(");
+    }
 }
 
 // МЕНЯЕМ ЦВЕТ СЕРДЕЧКАМ и цифирку
@@ -205,6 +199,26 @@ async function ProfileLikeMinus(one, two, num, url, user1, user2, imageid) {
     else {
         alert("Лайк не Убрался(");
     }
+
+}
+
+//суицид
+async function DeletePhotoCom(c, url, user, imageId, comId) {
+
+    var fullurl = url + "?imageAutor=" + user + "&imageId=" + imageId + "&comId=" + comId;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        var child = document.getElementById(c);
+        child.remove();
+    }
+    else {
+        alert("Не получилось удалить комментарий(");
+    }
+
 
 }
 
@@ -267,31 +281,6 @@ async function ProfileComLikeMinus(one, two, num, url, user1, user2, imageid, co
     }
 }
 
-async function DeletePhoto(url, imageid, userName, sliderId, photoId) {
-
-    const response = await fetch(url, {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            userName: userName,
-            imageId: parseInt(imageid)
-        })
-    });
-
-    var body = await response.json();
-
-    if (body) {
-        plusSlides();
-        document.getElementById(sliderId).remove();
-        document.getElementById(photoId).remove();
-    }
-    else {
-        alert("При удалении фото возникла ошибка(");
-    }
-}
-
-
-
 async function SetAva(url, user, color) {
 
     var classActive = `dark_dark_${color}_border`;
@@ -315,6 +304,26 @@ async function SetAva(url, user, color) {
     location.href = promise.url;
 
 
+}
+
+async function SetStatus(url, userName, statusId) {
+
+    var text = document.getElementById(statusId).innerText;
+
+    //var fullurl = url + "?text=" + text + "&username=" + userName;
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userName: userName,
+            text: text
+        })
+    });
+
+    var body = await response.json();
+
+    document.getElementById(statusId).innerText = body;
 }
 
 function OpenSetPhoto() {
@@ -464,6 +473,8 @@ async function PostLikePlus(one, two, num, url, user, postId, liker) {
         document.getElementById(two).classList.remove('heart_none');
         document.getElementById(one).classList.add('heart_none');
 
+        var lp = document.getElementById(one);
+
         var number = parseInt(document.getElementById(num).innerHTML);
         number++;
         document.getElementById(num).innerHTML = number;
@@ -518,6 +529,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
         return;
     }
 
+    var pId = body.id;
     var x = body.x;
     var y = body.y;
     var dateTime = body.dateTime;
@@ -526,9 +538,15 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
     var sn = body.secondName;
     var fP = body.formatPhotoCom;
     var f = body.photoCom;
-    var text = body.text;
+    var text = SeqHeml(body.text);
     var color = body.color;
-    
+    var helpId = body.helpId;
+    var author = body.author;
+    var comer = body.commenter;
+
+    var deleteComPost = "/api/user/deletecompost";
+    var comLikePlusURL = "/api/user/addlikecompost";
+    var comLikeMinusURL = "/api/user/deletelikecompost";
 
     var html = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${j}">
                             <div class="profil_modal__foto_r_c_l">
@@ -568,6 +586,41 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
                             </div>
                         </div>`;
 
+    var html1 = `<div class="profil_modal__foto_right_comment dark_${color}_border_bottom light_${color}" id=${i}com${helpId}>
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" href="">
+                                    <img class="profil_comment_link_img" src="data:image/${fP};base64,${f}" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" href="">${fn} ${sn}</a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/${x}d${y}.jpg" alt="">
+                                </div>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">${dateTime}</div>
+                                    <div class="profil_comment__icons">
+                                        <div class="profil_comment__minus" onclick="DeleteComPost('${i}com${helpId}', '${deleteComPost}',
+                                                   '${author}', '${pId}', '${helpId}', '${i}coms_all_count')">
+                                               <i class="fa fa-trash-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                            </div>
+                                        <div id="${i}com${helpId}_like_on" onclick="PostComLikePlus('${i}com${helpId}_like_on', '${i}com${helpId}_like_off',
+                                                    '${i}com${helpId}_like_num', '${comLikePlusURL}', '${author}', '${comer}', '${pId}', '${helpId}')"
+                                             class="comment__heart" >
+                                            <i class="fa fa-heart-o color_dark_dark_${color}" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${helpId}_like_off" onclick="PostComLikeMinus('${i}com${helpId}_like_on', '${i}com${helpId}_like_off',
+                                                    '${i}com${helpId}_like_num', '${comLikeMinusURL}', '${author}', '${comer}', '${pId}', '${helpId}')"
+                                             class="comment__heart_bac heart_none">
+                                            <i class="fa fa-heart color_dark_dark_${color} heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="${i}com${helpId}_like_num" class="comment__quantity">${likes}</div>
+                                    </div>
+                                </div>
+                                <div class="profil_comment__content">${text}</div>
+                            </div>
+                        </div>`;
+
     var s0 = $("#" + comsId).children()[0];
 
     var s1 = s0.children[1].children[0].children[0].children[0];
@@ -576,7 +629,7 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
 
     s1.id = memID;
 
-    $("#" + memID).append(html);
+    $("#" + memID).append(html1);
 
     var comCount = parseInt(document.getElementById(commentCount).innerText) + 1;
     document.getElementById(commentCount).innerText = comCount;
@@ -584,7 +637,6 @@ async function AddCommentToUserPost(textId, url, user, postId, commenter, i, j, 
     CloseComForm(cn, co, cl);
 
 }
-
 
 async function PostComLikePlus(one, two, num, url, user1, user2, postid, comid) {
 
@@ -661,5 +713,34 @@ async function DeleteComPost(c, url, user, postId, comId, comCount) {
     }
     else {
         alert("Не получилось удалить комментарий(");
+    }
+}
+
+async function AddFriend(url, user1, user2, addId, deleteId) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(addId).style = "display:none";
+        document.getElementById(deleteId).style = "display:block";
+    }
+
+}
+
+async function DeleteFriend(url, user1, user2, addId, deleteId) {
+
+    var fullurl = url + "?username1=" + user1 + "&username2=" + user2;
+
+    var promise = await fetch(fullurl);
+
+    var body = await promise.json();
+
+    if (body) {
+        document.getElementById(addId).style = "display:block";
+        document.getElementById(deleteId).style = "display:none";
     }
 }

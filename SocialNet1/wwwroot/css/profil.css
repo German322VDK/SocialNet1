@@ -55,6 +55,8 @@ button {
     margin-left: 20px;
     margin-right: 20px;
     font-size: 24px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .profil_left__status {
@@ -931,6 +933,21 @@ input[type="submit"] {
     border-radius: 12px;
 }
 
+.thumb1 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 350px;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(106, 106, 106)
+}
+
 .kto_na_koord_2 {
     position: absolute;
     transform: translate(-85px, -35px);
@@ -958,12 +975,13 @@ input[type="submit"] {
 /* МОЙ ЛЮБИМЫЙ СЛАЙДЕР <3 */
 /* .mySlides {display: none}; */
 .mySlides {
-    display: none
+    display: none;
 }
+/* Ни в коем случае НЕ ТРОГАТЬ!!! */
 
-;
+
 .slideshow-container {
-    position: relative;
+    position: fixed;
 }
 
 /* Next & previous buttons */
@@ -1125,6 +1143,12 @@ input[type="submit"] {
 /* Пост */
 .profil__post_lkr {
     padding: 0px 0 10px;
+}
+
+.profil__post_lkr1 {
+    display: flex;
+    padding: 10px;
+    justify-content: right;
 }
 
 .profil__post_lkr,
@@ -1574,8 +1598,8 @@ input[type="submit"] {
 
 .photo_selection__modal__dialog {
     max-width: 1000px;
-    min-height: 565px;
-    max-height: 600px;
+    min-height: 650px;
+    max-height: 700px;
     flex-grow: 1;
     display: flex;
     position: relative;
@@ -1613,7 +1637,7 @@ input[type="submit"] {
 
 .photo_selection__modal_foto_c {
     padding: 0 10px 10px;
-    height: 450px;
+    /*height: 450px;*/
 }
 
 .photo_selection__modal_foto_c_f {
@@ -1638,6 +1662,14 @@ input[type="submit"] {
     margin-right: auto;
     width: 500px;
     justify-content: center;
+}
+
+.coord_item{
+    margin: 0 5px;
+}
+
+.coord_text{
+    text-align:center;
 }
 
 .photo_selection__foto_img {
@@ -1679,6 +1711,18 @@ input[type="submit"] {
     margin-right: 5px;
     margin-left: 10px;
     /*margin-bottom: 10px;*/
+}
+
+.del_cross {
+    margin-left: 10px;
+    position: absolute;
+}
+
+.del_cross1 {
+    /*margin-left: 450px;*/
+    /* margin-right: 75px; */
+    position: absolute;
+    right: 55px;
 }
 /* МОДАЛЬНОЕ ОКНО ДОБАВИТЬ ФОТО ВВЕРХУ*/
 @-webkit-keyframes fade {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SocialNet1.Areas.Admin.Controllers
 {
-    [Area("Admin")/*, Authorize(Roles = "Admin, God")*/]
+    [Area("Admin"), Authorize(Roles = "Admin,God")]
     public class HomeController : Controller
     {
         private ILogInfo _logInfo;

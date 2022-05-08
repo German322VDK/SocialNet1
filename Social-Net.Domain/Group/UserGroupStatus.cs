@@ -1,4 +1,5 @@
 ﻿using SocialNet1.Domain.Base;
+using SocialNet1.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace SocialNet1.Domain.Group
@@ -25,5 +26,11 @@ namespace SocialNet1.Domain.Group
         /// </summary>
         [Required]
         public string GroupName { get; set; }
+
+        [Required]
+        public virtual GroupDTO Group { get; set; }
+
+        [Required]
+        public virtual UserDTO UserDTO { get; set; }
     }
 }

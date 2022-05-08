@@ -1,5 +1,167 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model GroupItemViewModel
+@inject IUser userService;
 @{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var userGroupImage = Model.Group.Images.SingleOrDefault(el => el.ImageNumber == Model.Group.SocNetItems.CurrentImage);
+
+    var imageArr = userGroupImage.Image;
+
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = NewImageMethods.GetFormat(imageArr);
+
+    var fullPhotos = new List<FullPhotoGroupFormat>();
+
+    int i = 1;
+
+    int avaNum = i;
+
+    var avaIms = new List<SetAvaModel>();
+
+    foreach (var item in Model.Group.Images)
+    {
+
+        var photo = NewImageMethods.GetStringFromByteArr(item.Image);
+        var formatPhoto = NewImageMethods.GetFormat(item.Image);
+
+        var coments = new List<PhotoGroupInfoComms>();
+
+        foreach (var coment in item.Coments)
+        {
+            var commentator = userService.Get(coment.UserName);
+
+            var commentMainImage = commentator.Images.SingleOrDefault(el => el.ImageNumber == commentator.SocNetItems.CurrentImage);
+
+            var commentImageArr = commentMainImage.Image;
+
+            var commentStrImage = NewImageMethods.GetStringFromByteArr(commentImageArr);
+
+            var commentFormat = NewImageMethods.GetFormat(commentImageArr);
+
+            var comId = coment.Id;
+
+            coments.Add(new PhotoGroupInfoComms
+            {
+                DateTime = coment.DateTime.ToString("g"),
+                Likes = coment.GroupCommentLikes,
+                Comment = coment.Text,
+                AuthorFirstName = commentator.FirstName,
+                AuthorSecondName = commentator.SecondName,
+                AuthorCoordinatesImage = $"photo/coordinates/{commentator.SocNetItems.X}d{commentator.SocNetItems.Y}.jpg",
+                AuthorUserName = commentator.UserName,
+                AuthorImage = commentStrImage,
+                AuthorFormat = commentFormat,
+                Color = UserMethods.GetColor(commentator.SocNetItems.X, commentator.SocNetItems.Y),
+                CommId = comId,
+                HelpId = coment.HelpId
+            });
+        }
+
+        fullPhotos.Add(new FullPhotoGroupFormat
+        {
+            ImageId = item.Id,
+            MainImage = photo,
+            Format = formatPhoto,
+
+            RepostCount = item.RepostCount,
+            Group = new PhotoGroupInfoAut
+            {
+                ShortGroupName = Model.Group.ShortGroupName,
+                GroupName = Model.Group.GroupName,
+                GroupImage = strImage,
+                GroupFormat = format,
+                GroupCoordinatesImage = Model.CoordImage,
+                DateTime = item.DateTime.ToString("g"),
+                Likes = item.GroupLikes
+            },
+
+            Comments = coments,
+
+            Number = i
+        });
+
+        avaIms.Add(new SetAvaModel
+        {
+            Image = photo,
+            Format = formatPhoto,
+            ImageNum = item.ImageNumber
+        });
+
+    }
+
+    fullPhotos.Reverse();
+
+    foreach (var item in fullPhotos)
+    {
+        if (item.MainImage == Model.MainImage)
+        {
+            avaNum = i;
+        }
+
+        i++;
+    }
+
+    var ava = new PhotoFormat
+    {
+        Format = Model.MainFormat,
+        Image = Model.MainImage,
+        Number = avaNum
+        //UserName = Model.User.UserName
+    };
+
+    var photos = fullPhotos
+        .Take(4)
+        .Select(el => new PhotoFormat
+        {
+            Image = el.MainImage,
+            Format = el.Format
+        })
+        .ToList();
+
+    i = 1;
+
+    foreach (var item in photos)
+    {
+        item.Number = i;
+
+        i++;
+    }
+
+}
+
+<div class="profil_left">
+    <partial name="Partial/Group/GroupInfo" model="@Model" />
+
+    <partial name="Partial/Group/GroupPhotos" model="@photos" />
+
+    @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
+    {
+        <div class="profil_left__add_f light_@(color)">
+            <button class="profil_left__add_foto add_foto">Добавить фото</button>
+        </div>
+    }
+
+    @if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
+    {
+        <partial name="Partial/Group/GroupAddPost" model="@new ComModel { AuthorName = Model.Group.ShortGroupName}" />
+    }
+
+    <partial name="Partial/Group/GroupPosts" model="@new PostsViewModel { Posts = Model.Group.SocNetItems.Posts, AuthorName = Model.Group.ShortGroupName }" />
+
+</div>
+
+<partial name="Partial/Group/GroupRight" model="@(new GroupRightModel{ PhotoFormat = ava, GroupName = Model.Group.ShortGroupName})" />
+
+<partial name="Partial/Group/Slider" model="@fullPhotos" />
+
+@if (Model.Group.Users.Where(us => us.Status == SocialNet1.Domain.Group.Status.Admin).Select(gs => gs.UserName).Contains(name))
+{
+    <partial name="Partial/Group/PhotoAdd" model="@new AddGroupPhotoModel { GroupName = Model.Group.ShortGroupName}" />
+    <partial name="Partial/Group/SetAva" model="@new SetAvaViewModel { SetAva = avaIms, GroupName = Model.Group.ShortGroupName}" />
+    <partial name="Partial/Group/Coord" model="@Model.Group.ShortGroupName"/>
 }

@@ -6,6 +6,9 @@ namespace SocialNet1.Models
     public class PhotoUserInfoComms
     {
         public int CommId { get; set; }
+
+        public int HelpId { get; set; }
+
         public string AuthorImage { get; set; }
 
         public string AuthorFormat { get; set; }

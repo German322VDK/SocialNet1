@@ -59,3 +59,34 @@ async function Confirm(em, hsh, url) {
 
     
 }
+
+function RegInput() {
+
+    var email = document.getElementById('RegEmail');
+
+    var email1 = document.getElementById('Email');
+
+    var hash = document.getElementById('Hash');
+
+    var emailText = email.value;
+
+    //document.getElementById('Email1').value = document.getElementById('RegEmail').value;
+
+    //$('#Email').value = $('#RegEmail').value;
+
+    $('#Email').val(emailText);
+
+
+    document.getElementById('regIn').click();
+    
+}
+
+function CheckInputChange(checkbox) {
+    if (checkbox.checked == true)
+    {
+        document.getElementById("RegButtn").removeAttribute("disabled");
+    }
+    else {
+        document.getElementById("RegButtn").setAttribute("disabled", "disabled");
+    }
+}

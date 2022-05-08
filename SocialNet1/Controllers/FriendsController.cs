@@ -21,6 +21,13 @@ namespace SocialNet1.Controllers
         }
         public IActionResult Index(string username = null)
         {
+            if(_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
             UserDTO user;
 
             if (username is not null)
@@ -33,6 +40,8 @@ namespace SocialNet1.Controllers
             }
 
             _logger.LogInformation($"{User.Identity.Name} заходит к друзьям {user.UserName}");
+
+            var allUser = _user.GetAll();
 
             var allFriends = user.Friends.Select(el => _user.Get(el.FriendName)).ToList();
 
@@ -53,7 +62,8 @@ namespace SocialNet1.Controllers
                 User = user,
                 Friends = friends,
                 Subscriptions = subscriptions,
-                Subscribers = subscribers
+                Subscribers = subscribers,
+                All = allUser
             });
         }
     }

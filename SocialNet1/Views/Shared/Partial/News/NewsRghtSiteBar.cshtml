@@ -1,0 +1,32 @@
+﻿@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    string color;
+
+    if(user is null)
+        color = "gray";
+    else
+        color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+}
+
+
+<div class="rightsitebar ">
+    <div class="rightsitebar__container light_@color">
+        <div class="rightsitebar__title_and_list">
+            <h2 class="rightsitebar__title">Фильтры новостей</h2>
+            <ul class="rightsitebar__list">
+                <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+                <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+                <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+            </ul>
+        </div>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@color" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

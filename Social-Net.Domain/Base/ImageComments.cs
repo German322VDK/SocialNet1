@@ -7,6 +7,9 @@ namespace Social_Net.Domain.Base
     public class ImageComments : Entity
     {
         [Required]
+        public int HelpId { get; set; }
+
+        [Required]
         public string UserName { get; set; }
 
         [Required]

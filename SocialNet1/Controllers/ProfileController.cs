@@ -9,6 +9,7 @@ using SocialNet1.Infrastructure.Interfaces.Based;
 using SocialNet1.Infrastructure.Methods;
 using SocialNet1.Models;
 using SocialNet1.ViewModels;
+using System.Collections.Generic;
 
 namespace SocialNet1.Controllers
 {
@@ -26,6 +27,13 @@ namespace SocialNet1.Controllers
 
         public IActionResult Index(string userName = null)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
             UserDTO userDTO;
 
             var currantUserName = User.Identity!.Name;
@@ -59,6 +67,13 @@ namespace SocialNet1.Controllers
 
         public IActionResult AddImage(IFormFile uploadedFile)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
             var currantUserName = User.Identity!.Name;
 
             _logger.LogInformation($"{currantUserName} пытается добавить фотографию");
@@ -71,9 +86,9 @@ namespace SocialNet1.Controllers
             }
                 
 
-            var arr = ImageMethods.GetByteArrFromFile(uploadedFile);
+            var arr = NewImageMethods.GetByteArrFromFile(uploadedFile);
 
-            var result = ImageMethods.IsValid(arr);
+            var result = NewImageMethods.IsValid(arr);
 
             if (!result)
             {
@@ -98,8 +113,14 @@ namespace SocialNet1.Controllers
 
         public IActionResult SetAva(string userName, int ava)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
 
-            if(userName is null)
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (userName is null)
             {
                 _logger.LogWarning($"Не понятно кому менять аву(");
 
@@ -122,6 +143,12 @@ namespace SocialNet1.Controllers
 
         public IActionResult SetCoord(string userName, int x, int y)
         {
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
 
             if (userName is null)
             {
@@ -146,22 +173,82 @@ namespace SocialNet1.Controllers
 
         public IActionResult AddComm(ComModel model)
         {
-            if(model is null || model.UserName is null || model.AuthorName is null || model.Text is null)
+            if (_user.Get(User.Identity.Name) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (model is null || model.UserName is null || model.AuthorName is null || (model.uploadedFile is null && string.IsNullOrEmpty(model.Text)))
             {
                 _logger.LogWarning("Данные для добавления поста не пришли");
 
                 return RedirectToAction("Index", "Profile");
             }
 
-            var result = _user.AddUserPost(model.AuthorName, new PostDTO 
-            { 
-                ThisPost = new CommentDTO
+            PostDTO post;
+            string text = string.IsNullOrEmpty(model.Text) ? "" : model.Text;
+
+            if (model.uploadedFile is not null)
+            {
+
+                var arr = NewImageMethods.GetByteArrFromFile(model.uploadedFile);
+
+                var resultArr = NewImageMethods.IsValid(arr);
+
+                if (resultArr)
                 {
-                    CommentatorStatus = CommentatorStatus.User,
-                    CommentatorName = model.UserName,
-                    Content = model.Text,
+                    _logger.LogInformation($"Получилось добавить пост с картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.UserName,
+                            Content = text,
+                            Images = new List<CommentImages>() 
+                            { 
+                                new CommentImages 
+                                { 
+                                    ImageNumber = 1,
+                                    Image = arr
+                                } 
+                            }
+                        }
+                    };
                 }
-            });
+                else
+                {
+                    _logger.LogWarning($"Не получилось добавить пост с картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+                    post = new PostDTO
+                    {
+                        ThisPost = new CommentDTO
+                        {
+                            CommentatorStatus = CommentatorStatus.User,
+                            CommentatorName = model.UserName,
+                            Content = text
+                        }
+                    };
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось добавить пост без картинкой: {text} человека {model.UserName} для человека {model.AuthorName}");
+
+                post = new PostDTO
+                {
+                    ThisPost = new CommentDTO
+                    {
+                        CommentatorStatus = CommentatorStatus.User,
+                        CommentatorName = model.UserName,
+                        Content = text
+                    }
+                };
+            }
+
+            var result = _user.AddUserPost(model.AuthorName, post);
 
             if (!result)
             {

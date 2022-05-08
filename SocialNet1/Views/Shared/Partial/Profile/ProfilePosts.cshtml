@@ -1,0 +1,826 @@
+﻿@model PostsViewModel
+
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+    var userMainImage = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage);
+
+    var imageArr = userMainImage.Image;
+
+    var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+    var format = NewImageMethods.GetFormat(imageArr);
+
+    int i = 1;
+
+    var deletePostURL = $"/{APIUrls.DELETE_POST}";
+
+    var likePlusURL = $"/{APIUrls.ADD_LIKE_POST}";
+
+    var likeMinusURL = $"/{APIUrls.DELETE_LIKE_POST}";
+
+    var addPostCom = $"/{APIUrls.ADD_COM_POST}";
+
+    var comLikePlusURL = $"/{APIUrls.ADD_LIKE_COM_POST}";
+
+    var comLikeMinusURL = $"/{APIUrls.DELETE_LIKE_COM_POST}";
+
+    var deleteComPost = $"/{APIUrls.DELETE_COM_POST}";
+}
+
+@*<div class="profil_left__news_dif light_@(color)">
+        <button id="botton1" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="one">Все записи</button>
+        <button id="botton2" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="two">Мои записи</button>
+        <button id="botton3" class="profil_left__news_dif_btn dark_@(color)_border_bottom_hover" data-path="three">Архив записей</button>
+    </div>*@
+
+<!-- ПОСТ -->
+<!-- <div class="news__post_profil_container news__post_profil_container_active" data-target="one"> -->
+<div class="profil__post_profil_container profil__post_profil_container_active" data-target="one">
+
+    @foreach (var item in Model.Posts.Reverse())
+    {
+        byte[] formatThisPost = null;
+        var poster = userService.Get(item.ThisPost.CommentatorName);
+
+        var colorPoster = UserMethods.GetColor(poster.SocNetItems.X, poster.SocNetItems.Y);
+
+        if (item.ThisPost.CommentatorStatus == CommentatorStatus.User)
+        {
+            formatThisPost = poster.Images
+                .FirstOrDefault(im => im.ImageNumber == poster.SocNetItems.CurrentImage)
+                .Image;
+        }
+
+        var photo = NewImageMethods.GetStringFromByteArr(formatThisPost);
+        var formatPhoto = NewImageMethods.GetFormat(formatThisPost);
+
+        var isLiked = item.ThisPost.Likes.FirstOrDefault(lk => lk.Likers == name) is null;
+        int j = 1, xp = poster.SocNetItems.X, yp = poster.SocNetItems.Y;
+
+        <div class="profil__post light_@(colorPoster)" id="@(i)Post">
+            <div class="profil__post_flex">
+                <div class="profil__post_blok">
+                    <div>
+                        @if (item.ThisPost.CommentatorStatus == CommentatorStatus.User)
+                        {
+                            <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index"
+                               asp-route-userName="@item.ThisPost.CommentatorName">
+                                <img class="profil__post_ava " src="data:image/@formatPhoto;base64,@photo" alt="">
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div>
+                    @*<div class="profil__post_gryp_name">
+                            <a>@poster.FirstName @poster.SecondName</a>
+                        </div>
+                        <img class="profil_comment__polit_img" src="photo/coordinates/@(xp)d@(yp).jpg" alt="">*@
+                    <div class="profil_comment__name_polit">
+                        <a class="profil_post__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.ThisPost.CommentatorName">
+                            @poster.FirstName @poster.SecondName
+                        </a>
+                        <img class="profil_comment__polit_img" src="photo/coordinates/@(xp)d@(yp).jpg" alt="">
+                    </div>
+                    <div class="profil__post_gryp_time">
+                        @item.ThisPost.DateTime.ToString("g")
+                    </div>
+                </div>
+            </div>
+            <div class="profil__post_p">
+                @item.ThisPost.Content
+
+                @if (item.ThisPost.Images is not null && item.ThisPost.Images.Count > 0 && item.ThisPost.Images.First() is not null)
+                {
+                    var phP = item.ThisPost.Images.First().Image;
+
+                    var photoPost = NewImageMethods.GetStringFromByteArr(phP);
+                    var formatPhotoPost = NewImageMethods.GetFormat(phP);
+
+                    <img class="thumb1 " src="data:image/@formatPhotoPost;base64,@photoPost" alt="">
+                }
+
+            </div>
+            <div class="profil__post_lkr1 dark_@(colorPoster)_border_top">
+                @if (item.ThisPost.CommentatorName == name || Model.AuthorName == name)
+                {
+                    <div class="profil__post_r">
+                        <button class="profil__post_l_img" onclick="DeletePost('@deletePostURL', '@(i)Post', '@(item.Id)',
+                            '@(Model.AuthorName)')">
+                            <i class="fa fa-trash-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                }
+                @*<!-- Репосты -->
+                    <!--<div class="profil__post_r">
+                        <button class="profil__post_r_img">
+                            <i class="fa fa-arrow-circle-o-right color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                        </button>
+                        <div id="@(i)_profil_rep_all" class="profil__col_rep_all dark_dark_@(colorPoster)_border_bottom_hover" onclick="repost('1_profil_repost')">746</div>-->
+                    <div class="profil__col_rep_ally">36</div>
+                    <div class="profil__col_rep_enemy">12</div>
+                    <!--</div>-->
+                    <!-- Появляющийся список репостнувших -->
+                    <div id="1_profil_repost" class="profil_circle__tooltop background-color_dark_dark_yellow jsrepost">
+                        <div class="profil_circle__tooltip_title">Список репостов</div>
+                        <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                            <div class="profil_circle__tooltip_r_c_l">
+                                <a class="profil_circle__ava_link" href="">
+                                    <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_circle__name_polit">
+                                <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                            <div class="profil_circle__tooltip_r_c_l">
+                                <a class="profil_circle__ava_link" href="">
+                                    <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_circle__name_polit">
+                                <a class="profil_circle__name_link" href="">Шашлычков Германия</a>
+                                <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                            <div class="profil_circle__tooltip_r_c_l">
+                                <a class="profil_circle__ava_link" href="">
+                                    <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_circle__name_polit">
+                                <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                            <div class="profil_circle__tooltip_r_c_l">
+                                <a class="profil_circle__ava_link" href="">
+                                    <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_circle__name_polit">
+                                <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                            <div class="profil_circle__tooltip_r_c_l">
+                                <a class="profil_circle__ava_link" href="">
+                                    <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_circle__name_polit">
+                                <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="profil_circle__tooltip_link_c">
+                            <a class="profil_circle__tooltip_link mid_yellow_border_bottom_hover" href="">А можно всех посмотреть?</a>
+                        </div>
+                    </div> *@
+                <!-- Комментарии -->
+                <div class="profil__post_c">
+                    <button class="profil__post_c_img" type="button" onclick="fun__but('@(i)comentadd')">
+                        <i class="fa fa-comments-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div class="profil__col_com_all" id="@(i)coms_all_count">@item.Comments.Count</div>
+                    @*<div class="profil__col_com_ally">257</div>
+                        <div class="profil__col_com_enemy">57</div>*@
+                </div>
+                <!-- Лайки -->
+                <div class="profil__post_l">
+                    <button id="@(i)_newsPostLike1" class="profil__post_l_img @(isLiked ? "" : "heart_none")"
+                            onclick="PostLikePlus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likePlusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                        <i class="fa fa-heart-o color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button id="@(i)_newsPostLike2" class="profil__post_l_img @(isLiked ? "heart_none" : "")"
+                            onclick="PostLikeMinus('@(i)_newsPostLike1', '@(i)_newsPostLike2',
+                            '@(i)_likeAll', '@likeMinusURL', '@Model.AuthorName', '@item.Id', '@name')">
+                        <i class="fa fa-heart color_dark_dark_@(colorPoster) fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="@(i)_likeAll" class="profil__col_like_all">@item.ThisPost.Likes.Count</div>
+                    @*<div class="profil__col_like_ally">36</div>
+                        <div class="profil__col_like_enemy">12</div>*@
+                </div>
+            </div>
+
+            <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
+            <div id="@(i)comentadd" style="display: none">
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_@(colorPoster)_scroll"
+                     data-simplebar id="@(i)coms">
+                    @foreach (var com in item.Comments)
+                    {
+                        j = com.HelpId;
+
+                        var commenter = userService.Get(com.CommentatorName);
+
+                        var arrComs = commenter.Images
+                                .FirstOrDefault(im => im.ImageNumber == commenter.SocNetItems.CurrentImage)
+                                .Image;
+
+                        var photoCom = NewImageMethods.GetStringFromByteArr(arrComs);
+                        var formatPhotoCom = NewImageMethods.GetFormat(arrComs);
+
+                        int xCom = commenter.SocNetItems.X, yCom = commenter.SocNetItems.Y;
+
+                        var commentorColor = UserMethods.GetColor(commenter.SocNetItems.X, commenter.SocNetItems.Y);
+
+                        var comIsLiked = com.Likes.FirstOrDefault(lk => lk.Likers == name) is not null;
+
+                        <div class="profil_modal__foto_right_comment dark_@(colorPoster)_border_bottom light_@(commentorColor)
+                             @(j==1? $"dark_dark_{colorPoster}_border_top" : "")" id="@(i)com@(j)">
+                            <div class="profil_modal__foto_r_c_l">
+                                <a class="profil_comment_ava_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.CommentatorName">
+                                    <img class="profil_comment_link_img" src="data:image/@formatPhotoCom;base64,@photoCom" alt="">
+                                </a>
+                            </div>
+                            <div class="profil_modal__foto_r_c_r">
+                                <div class="profil_comment__name_polit">
+                                    <a class="profil_comment__name_link" asp-controller="Profile" asp-action="Index" asp-route-userName="@com.CommentatorName">
+                                        @commenter.FirstName @commenter.SecondName
+                                    </a>
+                                    <img class="profil_comment__polit_img" src="photo/coordinates/@(xCom)d@(yCom).jpg" alt="">
+                                </div>
+                                <div class="profil_comment__all_infa">
+                                    <div class="profil_comment__date">@com.DateTime.ToString("g")</div>
+                                    <div class="profil_comment__icons">
+                                        @if (name == com.CommentatorName)
+                                        {
+                                            @*<div class="profil_comment__pencil">
+                                                    <i class="fa fa-pencil color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                                </div>*@
+                                            <div class="profil_comment__minus" onclick="DeleteComPost('@(i)com@(j)', '@deleteComPost',
+                                                   '@Model.AuthorName', '@item.Id', '@com.HelpId', '@(i)coms_all_count')">
+                                                <i class="fa fa-trash-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>
+                                        }
+                                        @*<div class="profil_comment__plus">
+                                                <i class="fa fa-commenting-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                            </div>*@
+                                        <div id="@(i)com@(j)_like_on" onclick="PostComLikePlus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikePlusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"
+                                             class="comment__heart @(comIsLiked ? "heart_none" : "")">
+                                            <i class="fa fa-heart-o color_dark_dark_@(commentorColor)" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_off" onclick="PostComLikeMinus('@(i)com@(j)_like_on', '@(i)com@(j)_like_off',
+                                                    '@(i)com@(j)_like_num', '@comLikeMinusURL', '@Model.AuthorName', '@name', '@item.Id', '@com.HelpId')"
+                                             class="comment__heart_bac @(comIsLiked ? "" : "heart_none")">
+                                            <i class="fa fa-heart color_dark_dark_@(commentorColor) heart_none" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="@(i)com@(j)_like_num" class="comment__quantity">@com.Likes.Count</div>
+                                    </div>
+                                </div>
+                                <div class="profil_comment__content">@com.Content</div>
+                            </div>
+                        </div>
+
+                        j++;
+                    }
+
+                </div>
+                <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
+                <div id="@(i)post_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_@(color)_border_top light_@(color)">
+                    <div class="profil_modal__foto_r_m_c_link_ava">
+                        <a class="profil_my_comment__ava_link" asp-controller="Profile" asp-action="Index">
+                            <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div id="@(i)profil_modal__foto_right_my_comment_one" class="profil_my_comment__container color_dark_dark_@(color)"
+                         onclick="OpenComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
+                  'profil_modal__foto_right_my_comment_write_active')">
+                        Оставить комментарий
+                    </div>
+                </div>
+                <div id="@(i)post_my_comment_two" class="profil_modal__foto_right_my_comment_write dark_dark_@(color)_border_top light_@(color)">
+                    <div class="profil_modal__foto_right_my_comment_write_top mid_@(color)">
+                        <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_@(color)">
+                            <div class="profil_my_comment_write_ava">
+                                <a class="profil_my_comment_write_ava_link" asp-controller="Profile" asp-action="Index">
+                                    <img class="profil_my_comment__link_img" src="data:image/@format;base64,@strImage" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profil_modal__foto_right_my_comment_write_t_r">
+                            <div class="profil_modal__foto_right_my_comment_write_t_r_two">
+                                <div id="@(i)_text_input" contenteditable="true"
+                                     class="profil_my_comment__write_my_comment color_dark_dark_@(color)" data-simplebar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profil_my_comment_write_emoj background-color_dark_dark_@(color)">
+                            <div class="profil_my_comment_write_smile">
+                                <i class="fas fa-dizzy mid_@(color)_color"></i>
+                            </div>
+                            <div class="profil_my_comment_write_skrepka">
+                                <i class="fa fa-paperclip mid_@(color)_color" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_my_comment_write_bottom background-color_dark_dark_@(color)">
+                        <button id="my_comment_write_btn_cancel" class="profil_my_comment_write_btn_cancel mid_@(color)"
+                                onclick="CloseComForm('@(i)post_my_comment_two', '@(i)post_my_comment_hyi',
+                    'profil_modal__foto_right_my_comment_write_active')">
+                            Отменить
+                        </button>
+                        <button class="profil_my_comment_write_btn_send mid_@(color)"
+                                onclick="AddCommentToUserPost('@(i)_text_input', '@addPostCom', '@Model.AuthorName', '@item.Id', '@name',
+                                '@i', '@j', '@(i)coms_all_count', '@(i)coms', '@(i)post_my_comment_two',
+                                '@(i)post_my_comment_hyi', 'profil_modal__foto_right_my_comment_write_active')">
+                            Отправить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        i++;
+    }
+
+
+</div>
+
+@*
+    <div class="profil__post_profil_container" data-target="two">
+        <div class="profil__post light_yellow">
+            <div class="profil__post_flex">
+                <div class="profil__post_blok">
+                    <div>
+                        <img class="profil__post_ava" src="img/123.png" alt="">
+                    </div>
+                </div>
+                <div>
+                    <div class="profil__post_gryp_name">
+                        Группа 222222222
+                    </div>
+                    <div class="profil__post_gryp_time">
+                        4:20
+                    </div>
+                </div>
+            </div>
+            <div class="profil__post_p">
+                html и css не единственные как бы, прост изучи че-то новое, например c++ и уже норм
+            </div>
+            <div class="profil__post_lkr">
+                <!-- Лайки -->
+                <div class="profil__post_l">
+                    <button id="2_newsPostLike1" class="profil__post_l_img" onclick="LikePlus('2_newsPostLike1', '2_newsPostLike2', '1_likeAll')">
+                        <i class="fa fa-heart-o color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button id="2_newsPostLike2" class="profil__post_l_img heart_none" onclick="LikeMinus('2_newsPostLike1', '2_newsPostLike2', '2_likeAll')">
+                        <i class="fa fa-heart color_dark_dark_yellow heart_none fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="2_likeAll" class="profil__col_like_all">46</div>
+                    <div class="profil__col_like_ally">36</div>
+                    <div class="profil__col_like_enemy">12</div>
+                </div>
+                <!-- Репосты -->
+                <div class="profil__post_r">
+                    <button class="profil__post_r_img">
+                        <i class="fa fa-arrow-circle-o-right color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="2_profil_rep_all" class="profil__col_rep_all dark_dark_yellow_border_bottom_hover" onclick="repost('2_profil_repost')">746</div>
+                    <div class="profil__col_rep_ally">36</div>
+                    <div class="profil__col_rep_enemy">12</div>
+                </div>
+                <!-- Появляющийся список репостнувших -->
+                <div id="2_profil_repost" class="profil_circle__tooltop background-color_dark_dark_yellow jsrepost">
+                    <div class="profil_circle__tooltip_title">Список репостов</div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Германия</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_link_c">
+                        <a class="profil_circle__tooltip_link mid_yellow_border_bottom_hover" href="">А можно всех посмотреть?</a>
+                    </div>
+                </div>
+                <!-- Комментарии -->
+                <div class="profil__post_c">
+                    <button class="profil__post_c_img" type="button" onclick="fun__but('comentadd')">
+                        <i class="fa fa-comments-o color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div class="profil__col_com_all">57</div>
+                    <div class="profil__col_com_ally">257</div>
+                    <div class="profil__col_com_enemy">57</div>
+                </div>
+
+                <div class="profil__post_r">
+                </div>
+            </div>
+
+            <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
+            <div id="comentadd2" style="display: none">
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_yellow_scroll" data-simplebar id="coms2">
+                    <div class="profil_modal__foto_right_comment dark_yellow_border_bottom dark_dark_yellow_border_top" id="com21">
+                        <div class="profil_modal__foto_r_c_l">
+                            <a class="profil_comment_ava_link" href="">
+                                <img class="profil_comment_link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_modal__foto_r_c_r">
+                            <div class="profil_comment__name_polit">
+                                <a class="profil_comment__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                            <div class="profil_comment__all_infa">
+                                <div class="profil_comment__date">26 фев 1947</div>
+                                <div class="profil_comment__icons">
+                                    <div class="profil_comment__plus">
+                                        <i class="fa fa-commenting-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com21_like_on" onclick="LikePlus('com21_like_on', 'com21_like_off', 'com21_like_num')" class="comment__heart">
+                                        <i class="fa fa-heart-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com21_like_off" onclick="LikeMinus('com21_like_on', 'com21_like_off', 'com21_like_num')" class="comment__heart_bac heart_none">
+                                        <i class="fa fa-heart color_dark_dark_yellow heart_none" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com21_like_num" class="comment__quantity">5</div>
+                                </div>
+                            </div>
+                            <div class="profil_comment__content">Был ужален сам, но мне ни жаль ужаленных ни капли трололололололололололололололололололололололол Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni soluta consequuntur ipsum neque voluptate ex eum sed, vitae molestias corporis optio architecto aut reprehenderit! Non perferendis eaque facere obcaecati ipsa!</div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_comment dark_yellow_border_bottom" id="com22">
+                        <div class="profil_modal__foto_r_c_l">
+                            <a class="profil_comment_ava_link" href="">
+                                <img class="profil_comment_link_img" src="img/ава.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_modal__foto_r_c_r">
+                            <div class="profil_comment__name_polit">
+                                <a class="profil_comment__name_link" href="">Коза Виктория</a>
+                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                            <div class="profil_comment__all_infa">
+                                <div class="profil_comment__date">27 фев 1947</div>
+                                <div class="profil_comment__icons">
+                                    <div class="profil_comment__pencil">
+                                        <i class="fa fa-pencil color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="profil_comment__minus" onclick="DeleteCom('com22')">
+                                        <i class="fa fa-trash-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="profil_comment__plus">
+                                        <i class="fa fa-commenting-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com22_like_on" onclick="LikePlus('com22_like_on', 'com22_like_off', 'com22_like_num')" class="comment__heart">
+                                        <i class="fa fa-heart-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com22_like_off" onclick="LikeMinus('com22_like_on', 'com22_like_off', 'com22_like_num')" class="comment__heart_bac heart_none">
+                                        <i class="fa fa-heart color_dark_dark_yellow heart_none" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com22_like_num" class="comment__quantity">56</div>
+                                </div>
+                            </div>
+                            <div class="profil_comment__content">Очень жаль, но не очень Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus voluptates architecto voluptatem animi labore sed modi dolorum blanditiis, quisquam nostrum assumenda officia accusamus, sapiente deleniti nihil ducimus ex neque?</div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
+                <div id="modal__foto_right_my_comment_hyi2" class="profil_modal__foto_right_my_comment dark_dark_yellow_border_top">
+                    <div class="profil_modal__foto_r_m_c_link_ava">
+                        <a class="profil_my_comment__ava_link" href="">
+                            <img class="profil_my_comment__link_img" src="img/ава.jpg" alt="">
+                        </a>
+                    </div>
+                    <div id="profil_modal__foto_right_my_comment_one2" class="profil_my_comment__container color_dark_dark_yellow"
+                         onclick="OpenComForm('modal__foto_right_my_comment_two2', 'modal__foto_right_my_comment_hyi2',
+                      'profil_modal__foto_right_my_comment_write_active')">
+                        Оставить комментарий
+                    </div>
+                </div>
+                <div id="modal__foto_right_my_comment_two2" class="profil_modal__foto_right_my_comment_write dark_dark_yellow_border_top">
+                    <div class="profil_modal__foto_right_my_comment_write_top mid_yellow">
+                        <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_yellow">
+                            <div class="profil_my_comment_write_ava">
+                                <a class="profil_my_comment_write_ava_link" href="">
+                                    <img class="profil_my_comment_write_ava_img" src="img/ава.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profil_modal__foto_right_my_comment_write_t_r">
+                            <div class="profil_modal__foto_right_my_comment_write_t_r_two">
+                                <div contenteditable="true" class="profil_my_comment__write_my_comment color_dark_dark_yellow" data-simplebar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profil_my_comment_write_emoj background-color_dark_dark_yellow">
+                            <div class="profil_my_comment_write_smile">
+                                <i class="fas fa-dizzy mid_yellow_color"></i>
+                            </div>
+                            <div class="profil_my_comment_write_skrepka">
+                                <i class="fa fa-paperclip mid_yellow_color" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_my_comment_write_bottom background-color_dark_dark_yellow">
+                        <button id="my_comment_write_btn_cancel2" class="profil_my_comment_write_btn_cancel mid_yellow"
+                                onclick="CloseComForm('modal__foto_right_my_comment_two2', 'modal__foto_right_my_comment_hyi2',
+                        'profil_modal__foto_right_my_comment_write_active')">
+                            Отменить
+                        </button>
+                        <button class="profil_my_comment_write_btn_send mid_yellow">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profil__post_profil_container" data-target="three">
+        <div class="profil__post light_yellow">
+            <div class="profil__post_flex">
+                <div class="profil__post_blok">
+                    <div>
+                        <img class="profil__post_ava" src="img/123.png" alt="">
+                    </div>
+                </div>
+                <div>
+                    <div class="profil__post_gryp_name">
+                        Группа 3333333333333333
+                    </div>
+                    <div class="profil__post_gryp_time">
+                        4:20
+                    </div>
+                </div>
+            </div>
+            <div class="profil__post_p">
+                html и css не единственные как бы, прост изучи че-то новое, например c++ и уже норм
+            </div>
+            <div class="profil__post_lkr">
+                <!-- Лайки -->
+                <div class="profil__post_l">
+                    <button id="1_newsPostLike1" class="profil__post_l_img" onclick="LikePlus('1_newsPostLike1', '1_newsPostLike2', '1_likeAll')">
+                        <i class="fa fa-heart-o color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button id="1_newsPostLike2" class="profil__post_l_img heart_none" onclick="LikeMinus('1_newsPostLike1', '1_newsPostLike2', '1_likeAll')">
+                        <i class="fa fa-heart color_dark_dark_yellow heart_none fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="1_likeAll" class="profil__col_like_all">46</div>
+                    <div class="profil__col_like_ally">36</div>
+                    <div class="profil__col_like_enemy">12</div>
+                </div>
+                <!-- Репосты -->
+                <div class="profil__post_r">
+                    <button class="profil__post_r_img">
+                        <i class="fa fa-arrow-circle-o-right color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div id="1_profil_rep_all" class="profil__col_rep_all dark_dark_yellow_border_bottom_hover" onclick="repost('1_profil_repost')">746</div>
+                    <div class="profil__col_rep_ally">36</div>
+                    <div class="profil__col_rep_enemy">12</div>
+                </div>
+                <!-- Появляющийся список репостнувших -->
+                <div id="1_profil_repost" class="profil_circle__tooltop background-color_dark_dark_yellow jsrepost">
+                    <div class="profil_circle__tooltip_title">Список репостов</div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Германия</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_comtainer mid_yellow_border_bottom_hover">
+                        <div class="profil_circle__tooltip_r_c_l">
+                            <a class="profil_circle__ava_link" href="">
+                                <img class="profil_circle__link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_circle__name_polit">
+                            <a class="profil_circle__name_link" href="">Шашлычков Герман</a>
+                            <img class="profil_circle__polit_img" src="img/намаз.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="profil_circle__tooltip_link_c">
+                        <a class="profil_circle__tooltip_link mid_yellow_border_bottom_hover" href="">А можно всех посмотреть?</a>
+                    </div>
+                </div>
+                <!-- Комментарии -->
+                <div class="profil__post_c">
+                    <button class="profil__post_c_img" type="button" onclick="fun__but('comentadd')">
+                        <i class="fa fa-comments-o color_dark_dark_yellow fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <div class="profil__col_com_all">57</div>
+                    <div class="profil__col_com_ally">257</div>
+                    <div class="profil__col_com_enemy">57</div>
+                </div>
+
+                <div class="profil__post_r">
+                </div>
+            </div>
+
+            <!-- ПОЯВЛЯЮЩИЕСЯ КОММЕНТЫ -->
+            <div id="comentadd" style="display: none">
+                <div class="profil_modal__foto_right_comment_container background-color_dark_dark_yellow_scroll" data-simplebar id="coms">
+                    <div class="profil_modal__foto_right_comment dark_yellow_border_bottom dark_dark_yellow_border_top" id="com1">
+                        <div class="profil_modal__foto_r_c_l">
+                            <a class="profil_comment_ava_link" href="">
+                                <img class="profil_comment_link_img" src="img/артем.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_modal__foto_r_c_r">
+                            <div class="profil_comment__name_polit">
+                                <a class="profil_comment__name_link" href="">Шашлычков Герман</a>
+                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                            <div class="profil_comment__all_infa">
+                                <div class="profil_comment__date">26 фев 1947</div>
+                                <div class="profil_comment__icons">
+                                    <div class="profil_comment__plus">
+                                        <i class="fa fa-commenting-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com1_like_on" onclick="LikePlus('com1_like_on', 'com1_like_off', 'com1_like_num')" class="comment__heart">
+                                        <i class="fa fa-heart-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com1_like_off" onclick="LikeMinus('com1_like_on', 'com1_like_off', 'com1_like_num')" class="comment__heart_bac heart_none">
+                                        <i class="fa fa-heart color_dark_dark_yellow heart_none" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com1_like_num" class="comment__quantity">5</div>
+                                </div>
+                            </div>
+                            <div class="profil_comment__content">Был ужален сам, но мне ни жаль ужаленных ни капли трололололололололололололололололололололололол Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni soluta consequuntur ipsum neque voluptate ex eum sed, vitae molestias corporis optio architecto aut reprehenderit! Non perferendis eaque facere obcaecati ipsa!</div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_comment dark_yellow_border_bottom" id="com2">
+                        <div class="profil_modal__foto_r_c_l">
+                            <a class="profil_comment_ava_link" href="">
+                                <img class="profil_comment_link_img" src="img/ава.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="profil_modal__foto_r_c_r">
+                            <div class="profil_comment__name_polit">
+                                <a class="profil_comment__name_link" href="">Коза Виктория</a>
+                                <img class="profil_comment__polit_img" src="img/намаз.jpg" alt="">
+                            </div>
+                            <div class="profil_comment__all_infa">
+                                <div class="profil_comment__date">27 фев 1947</div>
+                                <div class="profil_comment__icons">
+                                    <div class="profil_comment__pencil">
+                                        <i class="fa fa-pencil color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="profil_comment__minus" onclick="DeleteCom('com2')">
+                                        <i class="fa fa-trash-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="profil_comment__plus">
+                                        <i class="fa fa-commenting-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com2_like_on" onclick="LikePlus('com2_like_on', 'com2_like_off', 'com2_like_num')" class="comment__heart">
+                                        <i class="fa fa-heart-o color_dark_dark_yellow" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com2_like_off" onclick="LikeMinus('com2_like_on', 'com2_like_off', 'com2_like_num')" class="comment__heart_bac heart_none">
+                                        <i class="fa fa-heart color_dark_dark_yellow heart_none" aria-hidden="true"></i>
+                                    </div>
+                                    <div id="com2_like_num" class="comment__quantity">56</div>
+                                </div>
+                            </div>
+                            <div class="profil_comment__content">Очень жаль, но не очень Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus voluptates architecto voluptatem animi labore sed modi dolorum blanditiis, quisquam nostrum assumenda officia accusamus, sapiente deleniti nihil ducimus ex neque?</div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- НАПИСАНИЕ СВОЕГО КОМЕНТА -->
+                <div id="modal__foto_right_my_comment_hyi" class="profil_modal__foto_right_my_comment dark_dark_yellow_border_top">
+                    <div class="profil_modal__foto_r_m_c_link_ava">
+                        <a class="profil_my_comment__ava_link" href="">
+                            <img class="profil_my_comment__link_img" src="img/ава.jpg" alt="">
+                        </a>
+                    </div>
+                    <div id="profil_modal__foto_right_my_comment_one" class="profil_my_comment__container color_dark_dark_yellow"
+                         onclick="OpenComForm('modal__foto_right_my_comment_two', 'modal__foto_right_my_comment_hyi',
+                      'profil_modal__foto_right_my_comment_write_active')">
+                        Оставить комментарий
+                    </div>
+                </div>
+                <div id="modal__foto_right_my_comment_two" class="profil_modal__foto_right_my_comment_write dark_dark_yellow_border_top">
+                    <div class="profil_modal__foto_right_my_comment_write_top mid_yellow">
+                        <div class="profil_modal__foto_right_my_comment_write_t_l background-color_dark_dark_yellow">
+                            <div class="profil_my_comment_write_ava">
+                                <a class="profil_my_comment_write_ava_link" href="">
+                                    <img class="profil_my_comment_write_ava_img" src="img/ава.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profil_modal__foto_right_my_comment_write_t_r">
+                            <div class="profil_modal__foto_right_my_comment_write_t_r_two">
+                                <div contenteditable="true" class="profil_my_comment__write_my_comment color_dark_dark_yellow" data-simplebar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profil_my_comment_write_emoj background-color_dark_dark_yellow">
+                            <div class="profil_my_comment_write_smile">
+                                <i class="fas fa-dizzy mid_yellow_color"></i>
+                            </div>
+                            <div class="profil_my_comment_write_skrepka">
+                                <i class="fa fa-paperclip mid_yellow_color" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profil_modal__foto_right_my_comment_write_bottom background-color_dark_dark_yellow">
+                        <button id="my_comment_write_btn_cancel" class="profil_my_comment_write_btn_cancel mid_yellow"
+                                onclick="CloseComForm('modal__foto_right_my_comment_two', 'modal__foto_right_my_comment_hyi',
+                        'profil_modal__foto_right_my_comment_write_active')">
+                            Отменить
+                        </button>
+                        <button class="profil_my_comment_write_btn_send mid_yellow">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+*@

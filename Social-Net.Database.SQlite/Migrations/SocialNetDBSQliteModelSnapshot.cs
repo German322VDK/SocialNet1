@@ -226,7 +226,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("GroupDTOId")
+                    b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GroupName")
@@ -237,6 +237,7 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserDTOId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
@@ -245,7 +246,7 @@ namespace SocialNet1.Database.SQlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupDTOId");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("UserDTOId");
 
@@ -399,6 +400,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -477,9 +481,15 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Property<int?>("ChatDTOId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ClashDTOId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("GroupChatDTOId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
@@ -497,6 +507,10 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatDTOId");
+
+                    b.HasIndex("ClashDTOId");
+
+                    b.HasIndex("GroupChatDTOId");
 
                     b.ToTable("MessageDTO");
                 });
@@ -546,6 +560,9 @@ namespace SocialNet1.Database.SQlite.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("HelpId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("PostDTOId")
                         .HasColumnType("INTEGER");
@@ -609,6 +626,72 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.ToTable("PostDTOs");
                 });
 
+            modelBuilder.Entity("Social_Net.Domain.Clash.ClashDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastTimeMess")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Side1Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Side2Id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Side1Id");
+
+                    b.HasIndex("Side2Id");
+
+                    b.ToTable("Clashs");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Clash.ClashLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Emoji")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Likers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SideId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SideId");
+
+                    b.ToTable("ClashLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsReady")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Side");
+                });
+
             modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
                 {
                     b.Property<int>("Id")
@@ -645,6 +728,9 @@ namespace SocialNet1.Database.SQlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("GroupImagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HelpId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
@@ -735,6 +821,25 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasIndex("UserImagesId");
 
                     b.ToTable("UserLike");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastTimeMess")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupChats");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
@@ -858,13 +963,21 @@ namespace SocialNet1.Database.SQlite.Migrations
 
             modelBuilder.Entity("SocialNet1.Domain.Group.UserGroupStatus", b =>
                 {
-                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", null)
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group")
                         .WithMany("Users")
-                        .HasForeignKey("GroupDTOId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", null)
+                    b.HasOne("SocialNet1.Domain.Identity.UserDTO", "UserDTO")
                         .WithMany("Groups")
-                        .HasForeignKey("UserDTOId");
+                        .HasForeignKey("UserDTOId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("UserDTO");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Identity.UserDTO", b =>
@@ -895,6 +1008,14 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasOne("SocialNet1.Domain.Message.ChatDTO", null)
                         .WithMany("Messages")
                         .HasForeignKey("ChatDTOId");
+
+                    b.HasOne("Social_Net.Domain.Clash.ClashDTO", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ClashDTOId");
+
+                    b.HasOne("Social_Net.Domain.Message.GroupChatDTO", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("GroupChatDTOId");
                 });
 
             modelBuilder.Entity("SocialNet1.Domain.Message.MessageImages", b =>
@@ -935,6 +1056,37 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Navigation("ThisPost");
                 });
 
+            modelBuilder.Entity("Social_Net.Domain.Clash.ClashDTO", b =>
+                {
+                    b.HasOne("Social_Net.Domain.Clash.Side", "Side1")
+                        .WithMany()
+                        .HasForeignKey("Side1Id");
+
+                    b.HasOne("Social_Net.Domain.Clash.Side", "Side2")
+                        .WithMany()
+                        .HasForeignKey("Side2Id");
+
+                    b.Navigation("Side1");
+
+                    b.Navigation("Side2");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Clash.ClashLike", b =>
+                {
+                    b.HasOne("Social_Net.Domain.Clash.Side", null)
+                        .WithMany("GroupLikes")
+                        .HasForeignKey("SideId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Social_Net.Domain.Group.GroupCommentLike", b =>
                 {
                     b.HasOne("Social_Net.Domain.Group.GroupImageComments", null)
@@ -968,6 +1120,15 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.HasOne("SocialNet1.Domain.Identity.UserImages", null)
                         .WithMany("UserLikes")
                         .HasForeignKey("UserImagesId");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
+                {
+                    b.HasOne("SocialNet1.Domain.Group.GroupDTO", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Social_Net.Domain.PostCom.CommentLike", b =>
@@ -1044,9 +1205,24 @@ namespace SocialNet1.Database.SQlite.Migrations
                     b.Navigation("Comments");
                 });
 
+            modelBuilder.Entity("Social_Net.Domain.Clash.ClashDTO", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Clash.Side", b =>
+                {
+                    b.Navigation("GroupLikes");
+                });
+
             modelBuilder.Entity("Social_Net.Domain.Group.GroupImageComments", b =>
                 {
                     b.Navigation("GroupCommentLikes");
+                });
+
+            modelBuilder.Entity("Social_Net.Domain.Message.GroupChatDTO", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

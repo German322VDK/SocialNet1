@@ -108,7 +108,27 @@ function repost(element){
 
 }
 
+function TabMaster2(i1, i2, className) {
+    document.getElementById(i2).classList.remove(className)
+    document.getElementById(i1).classList.add(className)
+}
+
 function TabMaster3(i1, i2, i3, className) {
+    document.getElementById(i3).classList.remove(className)
+    document.getElementById(i2).classList.remove(className)
+    document.getElementById(i1).classList.add(className)
+}
+
+function TabMaster4(i1, i2, i3, i4, className) {
+    document.getElementById(i4).classList.remove(className)
+    document.getElementById(i3).classList.remove(className)
+    document.getElementById(i2).classList.remove(className)
+    document.getElementById(i1).classList.add(className)
+}
+
+function TabMaster5(i1, i2, i3, i4, i5, className) {
+    document.getElementById(i4).classList.remove(className)
+    document.getElementById(i5).classList.remove(className)
     document.getElementById(i3).classList.remove(className)
     document.getElementById(i2).classList.remove(className)
     document.getElementById(i1).classList.add(className)

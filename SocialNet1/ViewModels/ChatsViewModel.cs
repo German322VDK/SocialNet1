@@ -1,8 +1,7 @@
-﻿using SocialNet1.Domain.Message;
-using System;
+﻿using Social_Net.Domain.Message;
+using SocialNet1.Domain.Identity;
+using SocialNet1.Domain.Message;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNet1.ViewModels
 {
@@ -11,5 +10,9 @@ namespace SocialNet1.ViewModels
         public string UserName { get; set; }
 
         public ICollection<ChatDTO> Chats { get; set; }
+
+        public ICollection<UserDTO> Friends { get; set; }
+
+        public ICollection<GroupChatDTO> GroupChatDTOs { get; set; }
     }
 }

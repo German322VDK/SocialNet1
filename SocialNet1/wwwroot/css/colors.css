@@ -50,7 +50,7 @@
 }
 
 .mid_green {
-    background-color: rgba(232, 255, 232, 1);
+    background-color: rgba(207, 235, 207, 1);
 }
 
 .mid_red {
@@ -62,7 +62,7 @@
 }
 
 .mid_yellow {
-    background-color: rgba(252, 255, 219, 1);
+    background-color: rgba(242, 242, 200, 1);
 }
 
 .mid_gray {
@@ -70,7 +70,7 @@
 }
 
 .mid_green_color {
-    color: rgba(232, 255, 232, 1);
+    color: rgba(207, 235, 207, 1);
 }
 
 .mid_red_color {
@@ -82,7 +82,7 @@
 }
 
 .mid_yellow_color {
-    color: rgba(252, 255, 219, 1);
+    color: rgba(242, 242, 200, 1);
 }
 
 .mid_gray_color {
@@ -90,7 +90,7 @@
 }
 
 .dark_green {
-    background-color: rgba(210, 255, 209, 1);
+    background-color: rgba(210, 255, 210);
 }
 
 .dark_red {
@@ -111,7 +111,7 @@
 
 
 .color_dark_green {
-    color: rgba(210, 255, 209);
+    color: rgba(180, 215, 180);
 }
 
 .color_dark_red {
@@ -123,7 +123,7 @@
 }
 
 .color_dark_yellow {
-    color: rgba(255, 244, 171);
+    color: rgba(225, 225, 151);
 }
 
 .color_dark_gray {
@@ -131,7 +131,7 @@
 }
 
 .color_dark_dark_green {
-    color: rgba(153, 255, 153);
+    color: rgba(153, 195, 153);
 }
 
 .color_dark_dark_red {
@@ -151,7 +151,7 @@
 }
 
 .background-color_dark_dark_green {
-    background-color: rgba(153, 255, 153, 1);
+    background-color: rgba(153, 195, 153);
 }
 
 .background-color_dark_dark_red {
@@ -171,7 +171,7 @@
 }
 
 .mid_green_hover:hover {
-    background-color: rgb(232, 255, 232);
+    background-color: rgba(207, 235, 207, 1);
 }
 
 .mid_red_hover:hover {
@@ -183,7 +183,7 @@
 }
 
 .mid_yellow_hover:hover {
-    background-color: rgb(252, 255, 219);
+    background-color: rgba(242, 242, 200, 1);
 }
 
 .mid_gray_hover:hover {
@@ -191,7 +191,7 @@
 }
 
 .hover_dark_green:hover {
-    background-color: rgba(210, 255, 209);
+    background-color: rgba(180, 215, 180);
 }
 
 .hover_dark_red:hover {
@@ -203,7 +203,7 @@
 }
 
 .hover_dark_yellow:hover {
-    background-color: rgba(255, 244, 171);
+    background-color: rgba(225, 225, 151);
 }
 
 .hover_dark_gray:hover {
@@ -211,7 +211,7 @@
 }
 
 .mid_green_border {
-    border: 2px solid rgb(232, 255, 232);
+    border: 2px solid rgba(207, 235, 207, 1);
 }
 
 .mid_red_border {
@@ -223,7 +223,7 @@
 }
 
 .mid_yellow_border {
-    border: 2px solid rgb(252, 255, 219);
+    border: 2px solid rgba(242, 242, 200, 1);
 }
 
 .mid_gray_border {
@@ -231,7 +231,7 @@
 }
 
 .dark_green_border {
-    border: 2px solid rgba(210, 255, 209);
+    border: 2px solid rgba(180, 215, 180);
 }
 
 .dark_red_border {
@@ -243,7 +243,7 @@
 }
 
 .dark_yellow_border {
-    border: 2px solid rgba(255, 244, 171);
+    border: 2px solid rgba(225, 225, 151);
 }
 
 .dark_gray_border {
@@ -251,7 +251,7 @@
 }
 
 .dark_green_border_bottom {
-    border-bottom: 2px solid rgba(210, 255, 209);
+    border-bottom: 2px solid rgba(180, 215, 180);
 }
 
 .dark_red_border_bottom {
@@ -263,7 +263,7 @@
 }
 
 .dark_yellow_border_bottom {
-    border-bottom: 2px solid rgba(255, 244, 171);
+    border-bottom: 2px solid rgba(225, 225, 151);
 }
 
 .dark_gray_border_bottom {
@@ -272,7 +272,7 @@
 
 /* rfhlsfhlzjshflzh */
 .dark_dark_green_border_bottom {
-    border-bottom: 2px solid rgba(153, 255, 153, 1);
+    border-bottom: 2px solid rgba(153, 195, 153);
 }
 
 .dark_dark_red_border_bottom {
@@ -292,7 +292,7 @@
 }
 
 .dark_dark_green_border {
-    border: 5px solid rgba(153, 255, 153, 1);
+    border: 5px solid rgba(153, 195, 153);
     padding: 0;
 }
 
@@ -318,7 +318,7 @@
 
 
 .dark_dark_green_border_top {
-    border-top: 2px solid rgba(153, 255, 153, 1);
+    border-top: 2px solid rgba(153, 195, 153);
 }
 
 .dark_dark_red_border_top {
@@ -338,7 +338,7 @@
 }
 
 .mid_green_border_left {
-    border-left: 2px solid rgb(232, 255, 232);
+    border-left: 2px solid rgba(207, 235, 207, 1);
 }
 
 .mid_red_border_left {
@@ -350,7 +350,7 @@
 }
 
 .mid_yellow_border_left {
-    border-left: 2px solid rgb(252, 255, 219);
+    border-left: 2px solid rgba(242, 242, 200, 1);
 }
 
 .mid_gray_border_left {
@@ -358,7 +358,7 @@
 }
 
 .dark_green_border_bottom_hover:hover {
-    border-bottom: 2px solid rgba(210, 255, 209);
+    border-bottom: 2px solid rgba(180, 215, 180);
 }
 
 .dark_red_border_bottom_hover:hover {
@@ -370,11 +370,11 @@
 }
 
 .dark_yellow_border_bottom_hover:hover {
-    border-bottom: 2px solid rgba(255, 244, 171);
+    border-bottom: 2px solid rgba(225, 225, 151);
 }
 
 .dark_green_hover:hover {
-    background-color: rgba(210, 255, 209);
+    background-color: rgba(180, 215, 180);
 }
 
 .dark_red_hover:hover {
@@ -386,7 +386,7 @@
 }
 
 .dark_yellow_hover:hover {
-    background-color: rgba(255, 244, 171);
+    background-color: rgba(225, 225, 151);
 }
 
 .dark_gray_hover:hover {
@@ -406,7 +406,7 @@
 }
 
 .mid_yellow_border_bottom_hover:hover {
-    border-bottom: 2px solid rgba(252, 255, 219);
+    border-bottom: 2px solid rgba(242, 242, 200, 1);
 }
 
 .mid_gray_border_bottom_hover:hover {
@@ -414,7 +414,7 @@
 }
 
 .dark_green_border_top {
-    border-top: 2px solid rgba(210, 255, 209);
+    border-top: 2px solid rgba(180, 215, 180);
 }
 
 .dark_red_border_top {
@@ -426,7 +426,7 @@
 }
 
 .dark_yellow_border_top {
-    border-top: 2px solid rgba(255, 244, 171);
+    border-top: 2px solid rgba(225, 225, 151);
 }
 
 .dark_gray_border_top {
@@ -434,7 +434,7 @@
 }
 
 .dark_dark_green_border_bottom_hover:hover {
-    border-bottom: 2px solid rgba(153, 255, 153);
+    border-bottom: 2px solid rgba(153, 195, 153);
 }
 
 .dark_dark_red_border_bottom_hover:hover {
@@ -454,7 +454,7 @@
 }
 
 .dark_dark_green_border_bottom_focus:focus {
-    border: 2px solid rgba(153, 255, 153);
+    border: 2px solid rgba(153, 195, 153);
     padding: 8px 18px 10px;
 }
 
@@ -480,7 +480,7 @@
 
 .mid_green_border_triangle:after {
     border: 10px solid transparent;
-    border-top: 10px solid rgb(232, 255, 232);
+    border-top: 10px solid rgba(207, 235, 207, 1);
     border-right: none;
 }
 
@@ -498,7 +498,7 @@
 
 .mid_yellow_border_triangle:after {
     border: 10px solid transparent;
-    border-top: 10px solid rgb(252, 255, 219);
+    border-top: 10px solid rgba(242, 242, 200, 1);
     border-right: none;
 }
 
@@ -510,7 +510,7 @@
 
 .mid_green_border_triangle_partner:after {
     border: 10px solid transparent;
-    border-top: 10px solid rgb(232, 255, 232);
+    border-top: 10px solid rgba(207, 235, 207, 1);
     border-left: none;
 }
 
@@ -528,7 +528,7 @@
 
 .mid_yellow_border_triangle_partner:after {
     border: 10px solid transparent;
-    border-top: 10px solid rgb(252, 255, 219);
+    border-top: 10px solid rgba(242, 242, 200, 1);
     border-left: none;
 }
 

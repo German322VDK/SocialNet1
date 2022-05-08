@@ -14,24 +14,30 @@
         <div class="friends__nav">
             <ul class="friends__list">
                 <li class="friends__list_item_item dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one" id="but1"
-                    onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')">
-                    Друзья:@Model.Friends.Count
+                    onclick="TabMaster5('but1', 'but2', 'but3', 'but4', 'but5', 'dark_@(color)_border_bottom')">
+                    Друзья: @Model.Friends.Count
                 </li>
                 <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="two" id="but2"
-                    onclick="TabMaster3('but2', 'but2', 'but1', 'dark_@(color)_border_bottom')">
-                    Подписчики:@Model.Subscribers.Count
+                    onclick="TabMaster5('but2', 'but2', 'but1', 'but4', 'but5', 'dark_@(color)_border_bottom')">
+                    Подписчики: @Model.Subscribers.Count
                 </li>
                 <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="three" id="but3"
-                    onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')">
-                    Подписки:@Model.Subscriptions.Count
+                    onclick="TabMaster5('but3', 'but2', 'but1', 'but4', 'but5', 'dark_@(color)_border_bottom')">
+                    Подписки: @Model.Subscriptions.Count
                 </li>
-                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="four">
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="four" id="but4"
+                    onclick="TabMaster5('but4', 'but2', 'but1', 'but3', 'but5', 'dark_@(color)_border_bottom')">
                     Онлайн
                 </li>
+                <li class="friends__list_item_item dark_@(color)_border_bottom_hover" data-path="five" id="but5"
+                    onclick="TabMaster5('but5', 'but2', 'but1', 'but4', 'but3', 'dark_@(color)_border_bottom')">
+                    Все: @Model.All.Count
+                </li>
+
             </ul>
         </div>
         <div class="friends__search dark_@(color)_border_bottom dark_@(color)_border_top light_@(color)">
-            <input type="text" name="search" placeholder="Поиск" class="friends__search_input">
+            <input type="text" name="search" placeholder="Поиск когда-нибудь появится)" class="friends__search_input">
         </div>
         <div data-target="one" class="friends__info_container friends__info_container_active">
             @foreach (var item in Model.Friends)
@@ -42,13 +48,13 @@
 
                 var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
 
-                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+                var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-                var format = ImageMethods.GetFormat(imageArr);
+                var format = NewImageMethods.GetFormat(imageArr);
 
                 var coordImage = $"photo/coordinates/{x}d{y}.jpg";
 
-                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                <div class="friends__info dark_@(color)_border_bottom mid_@(itemColor)_hover">
                     <div>
                         <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
                             <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
@@ -91,13 +97,13 @@
 
                 var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
 
-                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+                var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-                var format = ImageMethods.GetFormat(imageArr);
+                var format = NewImageMethods.GetFormat(imageArr);
 
                 var coordImage = $"photo/coordinates/{x}d{y}.jpg";
 
-                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                <div class="friends__info dark_@(color)_border_bottom mid_@(itemColor)_hover">
                     <div>
                         <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
                             <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
@@ -116,8 +122,11 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <span>Написать</span>
-                                    <span class="friends__list_item_span">Настройки</span>
+                                    <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@item.UserName">Написать</a>
+                                    @if (name == Model.User.UserName)
+                                    {
+                                        <span class="friends__list_item_span">Настройки</span>
+                                    }
                                 </li>
                             </ul>
                         </div>
@@ -127,7 +136,6 @@
                     </div>
                 </div>
             }
-
         </div>
         <div data-target="three" class="friends__info_container">
             @foreach (var item in Model.Subscriptions)
@@ -138,13 +146,13 @@
 
                 var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
 
-                var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+                var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-                var format = ImageMethods.GetFormat(imageArr);
+                var format = NewImageMethods.GetFormat(imageArr);
 
                 var coordImage = $"photo/coordinates/{x}d{y}.jpg";
 
-                <div class="friends__info dark_@(itemColor)_border_bottom mid_@(itemColor)_hover">
+                <div class="friends__info dark_@(color)_border_bottom mid_@(itemColor)_hover">
                     <div>
                         <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
                             <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
@@ -163,8 +171,11 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <span>Написать</span>
-                                    <span class="friends__list_item_span">Настройки</span>
+                                    <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@item.UserName">Написать</a>
+                                    @if (name == Model.User.UserName)
+                                    {
+                                        <span class="friends__list_item_span">Настройки</span>
+                                    }
                                 </li>
                             </ul>
                         </div>
@@ -204,6 +215,55 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div data-target="five" class="friends__info_container">
+            @foreach (var item in Model.All)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var itemColor = UserMethods.GetColor(x, y);
+
+                var imageArr = item.Images.FirstOrDefault(el => el.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
+
+                var format = NewImageMethods.GetFormat(imageArr);
+
+                var coordImage = $"photo/coordinates/{x}d{y}.jpg";
+
+                <div class="friends__info dark_@(color)_border_bottom mid_@(itemColor)_hover">
+                    <div>
+                        <a asp-controller="Profile" asp-action="Index" asp-route-userName="@item.UserName">
+                            <img class="friends__big_ava" src="data:image/@format;base64,@strImage" alt="">
+                        </a>
+                    </div>
+                    <div class="friends__content">
+                        <div class="friends__content_top">
+                            <ul class="friends__content_top_list">
+                                <li class="friends__content_top_list_item">
+                                    <div class="friends__content_top_list_item_chel">
+                                        <div class="friends__text_margin" style="margin-right: 5px">@item.FirstName</div>
+                                        <div class="friends__text_margin">@item.SecondName</div>
+                                        <div>
+                                            <img class="friends__little_ava" src="@coordImage" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a asp-controller="Chats" asp-action="Chat" asp-route-userName="@item.UserName">Написать</a>
+                                    @if (name == Model.User.UserName)
+                                    {
+                                        <span class="friends__list_item_span">Настройки</span>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="friends__content_botton">
+                            <div class="friends__content_botton_sam_status">@item.Status</div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

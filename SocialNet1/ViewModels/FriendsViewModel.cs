@@ -15,5 +15,7 @@ namespace SocialNet1.ViewModels
         public ICollection<UserDTO> Subscribers { get; set; }
 
         public ICollection<UserDTO> Subscriptions { get; set; }
+
+        public ICollection<UserDTO> All { get; set; }
     }
 }

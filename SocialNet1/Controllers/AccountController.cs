@@ -22,15 +22,17 @@ namespace SocialNet1.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUser _user;
         private readonly IChat _chat;
+        private readonly IEmailConfirm _emailConfirm;
 
         public AccountController(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager,
-            ILogger<AccountController> logger, IUser user, IChat chat)
+            ILogger<AccountController> logger, IUser user, IChat chat, IEmailConfirm emailConfirm)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _user = user;
             _chat = chat;
+            _emailConfirm = emailConfirm;
         }
 
         #region Register
@@ -61,6 +63,13 @@ namespace SocialNet1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
+            if(Model is null || string.IsNullOrEmpty(Model.Email) || _emailConfirm.Get(Model.Email) is null)
+            {
+                _logger.LogWarning("Какой то конченный хотел меня обмануть");
+
+                return RedirectToAction("RegisterStart", "Account");
+            }
+
             var userNameIsExist = CheckUserName(Model.UserName);
 
             if (userNameIsExist)
@@ -100,21 +109,21 @@ namespace SocialNet1.Controllers
                 {
                     _logger.LogInformation("Пользователь {0} успешно зарегестрирован", Model.UserName);
 
-                    if (Model.AdminRolePassword == Passwords.Admin)
-                    {
-                        await _userManager.AddToRoleAsync(user, UserStatus.Admin.ToString());
-
-                        _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.Admin);
-                    }
-                    else
+                    if (string.IsNullOrEmpty(Model.AdminRolePassword) || Model.AdminRolePassword != Passwords.Admin)
                     {
                         await _userManager.AddToRoleAsync(user, UserStatus.User.ToString());
 
                         _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.User);
                     }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, UserStatus.Admin.ToString());
+
+                        _logger.LogInformation("Пользователь {0} наделён ролью {1}", Model.UserName, UserStatus.Admin);
+                    }
                     await _signInManager.SignInAsync(user, false);
 
-                    var arr = ImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
+                    var arr = NewImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
 
                     _user.AddPhoto(arr, user.UserName);
 
@@ -204,6 +213,15 @@ namespace SocialNet1.Controllers
         public IActionResult AccessDenied(string ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
+
+            var userName = User.Identity.Name;
+
+            if (userName is null || _user.Get(userName) is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+            }
+
+            _logger.LogWarning($"Тип {userName} хотел попасть на {ReturnUrl}");
 
             return View();
         }

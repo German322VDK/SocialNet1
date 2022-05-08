@@ -39,9 +39,9 @@ namespace SocialNet1.Components
                     arr = memorystream.ToArray();
                 }
 
-                image = ImageMethods.GetStringFromByteArr(arr);
+                image = NewImageMethods.GetStringFromByteArr(arr);
 
-                format = ImageMethods.GetFormat(arr);
+                format = NewImageMethods.GetFormat(arr);
 
                 return View("UserInfo", new UserInfoComponentViewModel 
                 { 

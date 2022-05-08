@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Social_Net.Domain.Clash;
+using Social_Net.Domain.Message;
 using Social_Net.Domain.Security;
 using SocialNet1.Domain.Group;
 using SocialNet1.Domain.Identity;
@@ -19,6 +21,10 @@ namespace SocialNet1.Database.SQlite.Context
         public DbSet<ChatDTO> Chats { get; set; }
 
         public DbSet<EmailConfirm> EmailConfirms { get; set; }
+
+        public DbSet<GroupChatDTO> GroupChats { get; set; }
+
+        public DbSet<ClashDTO> Clashs { get; set; }
 
         public SocialNetDBSQlite(DbContextOptions<SocialNetDBSQlite> options) : base(options) { }
     }

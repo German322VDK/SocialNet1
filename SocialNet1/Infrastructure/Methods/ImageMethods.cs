@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

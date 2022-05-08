@@ -46,7 +46,7 @@
 .messages__top_back{
     margin-left: 20px;
     margin-top: 25px;
-    font-size: 20px;
+    /*font-size: 20px;*/
 }
 
 .messages__top_talker{
@@ -57,7 +57,7 @@
 .messages__top_name{
     margin-left: 10px;
     margin-top: 5px;
-    font-size: 20px;
+    /*font-size: 20px;*/
 }
 
 .messages__top_img{
@@ -78,7 +78,7 @@
 
 .messages__top_time{
     margin-top: 5px;
-    font-size: 20px;
+    /*font-size: 20px;*/
 }
 
 .messages__block{

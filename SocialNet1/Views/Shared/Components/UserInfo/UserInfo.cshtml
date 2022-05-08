@@ -19,12 +19,6 @@
         </span>
     </a>*@
 <div class="header__blue_aaa light_@color">
-    @if (User.IsInRole(UserStatus.God.ToString()) || User.IsInRole(UserStatus.God.ToString()))
-    {
-        <a class="light_@color" asp-area="Admin" asp-controller="Home" , asp-action="Index">
-            <i class="fa fa-keyboard-o"></i>
-        </a>
-    }
     <a class="light_@color" asp-controller="Account" asp-action="Logout">
         <i class="fa fa-lock"></i>
     </a>

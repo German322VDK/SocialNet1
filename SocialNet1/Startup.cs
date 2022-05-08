@@ -15,9 +15,6 @@ using Social_Net1.Infrastructure.Services.Based;
 using SocialNet1.Data;
 using SocialNet1.Hubs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SocialNet1.Infrastructure.Services.Admin;
 using SocialNet1.Infrastructure.Interfaces.Admin;
 using SocialNet1.Infrastructure.Interfaces.Based;
@@ -51,10 +48,13 @@ namespace SocialNet1
 
             services.AddTransient<SocialNetDbInitializer>();
 
-            services.AddTransient<IImage, ImageService>();
+            services.AddTransient<IMyImage, ImageService>();
             services.AddTransient<IUser, UserService>();
+            services.AddTransient<IFriends, FriendsService>(); 
             services.AddTransient<IChat, ChatService>(); 
-            services.AddTransient<IGroup, GroupService>(); 
+            services.AddTransient<IGroupChat, GroupChatService>();
+            services.AddTransient<IGroup, GroupService>();
+            services.AddTransient<IClash, ClashService>(); 
             services.AddTransient<IEmailConfirm, EmailConfirmService>();
 
             services.AddTransient<IUserIdProvider, CustomUserIdProvider>();
@@ -65,21 +65,28 @@ namespace SocialNet1
 
             services.Configure<IdentityOptions>(opt =>
             {
-#if DEBUG
                 opt.Password.RequiredLength = 3;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredUniqueChars = 3;
-#endif
 
-                opt.User.RequireUniqueEmail = false;
+//#if DEBUG
+//                opt.Password.RequiredLength = 3;
+//                opt.Password.RequireDigit = false;
+//                opt.Password.RequireLowercase = false;
+//                opt.Password.RequireUppercase = false;
+//                opt.Password.RequireNonAlphanumeric = false;
+//                opt.Password.RequiredUniqueChars = 3;
+//#endif
 
-                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
-                opt.Lockout.AllowedForNewUsers = false;
-                opt.Lockout.MaxFailedAccessAttempts = 10;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+//                opt.User.RequireUniqueEmail = false;
+
+//                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+//                opt.Lockout.AllowedForNewUsers = false;
+//                opt.Lockout.MaxFailedAccessAttempts = 10;
+//                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             });
 
             services.ConfigureApplicationCookie(opt =>
@@ -128,6 +135,12 @@ namespace SocialNet1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<MessageHub>("/chat");
+
+                endpoints.MapHub<SecretMessageHub>("/secretchat");
+
+                endpoints.MapHub<GroupMessageHub>("/groupchat");
+
+                endpoints.MapHub<ClashMessageHub>("/clashchat");
 
                 endpoints.MapControllerRoute(
                     name: "areas",

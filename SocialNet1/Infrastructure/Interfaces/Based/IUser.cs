@@ -10,6 +10,10 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         UserDTO Get(string userName);
 
+        ICollection<RoleDTO> GetRolesByUser(string userName);
+
+        bool IsUserInRole(string userName, string roleName);
+
         bool AddPhoto(byte[] arr, string userName);
 
         bool DeletePhoto(int imageId, string userName);
@@ -30,6 +34,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
         bool SetStatus(string text, string userName);
 
         bool SetCoord(string userName, int x, int y);
+
+        ICollection<string> GetFriends(string userName);
 
         bool IsFriend(string userName1, string userName2);
 

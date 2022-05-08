@@ -1,0 +1,178 @@
+﻿@model ClashViewModel
+
+@inject IGroup groupService;
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var userT = userService.Get(name);
+
+    var color = UserMethods.GetColor(userT.SocNetItems.X, userT.SocNetItems.Y);
+
+
+    var group1 = Model.Clash.Side1.Group;
+
+    int x1 = group1.SocNetItems.X, y1 = group1.SocNetItems.Y;
+
+    var group1Color = UserMethods.GetColor(x1, y1);
+
+    var groupImageArr1 = group1.Images.SingleOrDefault(el => el.ImageNumber == group1.SocNetItems.CurrentImage).Image;
+
+    var group1StrImage = NewImageMethods.GetStringFromByteArr(groupImageArr1);
+
+    var group1Format = NewImageMethods.GetFormat(groupImageArr1);
+
+    var groupCoord1 = $"photo/coordinates/{x1}d{y1}.jpg";
+
+
+    var group2 = Model.Clash.Side2.Group;
+
+    int x2 = group2.SocNetItems.X, y2 = group2.SocNetItems.Y;
+
+    var group2Color = UserMethods.GetColor(x2, y2);
+
+    var groupImageArr2 = group2.Images.SingleOrDefault(el => el.ImageNumber == group2.SocNetItems.CurrentImage).Image;
+
+    var group2StrImage = NewImageMethods.GetStringFromByteArr(groupImageArr2);
+
+    var group2Format = NewImageMethods.GetFormat(groupImageArr2);
+
+    var groupCoord2 = $"photo/coordinates/{x2}d{y2}.jpg";
+
+    var isUser1 = groupService.IsUserInGroup(Model.Clash.Side1.Group.ShortGroupName, name);
+
+    var isUserLike1 = Model.Clash.Side1.GroupLikes.FirstOrDefault(lk => lk.Likers == name) is null;
+    var isUserLike2 = Model.Clash.Side2.GroupLikes.FirstOrDefault(lk => lk.Likers == name) is null;
+
+}
+
+<div class="messages light_@(color)">
+    <div class="messages__background_top mid_@(color)"></div>
+
+    <div class="messages__top dark_@(color)_border_bottom light_@(color)">
+        <div class="messages__top_back">
+            <a asp-controller="Chats" asp-action="Index">
+                Назад
+            </a>
+        </div>
+        <div>
+            <div class="messages__top_talker dark_@(color)_border_bottom">
+                <div>
+                    <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
+                        <img class="messages__top_img" src="data:image/@group1Format;base64,@group1StrImage" alt="Фото">
+                    </a>
+                </div>
+                <div class="messages__top_name">
+                    <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group1.ShortGroupName">
+                        @(group1.GroupName.Length > 25 ? group1.GroupName.Substring(0, 24) : group1.GroupName)
+                    </a>
+                </div>
+                <button id="1Like1" class="profil__post_l_img @(isUserLike1 ? "" : "heart_none")">
+                    <i class="fa fa-heart-o color_dark_dark_@(group1Color) fa-2x" aria-hidden="true"></i>
+                </button>
+                <button id="1Like2" class="profil__post_l_img @(isUserLike1 ? "heart_none" : "")">
+                    <i class="fa fa-heart color_dark_dark_@(group1Color) fa-2x" aria-hidden="true"></i>
+                </button>
+                <div id="1likeAll" class="profil__col_like_all">@Model.Clash.Side1.GroupLikes.Count</div>
+            </div>
+            <div class="messages__top_talker">
+                <div>
+                    <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
+                        <img class="messages__top_img" src="data:image/@group2Format;base64,@group2StrImage" alt="Фото">
+                    </a>
+                </div>
+                <div class="messages__top_name">
+                    <a asp-controller="Group" asp-action="Group" asp-route-groupName="@group2.ShortGroupName">
+                        @(group2.GroupName.Length > 25 ? group2.GroupName.Substring(0, 24) : group2.GroupName)
+                    </a>
+                </div>
+                <button id="2Like1" class="profil__post_l_img @(isUserLike2 ? "" : "heart_none")">
+                    <i class="fa fa-heart-o color_dark_dark_@(group2Color) fa-2x" aria-hidden="true"></i>
+                </button>
+                <button id="2Like2" class="profil__post_l_img @(isUserLike2 ? "heart_none" : "")">
+                    <i class="fa fa-heart color_dark_dark_@(group2Color) fa-2x" aria-hidden="true"></i>
+                </button>
+                <div id="2likeAll" class="profil__col_like_all">@Model.Clash.Side2.GroupLikes.Count</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- chat-messages -->
+    <div class="messages__block">
+        <div class="messages__empty light_@(color)"></div>
+        <!-- message-box-holder -->
+
+        @foreach (var message in Model.Clash.Messages)
+        {
+            bool isAut = groupService.IsUserInGroup(Model.Clash.Side1.Group.ShortGroupName, message.SenderName);
+
+            var user = userService.Get(message.SenderName);
+
+            <div class="message__box_holder @( isAut ? "" : "message__partner")" id="@(message.HelpId)_message">
+                <div class="message__box mid_@(isAut ? group1Color: group2Color) mid_@(isAut ? group1Color: group2Color)_border @(isAut ? "" : "message__partner_box") mid_@(isAut ? group1Color: group2Color)_border_triangle@(isAut ? "" : "_partner")">
+
+                    <div class="message_text dark_dark_@(isAut ? group1Color: group2Color)_border_bottom_focus">
+                        @message.Content
+                    </div>
+
+                    <div class="messages__block_m_l_t">
+                        <a asp-controller="Profile" asp-action="Index" asp-route-userName="@user.UserName">
+                            @($"{user.FirstName}-{user.SecondName}")
+                        </a>
+                    </div>
+                    <div class="messages__block_m_l_t">
+                        @message.TimeMess.ToString("g")
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div id="chatroom"></div>
+
+    </div>
+
+    <div class="messages__empty light_@(color)"></div>
+
+    <div class="messages__down dark_@(color)_border_top light_@(color)">
+        @if (Model.IsUserPlayer)
+        {
+            <button class="messages__down_options">
+                <i class="fas fa-paperclip color_dark_dark_@(color)"></i>
+            </button>
+            <div class="messages__down_input">
+                <textarea class="messages__down_textarea" name="" id="message" cols="30" rows="1"
+                          placeholder="введити текст сообщения"></textarea>
+            </div>
+            <button class="messages__down_sent" id="sendBtn">
+                <i class="fas fa-paper-plane color_dark_dark_@(color)"></i>
+            </button>
+        }
+
+    </div>
+    <div class="messages__down_down mid_@(color)"></div>
+</div>
+
+<script>
+
+    StartClashChat('@Model.Clash.Id', '@name', '@(isUser1 ? group1.ShortGroupName: group2.ShortGroupName)',
+        '@(isUser1 ? group1Color: group2Color)', '@(isUser1 ? "true": "false")');
+
+</script>
+
+
+<div class="settings__groups">
+    <div class="filter__groups light_@(color)">
+        <h2 class="filter__groups_title">Фильтры групп</h2>
+        <ul class="filter__groups_list">
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+        </ul>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

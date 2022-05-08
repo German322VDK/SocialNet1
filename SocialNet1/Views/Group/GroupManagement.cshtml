@@ -1,0 +1,117 @@
+﻿@model GroupManagementViewModel
+@inject IUser userService;
+@{
+    var name = User.Identity!.Name;
+
+    var user = userService.Get(name);
+
+    var color = UserMethods.GetColor(user.SocNetItems.X, user.SocNetItems.Y);
+
+
+}
+
+<div class="groups">
+    <div class="groups__dark_background mid_@(color)"></div>
+    <div class="chats__conteiner light_@(color)">
+        <div class="dark_@(color)_border_bottom clash_h2">
+            <h2>
+                Управление группой:
+            </h2>
+        </div>
+        <div class="groups__content_top">
+            <div class="groups__list_item groups__content_all dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one"
+                 onclick="TabMaster2('but1', 'but2', 'dark_@(color)_border_bottom')" id="but1">
+                Заявки на противостояние
+            </div>
+            <div class="groups__list_item groups__content_management dark_@(color)_border_bottom_hover" data-path="two"
+                 onclick="TabMaster2('but2', 'but1', 'dark_@(color)_border_bottom')" id="but2">
+                Создать противостояние
+            </div>
+        </div>
+        <div class="groups__content_gg chats__info_container chats__info_container_active" data-target="one">
+            <ul class="groups__content_list">
+
+                @foreach (var item in Model.Requests)
+                {
+                    <li class="groups__content_list_item mid_@(color)_hover">
+                        <div class="groups__content_list_item_c">
+                            <div class="groups__content_ava">
+                                <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                    <img class="groups__content_ava_img" src="data:image/@item.MainFormat;base64,@item.MainImage" alt="">
+                                </a>
+                            </div>
+                            <div class="groups__content_links">
+                                <div class="groups__content_politcor groups__content_list_item_m">
+                                    <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
+                                    @*<span class="groups__content_group_type">Хуитика</span>*@
+                                </div>
+                                <div class="groups__content_name_g groups__content_list_item_m">
+                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                        @item.MainName
+                                    </a>
+                                </div>
+                                <div class="groups__content_quantity">@item.UserCount учасников</div>
+                            </div>
+                        </div>
+                        <div class="groups__content_tk">
+                            <a asp-action="ConfirmClash" asp-route-thisGroupName="@Model.ThisGroupName" asp-route-groupName="@item.MainShortName">
+                                Принять
+                            </a>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="groups__content_gg chats__info_container" data-target="two">
+            <ul class="groups__content_list">
+
+                @foreach (var item in Model.All)
+                {
+                    <li class="groups__content_list_item mid_@(color)_hover">
+                        <div class="groups__content_list_item_c">
+                            <div class="groups__content_ava">
+                                <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                    <img class="groups__content_ava_img" src="data:image/@item.MainFormat;base64,@item.MainImage" alt="">
+                                </a>
+                            </div>
+                            <div class="groups__content_links">
+                                <div class="groups__content_politcor groups__content_list_item_m">
+                                    <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
+                                </div>
+                                <div class="groups__content_name_g groups__content_list_item_m">
+                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                        @item.MainName
+                                    </a>
+                                </div>
+                                <div class="groups__content_quantity">@item.UserCount учасников</div>
+                            </div>
+                        </div>
+                        <div class="groups__content_tk">
+                            <a asp-action="AddClash" asp-route-thisGroupName="@Model.ThisGroupName" asp-route-groupName="@item.MainShortName">
+                                Предолжить
+                            </a>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="settings__groups">
+    <div class="filter__groups light_@(color)">
+        <h2 class="filter__groups_title">Фильтры групп</h2>
+        <ul class="filter__groups_list">
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+            <li class="rightsitebar__list_item">В будущем тут будут фильтры</li>
+        </ul>
+    </div>
+    <div class="rightsitebar__link_top_cont">
+        <a class="rightsitebar__link_top" href="#top">
+            <i class="fas fa-arrow-alt-circle-up fa-2x color_dark_dark_@(color)" style="margin-bottom: 10px;"></i>
+        </a>
+    </div>
+</div>

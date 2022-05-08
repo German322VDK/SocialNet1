@@ -149,12 +149,13 @@ namespace SocialNet1.Controllers.API
 
             var imageArr = commenter.Images.SingleOrDefault(el => el.ImageNumber == commenter.SocNetItems.CurrentImage).Image;
 
-            var strImage = ImageMethods.GetStringFromByteArr(imageArr);
+            var strImage = NewImageMethods.GetStringFromByteArr(imageArr);
 
-            var format = ImageMethods.GetFormat(imageArr);
+            var format = NewImageMethods.GetFormat(imageArr);
 
             return new CommentModel
             {
+                Id = model.PostId,
                 X = commenter.SocNetItems.X,
                 Y = commenter.SocNetItems.Y,
                 FirstName = commenter.FirstName,
@@ -164,7 +165,10 @@ namespace SocialNet1.Controllers.API
                 DateTime = result.DateTime.ToString("g"),
                 PhotoCom = strImage,
                 FormatPhotoCom = format,
-                Text = result.Content
+                Text = result.Content,
+                HelpId = result.HelpId,
+                Author = model.UserName,
+                Commenter = model.Commenter
             };
 
         }

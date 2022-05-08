@@ -258,3 +258,15 @@ input {outline:none;}
   width: 100%;
 }
 
+.reg_div{
+    width: 350px;
+}
+
+.reg_data_input {
+    width: 100%;
+    font-size: 1rem;
+    height: calc(2.25rem + 2px);
+    border: 2px solid rgba(192, 192, 192, 1);
+    border-radius: 12px;
+}
+

@@ -31,9 +31,37 @@ namespace SocialNet1.Infrastructure.Services.Based
         public ICollection<UserDTO> GetAll() =>
             _db.Users.ToList();
 
+        public bool IsUserInRole(string userName, string roleName)
+        {
+            var rolesNames = GetRolesByUser(userName).Select(r => r.Name);
+
+            return rolesNames.Contains(roleName);
+        }
+
+        public ICollection<RoleDTO> GetRolesByUser(string userName)
+        {
+            var user = Get(userName);
+
+            var roleIds = _db.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId);
+
+            var roles = new List<RoleDTO>();
+
+            foreach (var roleId in roleIds)
+            {
+                var role = _db.Roles.FirstOrDefault(r => r.Id == roleId);
+
+                roles.Add(role);
+            }
+
+            return roles;
+        }
+
         #endregion
 
         #region Friend
+
+        public ICollection<string> GetFriends(string userName) =>
+            Get(userName).Friends.Select(fr => fr.FriendName).ToList();
 
         public bool IsFriend(string userName1, string userName2)
         {
@@ -242,12 +270,25 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (user is null || sender is null || text is null)
                 return comment;
 
+            var coms = _db.Users
+                    .SingleOrDefault(us => us.UserName == userName)
+                    .Images
+                    .SingleOrDefault(im => im.Id == imageId)
+                    .Coments
+                    .ToList();
+
             using (_db.Database.BeginTransaction())
             {
+                int helpId = 1;
+
+                if (coms.Count > 0)
+                    helpId = coms[coms.Count - 1].HelpId + 1;
+
                 comment = new UserImageComments
                 {
                     Text = text,
-                    UserName = senderName
+                    UserName = senderName,
+                    HelpId = helpId
                 };
 
                 _db.Users
@@ -266,7 +307,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             return comment;
         }
 
-        public bool DeleteComToPhoto(string userName, int imageId, int comId)
+        public bool DeleteComToPhoto(string userName, int imageId, int comHelpId)
         {
             var user = Get(userName);
 
@@ -278,7 +319,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (image is null)
                 return false;
 
-            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+            var com = image.Coments.FirstOrDefault(cm => cm.HelpId == comHelpId);
 
             if (com is null)
                 return false;
@@ -298,7 +339,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
-        public bool AddLikeComPhoto(string userName1, string userName2, int imageId, int comId)
+        public bool AddLikeComPhoto(string userName1, string userName2, int imageId, int comHelpId)
         {
             
             var user = Get(userName1);
@@ -311,7 +352,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (image is null)
                 return false;
 
-            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+            var com = image.Coments.FirstOrDefault(cm => cm.HelpId == comHelpId);
 
             if (com is null)
                 return false;
@@ -323,7 +364,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Images
                     .FirstOrDefault(im => im.Id == imageId)
                     .Coments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comHelpId)
                     .UserCommentLikes;
 
                 if (commentLikes.FirstOrDefault(lk => lk.Likers == userName2) is not null)
@@ -343,7 +384,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
-        public bool DeleteLikeComPhoto(string userName1, string userName2, int imageId, int comId)
+        public bool DeleteLikeComPhoto(string userName1, string userName2, int imageId, int comHelpId)
         {
             var user = Get(userName1);
 
@@ -355,7 +396,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (image is null)
                 return false;
 
-            var com = image.Coments.FirstOrDefault(cm => cm.Id == comId);
+            var com = image.Coments.FirstOrDefault(cm => cm.HelpId == comHelpId);
 
             if (com is null)
                 return false;
@@ -367,7 +408,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Images
                     .FirstOrDefault(im => im.Id == imageId)
                     .Coments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comHelpId)
                     .UserCommentLikes
                     .FirstOrDefault(lk => lk.Likers == userName2);
 
@@ -549,13 +590,26 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             CommentDTO comment = null;
 
+            int helpId = 1;
+
+            var coms = _db.Users
+                    .FirstOrDefault(us => us.UserName == username)
+                    .SocNetItems
+                    .Posts
+                    .FirstOrDefault(ps => ps.Id == postId)
+                    .Comments;
+
+            if (coms is not null && coms.Count > 0)
+                helpId = coms.Last().HelpId + 1;
+
             using (_db.Database.BeginTransaction())
             {
                 comment = new CommentDTO
                 {
                     CommentatorStatus = CommentatorStatus.User,
                     CommentatorName = commenter,
-                    Content = text
+                    Content = text,
+                    HelpId = helpId
                 };
 
                 _db.Users
@@ -584,7 +638,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             var like = _db.Users.FirstOrDefault(us => us.UserName == userName)
@@ -592,7 +646,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .FirstOrDefault(lk => lk.Likers == liker);
 
@@ -606,7 +660,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .Add(new CommentLike
                     {
@@ -632,7 +686,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             using (_db.Database.BeginTransaction())
@@ -642,7 +696,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId)
+                    .FirstOrDefault(cm => cm.HelpId == comId)
                     .Likes
                     .FirstOrDefault(lk => lk.Likers == liker);
 
@@ -670,7 +724,7 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (GetUserPost(userName, postId) is null)
                 return false;
 
-            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.Id == comId) is null)
+            if (GetUserPost(userName, postId).Comments.FirstOrDefault(cm => cm.HelpId == comId) is null)
                 return false;
 
             using (_db.Database.BeginTransaction())
@@ -680,7 +734,7 @@ namespace SocialNet1.Infrastructure.Services.Based
                     .Posts
                     .FirstOrDefault(ps => ps.Id == postId)
                     .Comments
-                    .FirstOrDefault(cm => cm.Id == comId);
+                    .FirstOrDefault(cm => cm.HelpId == comId);
 
                 _db.RemoveRange(comment.Likes);
 

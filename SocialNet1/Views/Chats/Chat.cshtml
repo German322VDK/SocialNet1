@@ -14,16 +14,16 @@
 
     var userImageArr = user.Images.SingleOrDefault(el => el.ImageNumber == user.SocNetItems.CurrentImage).Image;
 
-    var userStrImage = ImageMethods.GetStringFromByteArr(userImageArr);
+    var userStrImage = NewImageMethods.GetStringFromByteArr(userImageArr);
 
-    var userFormat = ImageMethods.GetFormat(userImageArr);
+    var userFormat = NewImageMethods.GetFormat(userImageArr);
 
 
     var authorImageArr = autor.Images.SingleOrDefault(el => el.ImageNumber == autor.SocNetItems.CurrentImage).Image;
 
-    var authorStrImage = ImageMethods.GetStringFromByteArr(authorImageArr);
+    var authorStrImage = NewImageMethods.GetStringFromByteArr(authorImageArr);
 
-    var authorFormat = ImageMethods.GetFormat(authorImageArr);
+    var authorFormat = NewImageMethods.GetFormat(authorImageArr);
 }
 
 <div class="messages light_@(colorAut)">
@@ -116,5 +116,5 @@
 
 </script>
 
-<partial name="Partial/MessagesRightSiteBar" />
+<partial name="Partial/MessagesRightSiteBar" model="@Model.UserName"/>
 
