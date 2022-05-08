@@ -1598,8 +1598,8 @@ input[type="submit"] {
 
 .photo_selection__modal__dialog {
     max-width: 1000px;
-    min-height: 565px;
-    max-height: 600px;
+    min-height: 650px;
+    max-height: 700px;
     flex-grow: 1;
     display: flex;
     position: relative;
@@ -1637,7 +1637,7 @@ input[type="submit"] {
 
 .photo_selection__modal_foto_c {
     padding: 0 10px 10px;
-    height: 450px;
+    /*height: 450px;*/
 }
 
 .photo_selection__modal_foto_c_f {
@@ -1662,6 +1662,14 @@ input[type="submit"] {
     margin-right: auto;
     width: 500px;
     justify-content: center;
+}
+
+.coord_item{
+    margin: 0 5px;
+}
+
+.coord_text{
+    text-align:center;
 }
 
 .photo_selection__foto_img {
