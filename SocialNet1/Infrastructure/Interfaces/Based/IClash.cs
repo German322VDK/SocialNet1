@@ -19,6 +19,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         bool Add(string thisGroupName, string groupName);
 
+        bool Delete(string thisGroupName, string groupName);
+
         bool Confirm(string thisGroupName, string groupName);
 
         bool AddMessage(int clashId, string sender, string groupName, string text);

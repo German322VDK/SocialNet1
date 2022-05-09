@@ -101,6 +101,50 @@ namespace SocialNet1.Infrastructure.Services.Based
             return true;
         }
 
+        public bool Delete(string thisGroupName, string groupName)
+        {
+            var thisGroup = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == thisGroupName);
+            var group = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == groupName);
+
+            if (thisGroup is null || group is null)
+            {
+                return false;
+            }
+
+            var clash = Get(thisGroupName, groupName);
+
+            if (clash is null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                _db.RemoveRange(clash.Side1.GroupLikes);
+
+                _db.Remove(clash.Side1);
+
+                _db.RemoveRange(clash.Side2.GroupLikes);
+
+                _db.Remove(clash.Side2);
+
+                foreach (var message in clash.Messages)
+                {
+                    _db.RemoveRange(message.Images);
+
+                    _db.Remove(message);
+                }
+
+                _db.Remove(clash);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         public bool Confirm(string thisGroupName, string groupName)
         {
             var thisGroup = _db.Groups.FirstOrDefault(gr => gr.ShortGroupName == thisGroupName);

@@ -291,6 +291,22 @@ namespace SocialNet1.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
+            var groupClashs = _clash.GetByGroup(groupName).Where(cl => cl.Side1.IsReady || cl.Side2.IsReady).ToList();
+
+            var groupsClashs = new List<GroupDTO>();
+
+            foreach (var item in groupClashs)
+            {
+                if (item.Side1.Group.ShortGroupName == groupName)
+                {
+                    groupsClashs.Add(item.Side2.Group);
+                }
+                else
+                {
+                    groupsClashs.Add(item.Side1.Group);
+                }
+            }
+
             var thisGroup = _group.Get(groupName);
 
             var readyGroups = _clash.GetReadyGroups(groupName).Select(gr => _group.Get(gr));
@@ -304,8 +320,15 @@ namespace SocialNet1.Controllers
                 groups.Remove(item);
             }
 
+            foreach (var item in groupsClashs)
+            {
+                if(groups.Contains(item))
+                    groups.Remove(item);
+            }
+
             var reqGropsVM = new List<GroupViewModel>();
             var allGropsVM = new List<GroupViewModel>();
+            var clashGropsVM = new List<GroupViewModel>();
 
             foreach (var item in readyGroups)
             {
@@ -345,12 +368,32 @@ namespace SocialNet1.Controllers
                 allGropsVM.Add(group);
             }
 
+            foreach (var item in groupsClashs)
+            {
+                int x = item.SocNetItems.X, y = item.SocNetItems.Y;
+
+                var arr = item.Images.FirstOrDefault(im => im.ImageNumber == item.SocNetItems.CurrentImage).Image;
+
+                var group = new GroupViewModel
+                {
+                    MainName = item.GroupName,
+                    MainShortName = item.ShortGroupName,
+                    UserCount = item.Users.Count,
+                    CoordImage = $"/photo/coordinates/{x}d{y}.jpg",
+                    MainImage = NewImageMethods.GetStringFromByteArr(arr),
+                    MainFormat = NewImageMethods.GetFormat(arr)
+                };
+
+                clashGropsVM.Add(group);
+            }
+
             _logger.LogInformation($"Чел {user.UserName} заходит в управление группой {groupName}");
 
             return View(new GroupManagementViewModel 
             {
                 Requests = reqGropsVM,
                 All = allGropsVM,
+                Clashes = clashGropsVM,
                 ThisGroupName = groupName
             });
         }
@@ -395,6 +438,51 @@ namespace SocialNet1.Controllers
             else
             {
                 _logger.LogInformation($"Получилось создать противостояние групп {thisGroupName} и {groupName}");
+            }
+
+            return RedirectToAction("GroupManagement", "Group", new { groupName = thisGroupName });
+        }
+
+        public IActionResult  DeleteClash(string thisGroupName, string groupName)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+
+            }
+
+            var thisGroup = _group.Get(thisGroupName);
+            var group = _group.Get(groupName);
+
+            if (thisGroup is null || group is null)
+            {
+                _logger.LogWarning($"Группы {thisGroupName} или группы {groupName} не существует(");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var IsUserGroupAdmin = _group.IsUserAdmin(thisGroupName, user.UserName);
+
+            if (!IsUserGroupAdmin)
+            {
+                _logger.LogWarning($"Чел {user.UserName} не админ группы {thisGroupName} (");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var result = _clash.Delete(thisGroupName, groupName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить противостояние групп {thisGroupName} и {groupName} (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось удалить противостояние групп {thisGroupName} и {groupName}");
             }
 
             return RedirectToAction("GroupManagement", "Group", new { groupName = thisGroupName });

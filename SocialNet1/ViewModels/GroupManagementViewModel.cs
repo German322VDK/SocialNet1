@@ -8,6 +8,8 @@ namespace SocialNet1.ViewModels
 
         public List<GroupViewModel> All { get; set; }
 
+        public List<GroupViewModel> Clashes { get; set; }
+
         public string ThisGroupName { get; set; }
     }
 }
