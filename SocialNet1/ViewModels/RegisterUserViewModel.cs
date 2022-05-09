@@ -15,6 +15,8 @@ namespace SocialNet1.ViewModels
 
         [Required(ErrorMessage = "Логин обязателен и не должен использоваться другими"), MaxLength(256)]
         [Display(Name = "Логин пользователя")]
+        [RegularExpression(@"^[A-Za-z0-9]{1,40}$",
+         ErrorMessage = "Только английские буквы и цыфры")]
         //[Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Email уже используется")]
         public string UserName { get; set; }
 

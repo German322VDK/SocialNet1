@@ -30,6 +30,13 @@
             <button class="profil_right__ava_btn mid_@(color)_hover" onclick="OpenSetPhoto()">Сменить фотографию</button>
         }
 
+        @if (User.IsInRole("God"))
+        {
+            <button class="profil_right__ava_btn mid_@(color)_hover">
+                <a asp-action="Delete" asp-route-groupName="@Model.GroupName">Удалить группу</a>
+            </button>
+        }
+
         <button id="Sub" class="profil_right__ava_btn mid_@(color)_hover" @(isSub ? "style=display:none" : "")
                 onclick="Sub('@Model.GroupName', '@name', '@subUrl')">
             Подписаться
