@@ -23,9 +23,10 @@ namespace SocialNet1.Controllers
         private readonly IUser _user;
         private readonly IChat _chat;
         private readonly IEmailConfirm _emailConfirm;
+        private readonly IGroup _group;
 
         public AccountController(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager,
-            ILogger<AccountController> logger, IUser user, IChat chat, IEmailConfirm emailConfirm)
+            ILogger<AccountController> logger, IUser user, IChat chat, IEmailConfirm emailConfirm, IGroup group)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +34,7 @@ namespace SocialNet1.Controllers
             _user = user;
             _chat = chat;
             _emailConfirm = emailConfirm;
+            _group = group;
         }
 
         #region Register
@@ -131,11 +133,22 @@ namespace SocialNet1.Controllers
 
                     if (!result)
                     {
-                        _logger.LogWarning($"Не удалось типу {Model.UserName} содать чат с самим собой");
+                        _logger.LogWarning($"Не удалось типу {Model.UserName} содать чат с самим собой (");
                     }
                     else
                     {
                         _logger.LogInformation($"Удалось типу {Model.UserName} содать чат с самим собой");
+                    }
+
+                    var addGrouPresult = _group.Sub("offgroup", user.UserName);
+
+                    if (!addGrouPresult)
+                    {
+                        _logger.LogWarning($"Не удалось типа {Model.UserName} подписать на официальную группу (");
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Удалось типа {Model.UserName} подписать на официальную группу");
                     }
 
                     return RedirectToAction("Index", "News");
