@@ -236,6 +236,11 @@ namespace SocialNet1.Infrastructure.Services.Based
             if (user is null)
                 return false;
 
+            if(user.Images.Count < 2)
+            {
+                return false;
+            }
+
             var image = user.Images.FirstOrDefault(el => el.Id == imageId);
 
             if (image is null)
