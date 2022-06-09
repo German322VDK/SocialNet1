@@ -63,29 +63,32 @@
 
                 var user = userService.Get(message.SenderName);
 
-                <div class="message__box_holder @( isAut ? "" : "message__partner")" id="@(message.HelpId)_message">
-                    <div class="message__box mid_@(groupColor) mid_@(groupColor)_border @(isAut ? "" : "message__partner_box") mid_@(groupColor)_border_triangle@(isAut ? "" : "_partner")">
+                if (user is not null)
+                {
+                    <div class="message__box_holder @( isAut ? "" : "message__partner")" id="@(message.HelpId)_message">
+                        <div class="message__box mid_@(groupColor) mid_@(groupColor)_border @(isAut ? "" : "message__partner_box") mid_@(groupColor)_border_triangle@(isAut ? "" : "_partner")">
 
-                        <div class="message_text dark_dark_@(groupColor)_border_bottom_focus" >
-                            @message.Content
-                        </div>
+                            <div class="message_text dark_dark_@(groupColor)_border_bottom_focus my_font">
+                                @message.Content
+                            </div>
 
-                        <div class="messages__block_m_l_t">
-                            <a asp-controller="Profile" asp-action="Index" asp-route-userName="@user.UserName">
-                                @($"{user.FirstName}-{user.SecondName}")
-                            </a>
-                        </div>
-                        <div class="messages__block_m_l_t">
-                            @if (isAut)
-                            {
-                                <button id="@(message.HelpId)_message_delete" class="message_delete">
-                                    <i class="fa fa-trash-o color_dark_dark_@(groupColor) fa-1x" aria-hidden="true"></i>
-                                </button>
-                            }
-                            @message.TimeMess.ToString("g")
+                            <div class="messages__block_m_l_t">
+                                <a asp-controller="Profile" asp-action="Index" asp-route-userName="@user.UserName">
+                                    @($"{user.FirstName}-{user.SecondName}")
+                                </a>
+                            </div>
+                            <div class="messages__block_m_l_t">
+                                @if (isAut)
+                                {
+                                    <button id="@(message.HelpId)_message_delete" class="message_delete">
+                                        <i class="fa fa-trash-o color_dark_dark_@(groupColor) fa-1x" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                @message.TimeMess.ToString("g")
+                            </div>
                         </div>
                     </div>
-                    </div>
+                }
             }
 
             <div id="chatroom"></div>
