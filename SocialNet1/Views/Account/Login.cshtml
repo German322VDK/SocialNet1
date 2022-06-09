@@ -7,7 +7,7 @@
 
 <div class="registration">
     <div class="registration__container">
-        <form asp-action="Login" asp-antiforgery="true" asp-route-ReturnUrl="@Model.ReturnUrl" class="registration-form">
+        <form asp-action="Login" asp-antiforgery="true" asp-route-ReturnUrl="@Model.ReturnUrl" class="registration-form" id="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="input-wrapper_l">
