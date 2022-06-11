@@ -74,12 +74,21 @@ namespace SocialNet1.Controllers
 
             var userNameIsExist = CheckUserName(Model.UserName);
 
+            var emailIsExist = CheckEmailName(Model.Email);
+
             if (userNameIsExist)
             {
-                _logger.LogInformation($"Тип с почтой {Model.Email} пытается забрать существующий {nameof(Model.UserName)}: {Model.UserName}");
+                _logger.LogWarning($"Тип с почтой {Model.Email} пытается забрать существующий {nameof(Model.UserName)}: {Model.UserName}");
 
                 ModelState["UserName"].Errors.Add(new Exception("Логин обязателен и не должен использоваться другими"));
                 ModelState["UserName"].ValidationState = ModelValidationState.Invalid;
+            }
+
+            if (emailIsExist)
+            {
+                _logger.LogWarning($"Тип с ником {Model.UserName} пытается забрать существующую почту {Model.Email}");
+
+                return RedirectToAction("RegisterStart", "Account");
             }
                 
 
@@ -168,6 +177,9 @@ namespace SocialNet1.Controllers
 
         public bool CheckUserName(string username) =>
             _user.Get(username) is not null ? true : false;
+
+        public bool CheckEmailName(string email) =>
+            _user.GetAll().FirstOrDefault(us=> us.Email == email) is not null ? true : false;
 
 
         #endregion
