@@ -67,11 +67,11 @@ input {outline:none;}
 
 }
 
-.body__container{
+.body__container {
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    min-height: 100vh;
+    min-height: 95vh;
 }
 
 .news{
