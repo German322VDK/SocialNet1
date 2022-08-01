@@ -148,3 +148,7 @@
     display:flex;
     justify-content:center;
 }
+
+.my_font {
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+}

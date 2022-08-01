@@ -261,5 +261,39 @@ namespace SocialNet1.Controllers
             return RedirectToAction("Index", "Profile", new { userName = model.AuthorName });
         }
 
+        public IActionResult Delete(string userName)
+        {
+            var user = _user.Get(User.Identity.Name);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            var godResult = _user.IsUserInRole(user.UserName, "God");
+
+            if (!godResult)
+            {
+                _logger.LogWarning($"Хакер {user.UserName} нас обманывает (");
+
+                return RedirectToAction("Error", "Home");
+            }
+
+            var result = _user.Delete(userName);
+
+            if (!result)
+            {
+                _logger.LogWarning($"Не получилось удалить типа {userName} (");
+            }
+            else
+            {
+                _logger.LogInformation($"Получилось удалить типа {userName}");
+            }
+
+            return RedirectToAction("Index", "News");
+        }
+
     }
 }

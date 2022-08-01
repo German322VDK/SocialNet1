@@ -15,17 +15,21 @@
     <div class="chats__conteiner light_@(color)">
         <div class="dark_@(color)_border_bottom clash_h2">
             <h2>
-                Управление группой:
+                Управление противостояний группы:
             </h2>
         </div>
         <div class="groups__content_top">
             <div class="groups__list_item groups__content_all dark_@(color)_border_bottom_hover dark_@(color)_border_bottom" data-path="one"
-                 onclick="TabMaster2('but1', 'but2', 'dark_@(color)_border_bottom')" id="but1">
-                Заявки на противостояние
+                 onclick="TabMaster3('but1', 'but2', 'but3', 'dark_@(color)_border_bottom')" id="but1">
+                Заявки
             </div>
             <div class="groups__list_item groups__content_management dark_@(color)_border_bottom_hover" data-path="two"
-                 onclick="TabMaster2('but2', 'but1', 'dark_@(color)_border_bottom')" id="but2">
-                Создать противостояние
+                 onclick="TabMaster3('but2', 'but1', 'but3', 'dark_@(color)_border_bottom')" id="but2">
+                Создать
+            </div>
+            <div class="groups__list_item groups__content_management dark_@(color)_border_bottom_hover" data-path="three"
+                 onclick="TabMaster3('but3', 'but2', 'but1', 'dark_@(color)_border_bottom')" id="but3">
+                Противостояния
             </div>
         </div>
         <div class="groups__content_gg chats__info_container chats__info_container_active" data-target="one">
@@ -90,6 +94,40 @@
                         <div class="groups__content_tk">
                             <a asp-action="AddClash" asp-route-thisGroupName="@Model.ThisGroupName" asp-route-groupName="@item.MainShortName">
                                 Предолжить
+                            </a>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="groups__content_gg chats__info_container" data-target="three">
+            <ul class="groups__content_list">
+
+                @foreach (var item in Model.Clashes)
+                {
+                    <li class="groups__content_list_item mid_@(color)_hover">
+                        <div class="groups__content_list_item_c">
+                            <div class="groups__content_ava">
+                                <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                    <img class="groups__content_ava_img" src="data:image/@item.MainFormat;base64,@item.MainImage" alt="">
+                                </a>
+                            </div>
+                            <div class="groups__content_links">
+                                <div class="groups__content_politcor groups__content_list_item_m">
+                                    <img class="groups__content_politcor_img" src="@item.CoordImage" alt="">
+                                </div>
+                                <div class="groups__content_name_g groups__content_list_item_m">
+                                    <a class="groups__content_ava_link" asp-controller="Group" asp-action="Group" asp-route-groupName="@item.MainShortName">
+                                        @item.MainName
+                                    </a>
+                                </div>
+                                <div class="groups__content_quantity">@item.UserCount учасников</div>
+                            </div>
+                        </div>
+                        <div class="groups__content_tk">
+                            <a asp-action="DeleteClash" asp-route-thisGroupName="@Model.ThisGroupName" asp-route-groupName="@item.MainShortName">
+                                Удалить
                             </a>
                         </div>
                     </li>

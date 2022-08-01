@@ -33,10 +33,7 @@ namespace SocialNet1.Components
 
                 if (arr is null)
                 {
-                    var newImage = Image.FromFile("wwwroot/photo/def/anon.jpg");
-                    var memorystream = new MemoryStream();
-                    newImage.Save(memorystream, ImageFormat.Jpeg);
-                    arr = memorystream.ToArray();
+                    arr = NewImageMethods.GetByteArrFromFile("wwwroot/photo/def/anon.jpg");
                 }
 
                 image = NewImageMethods.GetStringFromByteArr(arr);

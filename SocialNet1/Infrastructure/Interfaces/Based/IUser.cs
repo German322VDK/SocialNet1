@@ -10,6 +10,8 @@ namespace SocialNet1.Infrastructure.Interfaces.Based
 
         UserDTO Get(string userName);
 
+        bool Delete(string userName);
+
         ICollection<RoleDTO> GetRolesByUser(string userName);
 
         bool IsUserInRole(string userName, string roleName);

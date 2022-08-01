@@ -66,7 +66,7 @@
             <div class="message__box_holder @( isAut ? "" : "message__partner")" id="@(message.HelpId)_message">
                 <div class="message__box mid_@(isAut ? colorAut : colorUs) mid_@(isAut ? colorAut : colorUs)_border @(isAut ? "" : "message__partner_box") mid_@(isAut ? colorAut : colorUs)_border_triangle@(isAut ? "" : "_partner")">
                     
-                    <div class="message_text dark_dark_@(isAut ? colorAut : colorUs)_border_bottom_focus" @( isAut ? "contenteditable=True" : "") 
+                    <div class="message_text dark_dark_@(isAut ? colorAut : colorUs)_border_bottom_focus my_font" @( isAut ? "contenteditable=True" : "") 
                          id="@(message.HelpId)_message_text">
                         @message.Content
                     </div>

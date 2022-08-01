@@ -12,6 +12,8 @@ namespace SocialNet1.ViewModels
 
         [Required(ErrorMessage = "Короткое имя группы обязательно и не должено использоваться другими"), MaxLength(256)]
         [Display(Name = "Короткое имя групп")]
+        [RegularExpression(@"^[A-Za-z0-9]{1,40}$",
+         ErrorMessage = "Только английские буквы и цыфры")]
         public string ShortGroupName { get; set; }
 
         [Required(ErrorMessage = "Название группы обязателено"), MaxLength(256)]

@@ -49,28 +49,28 @@ namespace Social_Net1.Infrastructure.Services.Based
                 s += $"{file}\n";
             }
 
-            _logger.LogInformation(s);
+            //_logger.LogInformation(s);
 
             string photoPath = $"wwwroot/photo/base/{photo}";
 
             var memorystream = new MemoryStream();
 
-            _logger.LogInformation("Создали мемори стрим )");
+            //_logger.LogInformation("Создали мемори стрим )");
 
             Image.Load(photoPath);
 
             using (var newImage = Image.Load(photoPath))
             {
-                _logger.LogInformation("Создали Image )");
+                //_logger.LogInformation("Создали Image )");
 
                 var format = NewImageMethods.GetFormat(photo);
 
-                _logger.LogInformation($"Сохранили Image по формату {format} )");
+                //_logger.LogInformation($"Сохранили Image по формату {format} )");
 
                 newImage.Save(memorystream, format);
             }
 
-            _logger.LogInformation("Всё прошло хорошо )");
+            //_logger.LogInformation("Всё прошло хорошо )");
 
             var arr = memorystream.ToArray();
 

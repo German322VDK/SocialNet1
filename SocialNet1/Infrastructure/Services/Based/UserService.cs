@@ -31,6 +31,79 @@ namespace SocialNet1.Infrastructure.Services.Based
         public ICollection<UserDTO> GetAll() =>
             _db.Users.ToList();
 
+        public bool Delete(string userName)
+        {
+            var user = Get(userName);
+
+            if(user is null)
+            {
+                return false;
+            }
+
+            using (_db.Database.BeginTransaction())
+            {
+                var ugs = _db.UserGroupStatuses.Where(gu => gu.UserName == userName);
+
+                _db.RemoveRange(ugs);
+
+                var ur = _db.UserRoles.Where(ur=> ur.UserId == user.Id);
+
+                _db.RemoveRange(ur);
+
+                var friends = user.Friends;
+
+                _db.RemoveRange(friends);
+
+                var images = user.Images;
+
+                foreach (var image in images)
+                {
+                    foreach (var com in image.Coments)
+                    {
+                        _db.RemoveRange(com.UserCommentLikes);
+
+                        _db.Remove(com);
+                    }
+
+                    _db.RemoveRange(image.UserLikes);
+
+                    _db.Remove(image);
+                }
+
+                var posts = user.SocNetItems.Posts;
+
+                foreach (var post in posts)
+                {
+                    foreach (var com in post.Comments)
+                    {
+                        _db.RemoveRange(com.Likes);
+
+                        _db.RemoveRange(com.Images);
+
+                        _db.Remove(com);
+                    }
+
+                    _db.RemoveRange(post.ThisPost.Likes);
+
+                    _db.RemoveRange(post.ThisPost.Images);
+
+                    _db.Remove(post.ThisPost);
+
+                    _db.Remove(post);
+                }
+
+                _db.Remove(user.SocNetItems);
+
+                _db.Remove(user);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+            }
+
+            return true;
+        }
+
         public bool IsUserInRole(string userName, string roleName)
         {
             var rolesNames = GetRolesByUser(userName).Select(r => r.Name);
@@ -162,6 +235,11 @@ namespace SocialNet1.Infrastructure.Services.Based
 
             if (user is null)
                 return false;
+
+            if(user.Images.Count < 2)
+            {
+                return false;
+            }
 
             var image = user.Images.FirstOrDefault(el => el.Id == imageId);
 
