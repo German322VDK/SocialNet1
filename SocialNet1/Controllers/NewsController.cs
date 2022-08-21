@@ -32,6 +32,10 @@ namespace SocialNet1.Controllers
         {
             var user = _user.Get(User.Identity.Name);
 
+            string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation(ip);
+
             if (user is null)
             {
                 _logger.LogWarning("Опять эти куки пытаются не существующего пользователя куда-то отправить");
